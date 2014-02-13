@@ -1,0 +1,50 @@
+#Android generated
+bin/
+gen/
+
+#Eclipse
+#.project
+#.classpath
+.settings
+
+#Maven
+target
+release.properties
+pom.xml.*
+
+#Ant
+#build.xml
+local.properties
+proguard.cfg
+
+#Temp
+*~
+obj
+.gradle
+
+# Eclipse generated
+
+
+# OS generated files #
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs and databases #
+######################
+*.log
+*.sql
+*.sqlite
+
+# Compiled source #
+###################
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
