@@ -1,4 +1,4 @@
-package mdp.simulation;
+package mdp.gui;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -16,7 +16,7 @@ import mdp.Config;
 import mdp.algo.ArenaMap;
 import mdp.algo.Point;
 
-public class Map extends JPanel {
+public class MapPanel extends JPanel {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -25,10 +25,14 @@ public class Map extends JPanel {
 	ArrayList<Point> path;
 	public static int GRID_SIZE = Config.PANEL_GRID_SIZE;
 
-	private BufferedImage image;
+	private BufferedImage RobotImage;
 
-	public Map() {
-
+	public MapPanel() {
+		try {
+			RobotImage = ImageIO.read(new File(Config.robotFileName));
+		} catch (IOException ex) {
+			// handle exception... whatever, nobody cares my code anyway
+		}
 	}
 
 	public void updateMap(int[][] matrix) {
@@ -56,19 +60,22 @@ public class Map extends JPanel {
 	@Override 
 	public void paint(Graphics g) {
 		Graphics2D ga = (Graphics2D) g;
-		System.out.println("visualizing...");
+		if (Config.trackingOn)
+			System.out.println("visualizing...");
 
 		if (this.map != null) {
 			int height = GRID_SIZE;
 			int width = GRID_SIZE;
-
-			System.out.print("map.length: "+map.length+"    ");
-			System.out.println("map.width: "+map[0].length);
+			
+			if (Config.trackingOn) {
+				System.out.print("map.length: " + map.length + "    ");
+				System.out.println("map.width: " + map[0].length);
+			}
 
 			// ConvertMap mapimage = new ConvertMap(map);
 			for (int i = 0; i < map.length; i++) {
 				for (int j = 0; j < map[0].length; j++) {
-					System.out.print(map[i][j]);
+					if (Config.trackingOn) System.out.print(map[i][j]);
 					switch (map[i][j]) {
 					case ArenaMap.OBS:
 						ga.setPaint(Color.black);
@@ -107,7 +114,7 @@ public class Map extends JPanel {
 					}
 
 				}
-				System.out.println();
+				if (Config.trackingOn) System.out.println();
 			}
 		}
 
@@ -133,16 +140,15 @@ public class Map extends JPanel {
 		if (this.robotPosition != null) {
 			int x = robotPosition.xToGrid();
 			int y = robotPosition.yToGrid();
-
-			try {
-				image = ImageIO.read(new File("droidedited.png"));
-			} catch (IOException ex) {
-				// handle exception... whatever, nobody cares my code anyway
-			}
-			g.drawImage(image, (int) ((y - 0.5) * GRID_SIZE),
-					(int) ((x - 0.5) * GRID_SIZE), 5 * GRID_SIZE,
-					6 * GRID_SIZE, null);
-
+			if (Config.debugOn) 
+				System.out.println("x="+x+"   " +"y="+y);
+			
+			g.drawImage(RobotImage,
+					(int) ((y - 1) * GRID_SIZE),
+					(int) ((x - 1) * GRID_SIZE), 
+					2 * GRID_SIZE,
+					2 * GRID_SIZE, 
+					null);
 		}
 
 	}

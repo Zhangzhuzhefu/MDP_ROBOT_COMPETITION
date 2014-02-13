@@ -1,6 +1,5 @@
 package mdp.algo;
 
-import mdp.Config;
 
 public class Point {
 	

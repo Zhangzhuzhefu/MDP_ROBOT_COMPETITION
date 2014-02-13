@@ -10,27 +10,39 @@ import java.util.Arrays;
 
 import mdp.Config;
 import mdp.algo.ArenaMap;
+import mdp.algo.Explorer;
+import mdp.algo.Robot;
+import mdp.algo.RobotManager;
+import mdp.gui.MainFrame;
+import mdp.gui.MapPanel;
 
 public class Simulator {
 
-	ArenaMap arenaMap = new ArenaMap();
-	Map simulatorMap;
+	MapPanel simulatorMap;
 	int[][] environment;
+	RobotManager robotManager;
+	Robot robot;
+	Explorer explorer;
 	
 	public Simulator() {
-		//load actual map
-		environment = loadMaze(Config.mapFileName);
-		
+		// GUI
 		MainFrame mainFrame = new MainFrame();
 		simulatorMap = mainFrame.getMap();
+
+		// setup robot
+		robotManager = new RobotManager();
+		robot = robotManager.getRobot();
+
+		// setup algo
+		explorer = new Explorer();
 		
-		//test painting
-		simulatorMap.updateMap(environment);
+		//test painting  *should be the knowledge base, not actual environment!
+		simulatorMap.updateMap(robot.getMapKnowledgeBase().getArrayMap());
 		
 	}
 	
 	@SuppressWarnings("resource")
-	int [][] loadMaze(String filename) {
+	int [][] loadMazeEnvironment(String filename) {
 		File file = new File(filename);
 		int[][] map = new int[ArenaMap.MAXN][ArenaMap.MAXM];
 		for (int[] rows : map)
@@ -68,6 +80,10 @@ public class Simulator {
 	
 	//TODO
 	public void startSimulation() {
-		
+		// load actual map
+		environment = loadMazeEnvironment(Config.mapFileName);
+		robotManager.start();
+		//explorer.explore();
+		//simulatorMap.updateRobot(Config.START_POINT);//test robot
 	}
 }
