@@ -1,3 +1,4 @@
+
 #Android generated
 bin/
 gen/
@@ -48,3 +49,10 @@ Thumbs.db
 *.exe
 *.o
 *.so
+=======
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
