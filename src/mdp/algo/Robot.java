@@ -6,6 +6,7 @@ import mdp.Config;
 public class Robot {
 
 	ArenaMap mapKnowledgeBase;
+	VirtualPerceptron sensors;
 	
 	boolean isMoving, isOnTheWayReturning; 
 	private Point currentLocation;
