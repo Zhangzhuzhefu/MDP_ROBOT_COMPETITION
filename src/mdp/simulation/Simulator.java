@@ -9,7 +9,7 @@ import mdp.gui.MapPanel;
 
 public class Simulator {
 
-	MapPanel simulatorMap;
+	MapPanel simulatorMapPanel;
 	SimPerceptron perceptronSim;
 	RobotManager robotManager;
 	Robot robot;
@@ -18,7 +18,7 @@ public class Simulator {
 	public Simulator() {
 		// GUI
 		MainFrame mainFrame = new MainFrame();
-		simulatorMap = mainFrame.getMap();
+		simulatorMapPanel = mainFrame.getMap();
 
 		// setup robot
 		robotManager = new RobotManager();
@@ -29,7 +29,7 @@ public class Simulator {
 		perceptronSim = new SimPerceptron();
 		
 		//test painting  *should be the knowledge base, not actual environment!
-		simulatorMap.updateMap(robot.getMapKnowledgeBase().getArrayMap());
+		simulatorMapPanel.updateMap(robot.getMapKnowledgeBase().getArrayMap());
 		
 	}
 	
@@ -40,6 +40,9 @@ public class Simulator {
 	}
 	
 	public void explore(){
-		simulatorMap.updateRobot(Config.START_POINT);//test robot
+		//TODO
+		//Explore share not talk to mapPanel. 
+		//Instead, mapPanel share register an observer to Robots knowledgebase
+		simulatorMapPanel.updateRobot(Config.START_POINT);//test robot
 	}
 }

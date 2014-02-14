@@ -8,11 +8,12 @@ public class Robot {
 	ArenaMap mapKnowledgeBase;
 	VirtualPerceptron sensors;
 	
-	boolean isMoving, isOnTheWayReturning; 
+	boolean isExploring, isMoving, isOnTheWayReturning; 
 	private Point currentLocation;
 	
 	
 	public Robot() {
+		isExploring = false;
 		isMoving = false;
 		isOnTheWayReturning = false;
 		mapKnowledgeBase = new ArenaMap();
@@ -20,7 +21,7 @@ public class Robot {
 	
 	public void start(){
 		setCurrentLocation(Config.START_POINT);
-		isMoving = true;
+		isExploring = true;
 		isOnTheWayReturning = false;
 	}
 	
@@ -54,6 +55,14 @@ public class Robot {
 
 	public void setMapKnowledgeBase(ArenaMap mapKnowledgeBase) {
 		this.mapKnowledgeBase = mapKnowledgeBase;
+	}
+
+	public VirtualPerceptron getSensors() {
+		return sensors;
+	}
+
+	public void setSensors(VirtualPerceptron sensors) {
+		this.sensors = sensors;
 	}
 
 }
