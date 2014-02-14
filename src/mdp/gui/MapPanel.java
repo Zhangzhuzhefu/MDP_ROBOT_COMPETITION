@@ -120,10 +120,10 @@ public class MapPanel extends JPanel {
 		if (this.path != null) {
 
 			for (int k = 0; k < path.size() - 1; k++) {
-				int firstpointx = path.get(k).xToGrid();
-				int firstpointy = path.get(k).yToGrid();
-				int secondpointx = path.get(k + 1).xToGrid();
-				int secondpointy = path.get(k + 1).yToGrid();
+				int firstpointx = path.get(k).gridX;
+				int firstpointy = path.get(k).gridY;
+				int secondpointx = path.get(k + 1).gridX;
+				int secondpointy = path.get(k + 1).gridY;
 
 				ga.setPaint(Color.red);
 				ga.setStroke(new BasicStroke(5));
@@ -137,8 +137,8 @@ public class MapPanel extends JPanel {
 		}
 
 		if (this.robotPosition != null) {
-			int x = robotPosition.xToGrid();
-			int y = robotPosition.yToGrid();
+			int x = robotPosition.gridX;
+			int y = robotPosition.gridY;
 			if (Config.debugOn) 
 				System.out.println("x="+x+"   " +"y="+y);
 			

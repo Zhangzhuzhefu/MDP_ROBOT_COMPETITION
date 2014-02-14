@@ -77,11 +77,16 @@ public class SimPerceptron extends VirtualPerceptron{
 	}
 	
 	public int percept(Point p) {
-		return environment[p.xToGrid()][p.yToGrid()];
+		return environment[p.gridX][p.gridY];
 	}
 	
 	public int percept(int x, int y) {
 		return environment[x][y];
+	}
+
+	@Override
+	public int[][] getEnvironment() {
+		return environment;
 	}
 
 	

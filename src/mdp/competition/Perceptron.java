@@ -26,6 +26,11 @@ public class Perceptron extends VirtualPerceptron{
 		return 0;
 	}
 
+	@Override
+	public int[][] getEnvironment() {
+		return null;
+	}
+
 	
 
 }

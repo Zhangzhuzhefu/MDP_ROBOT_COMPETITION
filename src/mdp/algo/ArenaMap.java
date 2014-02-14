@@ -65,5 +65,8 @@ public class ArenaMap {
 	public int[][] getArrayMap(){
 		return map;
 	}
+	public void setArrayMap(int[][] map){
+		this.map=map;
+	}
 	
 }

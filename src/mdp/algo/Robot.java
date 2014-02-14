@@ -8,6 +8,7 @@ public class Robot {
 	ArenaMap mapKnowledgeBase;
 	VirtualPerceptron sensors;
 	
+	
 	boolean isExploring, isMoving, isOnTheWayReturning; 
 	private Point currentLocation;
 	
@@ -39,7 +40,11 @@ public class Robot {
 	
 	public void turnRight(){
 	
-}
+	}
+	
+	public void updatePerceptronToKnowledgebase(){
+		mapKnowledgeBase.setArrayMap(sensors.getEnvironment());
+	}
 
 	public Point getCurrentLocation() {
 		return currentLocation;

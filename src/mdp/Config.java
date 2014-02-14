@@ -1,6 +1,7 @@
 package mdp;
 
 import mdp.algo.Point;
+import mdp.algo.PointManager;
 
 public class Config {
 	//simulation test file
@@ -19,8 +20,8 @@ public class Config {
 
 	//Robot
 	public static final int robotWaitingTime = 100;
-	public static final Point START_POINT = new Point(30, 30);
-	public static final Point END_POINT = new Point(160, 210);
+	public static final Point START_POINT = PointManager.getPoint(30.0, 30.0);
+	public static final Point END_POINT = PointManager.getPoint(160.0, 210.0);
 //	public static final Point RETURN_POINT = new Point(132.5, 182.5);
 //	public static final Point RETURN_START = new Point(12.5, 12.5);
 }

@@ -9,4 +9,5 @@ public abstract class VirtualPerceptron {
 
 	public abstract int perceptRight();
 
+	public abstract int[][] getEnvironment();
 }
