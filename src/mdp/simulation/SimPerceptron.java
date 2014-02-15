@@ -12,13 +12,16 @@ import mdp.Config;
 import mdp.algo.ArenaMap;
 import mdp.algo.Point;
 import mdp.algo.VirtualPerceptron;
+import mdp.gui.MapPanel;
 
 public class SimPerceptron extends VirtualPerceptron{
 	int[][] environment;
 	
-	public SimPerceptron (){
+	
+	public SimPerceptron (MapPanel p){
 		super();
 		environment = loadMazeEnvironment(Config.mapFileName);
+		communicator = new SimCommunicator(p);
 	}
 	
 	@SuppressWarnings("resource")

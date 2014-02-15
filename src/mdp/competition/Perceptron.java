@@ -5,7 +5,8 @@ import mdp.algo.VirtualPerceptron;
 public class Perceptron extends VirtualPerceptron{
 
 	public Perceptron() {
-
+		super();
+		communicator = new Communicator();
 	}
 
 	@Override

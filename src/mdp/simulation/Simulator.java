@@ -9,7 +9,6 @@ import mdp.gui.MapPanel;
 public class Simulator {
 
 	MapPanel simulatorMapPanel;
-	SimPerceptron perceptronSim;
 	RobotManager robotManager;
 	Robot robot;
 	
@@ -23,20 +22,17 @@ public class Simulator {
 		// setup robot
 		robotManager = new RobotManager();
 		robot = robotManager.getRobot();
-		robot.setSensors(new SimPerceptron());
-
-		// setup algo
-		
-		perceptronSim = new SimPerceptron();
+		robot.setSensors(new SimPerceptron(simulatorMapPanel));
 		
 	}
 	
 	//TODO
 	public void startSimulation() {
-		robotManager.start();
+		
 		explore();
 		findPath();
 		secondRun();
+		robotManager.start();
 	}
 	
 	public void explore(){

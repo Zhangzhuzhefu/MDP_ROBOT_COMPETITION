@@ -13,7 +13,7 @@ public class RobotManager extends Thread{
 	public void run() {
 		robot.start();
 		System.out.println("RobotManager: Robot started!");
-		while (robot.isMoving) {
+		while (robot.isExploring) {
 			robot.move();
 			try {
 				Thread.sleep(Config.robotWaitingTime);

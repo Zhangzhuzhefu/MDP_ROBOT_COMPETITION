@@ -18,7 +18,7 @@ public class Config {
 	public static final int[] FRAME_LOCATION ={250, 100, 850, 700};
 
 	//Robot
-	public static final int robotWaitingTime = 100;
+	public static final int robotWaitingTime = 200;
 	public static final double startPointX = 30.0;
 	public static final double startPointY = 30.0;
 	public static final double endPointX = 160.0;
