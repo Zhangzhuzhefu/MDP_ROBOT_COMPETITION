@@ -65,7 +65,10 @@ public class Robot {
 			if (Config.debugOn) System.out.println("Robot route exists");
 			currentLocation = route.pop();
 			updateLocation(currentLocation);
-		} else if (Config.debugOn) System.out.println("Robot route is empty..");
+		} else {
+			if (Config.debugOn) System.out.println("Robot route is empty..");
+			isExploring = false;
+		}
 	}
 	
 	public void updateLocation(Point p){
