@@ -58,16 +58,19 @@ public class Point {
 		return (double) (gridY * ArenaMap.GRID_LEN);
 	}
 	
-	public static double distance(Point A, Point B) {
-		return Math.sqrt((A.positionX-B.positionX)*(A.positionX-B.positionX) 
-				+ (A.positionY-B.positionY)*(A.positionY-B.positionY));
+	public double distance(Point A) {
+		return Math.sqrt((A.positionX-positionX)*(A.positionX-positionX) 
+				+ (A.positionY-positionY)*(A.positionY-positionY));
+	}
+	public int gridDistanceTo(Point A) {
+		return (int) (Math.abs((A.gridX - gridX)) + Math.abs((A.gridY - gridY)));
 	}
 	
 	public boolean sameGridPoint (Point p){
 		return (gridX==p.gridX && gridY==p.gridY);
 	}
 	public boolean samePoint (Point p){
-		return distance(this, p) < Config.EPS;
+		return this.distance(p) < Config.EPS;
 	}
 	
 	public Point scalarProduct(double a) {

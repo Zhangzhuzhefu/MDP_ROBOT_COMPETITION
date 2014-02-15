@@ -62,8 +62,9 @@ public class MapPanel extends JPanel {
 		if (path == null)
 			return;
 		this.path = new ArrayList<Point>();
-		this.path.add(robotPosition);
+		
 		this.path.addAll(path);
+		//this.path.add(robotPosition);
 		this.revalidate();
 		this.repaint();
 	}
