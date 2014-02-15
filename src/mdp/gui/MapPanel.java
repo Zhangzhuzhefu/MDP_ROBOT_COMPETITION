@@ -64,7 +64,7 @@ public class MapPanel extends JPanel {
 		this.path = new ArrayList<Point>();
 		
 		this.path.addAll(path);
-		//this.path.add(robotPosition);
+		this.path.add(robotPosition);
 		this.revalidate();
 		this.repaint();
 	}
@@ -152,7 +152,7 @@ public class MapPanel extends JPanel {
 			int x = robotPosition.gridX;
 			int y = robotPosition.gridY;
 			if (Config.debugOn) 
-				System.out.println("x="+x+"   " +"y="+y);
+				System.out.println("MapPanel painting robot: x="+x+"   " +"y="+y);
 			
 			g.drawImage(RobotImage,
 					(int) ((y - 1) * GRID_SIZE),

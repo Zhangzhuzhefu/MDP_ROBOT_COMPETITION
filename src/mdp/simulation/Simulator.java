@@ -1,11 +1,6 @@
 package mdp.simulation;
 
-import java.util.Stack;
-
 import mdp.algo.ArenaMap;
-import mdp.algo.Explorer;
-import mdp.algo.PathCalculator;
-import mdp.algo.Point;
 import mdp.algo.Robot;
 import mdp.algo.RobotManager;
 import mdp.gui.MainFrame;
@@ -17,8 +12,8 @@ public class Simulator {
 	SimPerceptron perceptronSim;
 	RobotManager robotManager;
 	Robot robot;
-	Explorer explorer;
-	PathCalculator pathFinder;
+	
+	
 	
 	public Simulator() {
 		// GUI
@@ -31,9 +26,8 @@ public class Simulator {
 		robot.setSensors(new SimPerceptron());
 
 		// setup algo
-		explorer = new Explorer();
+		
 		perceptronSim = new SimPerceptron();
-		pathFinder = new PathCalculator();
 		
 	}
 	
@@ -41,7 +35,7 @@ public class Simulator {
 	public void startSimulation() {
 		robotManager.start();
 		explore();
-		generateShortestPath();
+		findPath();
 		secondRun();
 	}
 	
@@ -59,11 +53,9 @@ public class Simulator {
 		simulatorMapPanel.updateMap(robot.getMapKnowledgeBase().getArrayMap());
 	}
 	
-	public void generateShortestPath(){
-		pathFinder.setMap(robot.getMapKnowledgeBase().getArrayMap());
-		System.out.println("Finding a random path: " + pathFinder.findRandomPath());
-		pathFinder.findShortestPath();
-		simulatorMapPanel.updatePath(pathFinder.getShortestPath());
+	public void findPath(){
+		simulatorMapPanel.updatePath(robot.generateShortestPath());
+		//simulatorMapPanel.updatePath(robot.generateRandomPath());
 	}
 	
 	public void secondRun(){

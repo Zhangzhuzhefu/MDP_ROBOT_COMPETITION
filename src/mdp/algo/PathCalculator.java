@@ -60,7 +60,7 @@ public class PathCalculator {
 			for (int i = 0; i < 4; i++) {
 				v=u.getNeighbors(i);
 				if (v!=null) {
-					System.out.println("distance["+u.gridX+"]["+u.gridY+"]+u.gridDistanceTo("+v.gridX+" "+v.gridY+")"+distance[u.gridX][u.gridY]);
+					//System.out.println("distance["+u.gridX+"]["+u.gridY+"]+u.gridDistanceTo("+v.gridX+" "+v.gridY+")"+distance[u.gridX][u.gridY]);
 					if (distance[v.gridX][v.gridY] > (distance[u.gridX][u.gridY]+u.gridDistanceTo(v))){
 						if (map[v.gridX-1][v.gridY-1]==ArenaMap.EMP && 
 							map[v.gridX-2][v.gridY-1]==ArenaMap.EMP &&
@@ -82,21 +82,9 @@ public class PathCalculator {
 			a = predecessors[a.gridX][a.gridY];
 		}
 		shortestPath.push(a);
-		/*
-		for (int i=0;i<ArenaMapPointMAXN;i++) {
-			for (int j=0;j<ArenaMapPointMAXM;j++) {
-				System.out.print(distance[i][j]+" ");
-			}System.out.println();
-		}System.out.println();
-		
-		while (!queue.isEmpty()){
-			Point p = queue.remove();
-			System.out.println("queue remove: "+p.gridX+" "
-					+p.gridY+" "+shortestDistanceFromSource[p.gridX][p.gridY]+" "+p);
-		}
-		*/
-		
-		return false;
+		if (shortestPath!=null)
+			return true;
+		else return false;
 	}
 	
 	public boolean findRandomPath() {
@@ -142,6 +130,14 @@ public class PathCalculator {
 
 		}
 		aRandomPath.push(here);
+		
+		//To reverse the randomPath stack
+		Stack <Point> temp = new Stack<Point>();
+		while (!aRandomPath.isEmpty()){
+			temp.push(aRandomPath.pop());
+		}
+		aRandomPath = temp;
+		
 		return true;
 	}
 	

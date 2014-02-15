@@ -1,11 +1,15 @@
 package mdp.algo;
 
+import java.util.Stack;
+
 
 
 public class Robot {
 
 	ArenaMap mapKnowledgeBase;
 	VirtualPerceptron sensors;
+	Explorer explorer;
+	PathCalculator pathCalculator;
 	
 	
 	boolean isExploring, isMoving, isOnTheWayReturning; 
@@ -17,12 +21,30 @@ public class Robot {
 		isMoving = false;
 		isOnTheWayReturning = false;
 		mapKnowledgeBase = new ArenaMap();
+		explorer = new Explorer();
+		pathCalculator = new PathCalculator();
 	}
 	
 	public void start(){
 		setCurrentLocation(ArenaMap.START_POINT);
 		isExploring = true;
 		isOnTheWayReturning = false;
+	}
+	
+	public Stack<Point> generateShortestPath(){
+		pathCalculator.setMap(getMapKnowledgeBase().getArrayMap());
+		if(pathCalculator.findShortestPath())
+			return pathCalculator.getShortestPath();
+		else 
+			return null;
+	}
+	
+	public Stack<Point> generateRandomPath(){
+		pathCalculator.setMap(this.getMapKnowledgeBase().getArrayMap());
+		if(pathCalculator.findRandomPath())
+			return pathCalculator.getRandomPath();
+		else 
+			return null;
 	}
 	
 	public void move(){

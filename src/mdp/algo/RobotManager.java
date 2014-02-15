@@ -18,7 +18,6 @@ public class RobotManager extends Thread{
 			try {
 				Thread.sleep(Config.robotWaitingTime);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
