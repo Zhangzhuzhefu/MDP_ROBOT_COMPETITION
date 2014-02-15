@@ -11,6 +11,8 @@ public class ArenaMap {
 			GRID_LEN = Config.GRID_LEN;
 	public static final int MAXN = WIDTH / GRID_LEN + 2;
 	public static final int MAXM = LENGTH / GRID_LEN + 2;
+	public static final Point START_POINT = PointManager.getPoint(Config.startPointX, Config.startPointY);
+	public static final Point END_POINT = PointManager.getPoint(Config.endPointX, Config.endPointY);
 	
 	public static final int UNKNOWN = 2, EMP = 0, OBS = 1, VWall = 3, UNSAFE=4;
 	

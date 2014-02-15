@@ -1,6 +1,5 @@
 package mdp.algo;
 
-import mdp.Config;
 
 
 public class Robot {
@@ -21,7 +20,7 @@ public class Robot {
 	}
 	
 	public void start(){
-		setCurrentLocation(Config.START_POINT);
+		setCurrentLocation(ArenaMap.START_POINT);
 		isExploring = true;
 		isOnTheWayReturning = false;
 	}

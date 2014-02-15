@@ -1,5 +1,7 @@
 package mdp.algo;
 
+import mdp.Config;
+
 
 public class Point {
 	
@@ -34,6 +36,12 @@ public class Point {
 		neighbors[i] = p;
 	}
 	
+	public Point getNeighbors(int i){
+		if (i>=0 && i<4)
+			return neighbors[i];
+		else return null;
+	}
+	
 	private int xToGrid() {
 		return (int) (positionX / ArenaMap.GRID_LEN);
 	}
@@ -49,9 +57,18 @@ public class Point {
 	private double yToPosition() {
 		return (double) (gridY * ArenaMap.GRID_LEN);
 	}
-	//TODO distance()
 	
-	//TODO equals()
+	public static double distance(Point A, Point B) {
+		return Math.sqrt((A.positionX-B.positionX)*(A.positionX-B.positionX) 
+				+ (A.positionY-B.positionY)*(A.positionY-B.positionY));
+	}
+	
+	public boolean sameGridPoint (Point p){
+		return (gridX==p.gridX && gridY==p.gridY);
+	}
+	public boolean samePoint (Point p){
+		return distance(this, p) < Config.EPS;
+	}
 	
 	public Point scalarProduct(double a) {
 		return new Point(a*positionX, a*positionY);

@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Stack;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -48,6 +49,16 @@ public class MapPanel extends JPanel {
 	}
 
 	public void updatePath(ArrayList<Point> path) {
+		if (path == null)
+			return;
+		this.path = new ArrayList<Point>();
+		this.path.add(robotPosition);
+		this.path.addAll(path);
+		this.revalidate();
+		this.repaint();
+	}
+	
+	public void updatePath(Stack<Point> path) {
 		if (path == null)
 			return;
 		this.path = new ArrayList<Point>();
@@ -120,17 +131,17 @@ public class MapPanel extends JPanel {
 		if (this.path != null) {
 
 			for (int k = 0; k < path.size() - 1; k++) {
-				int firstpointx = path.get(k).gridX;
-				int firstpointy = path.get(k).gridY;
-				int secondpointx = path.get(k + 1).gridX;
-				int secondpointy = path.get(k + 1).gridY;
+				int firstpointx = path.get(k).gridX-1;
+				int firstpointy = path.get(k).gridY-1;
+				int secondpointx = path.get(k + 1).gridX-1;
+				int secondpointy = path.get(k + 1).gridY-1;
 
 				ga.setPaint(Color.red);
 				ga.setStroke(new BasicStroke(5));
-				ga.drawLine((int) ((firstpointy + 1.5) * GRID_SIZE),
-						(int) ((firstpointx + 1.5) * GRID_SIZE),
-						(int) ((secondpointy + 1.5) * GRID_SIZE),
-						(int) ((secondpointx + 1.5) * GRID_SIZE));
+				ga.drawLine((int) ((firstpointy + 1) * GRID_SIZE),
+						(int) ((firstpointx + 1) * GRID_SIZE),
+						(int) ((secondpointy + 1) * GRID_SIZE),
+						(int) ((secondpointx + 1) * GRID_SIZE));
 
 			}
 

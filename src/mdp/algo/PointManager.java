@@ -19,13 +19,15 @@ public class PointManager {
 			for (int i=0; i<numTotalXPoints;i++) {
 				for (int j=0; j<numTotalYPoints;j++){
 					gridPoints[i][j] = new Point(i,j);
+					//if (i==3 && j == 3) System.out.println ("(3,3): "+gridPoints[i][j] );
 				}
 			}
 			//set lower neighbors 
 			for (int i=0; i<ArenaMap.MAXN;i++) {
 				for (int j=0; j<numTotalYPoints;j++){
 					gridPoints[i][j].setNeighbors(Point.DOWN,gridPoints[i+1][j]); 
-				}
+					//System.out.print(gridPoints[i][j].getNeighbors(Point.DOWN).gridX);
+				}//System.out.println();
 			}
 			//set upper neighbors 
 			for (int i=1; i<numTotalXPoints;i++) {

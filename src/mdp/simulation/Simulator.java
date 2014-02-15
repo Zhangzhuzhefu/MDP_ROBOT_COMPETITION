@@ -1,8 +1,11 @@
 package mdp.simulation;
 
-import mdp.Config;
+import java.util.Stack;
+
+import mdp.algo.ArenaMap;
 import mdp.algo.Explorer;
 import mdp.algo.PathFinder;
+import mdp.algo.Point;
 import mdp.algo.Robot;
 import mdp.algo.RobotManager;
 import mdp.gui.MainFrame;
@@ -46,7 +49,7 @@ public class Simulator {
 		//TODO
 		//Explore share not talk to mapPanel. 
 		//Instead, mapPanel share register an observer to Robots knowledgebase
-		simulatorMapPanel.updateRobot(Config.START_POINT);
+		simulatorMapPanel.updateRobot(ArenaMap.START_POINT);
 		/*
 		 * test painting  *should be the knowledge base, not actual environment!
 		*/
@@ -58,7 +61,9 @@ public class Simulator {
 	
 	public void generateShortestPath(){
 		pathFinder.setMap(robot.getMapKnowledgeBase().getArrayMap());
-		
+		System.out.println("Finding Path: " + pathFinder.findRandomPath());
+		Stack <Point> path = pathFinder.getPath();
+		simulatorMapPanel.updatePath(path);
 	}
 	
 	public void secondRun(){
