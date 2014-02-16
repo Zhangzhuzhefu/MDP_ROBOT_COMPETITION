@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Stack;
+import java.awt.geom.AffineTransform;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -16,6 +17,7 @@ import javax.swing.JPanel;
 import mdp.Config;
 import mdp.algo.ArenaMap;
 import mdp.algo.Point;
+import mdp.algo.Robot;
 
 public class MapPanel extends JPanel {
 	
@@ -151,15 +153,25 @@ public class MapPanel extends JPanel {
 		if (this.robotPosition != null) {
 			int x = robotPosition.gridX;
 			int y = robotPosition.gridY;
+            int d = robotPosition.direction;
 			if (Config.debugOn) 
-				System.out.println("MapPanel painting robot: x="+x+"   " +"y="+y);
+				System.out.println("MapPanel painting robot: x="+x+"   " +"y="+y + "\tDirection= "+d);
 			
-			g.drawImage(RobotImage,
+			/*g.drawImage(RobotImage,
 					(int) ((y - 1) * GRID_SIZE),
 					(int) ((x - 1) * GRID_SIZE), 
 					2 * GRID_SIZE,
 					2 * GRID_SIZE, 
 					null);
+            */
+            AffineTransform at = new AffineTransform();
+            at.translate((int) ((y) * GRID_SIZE),(int) ((x) * GRID_SIZE) );
+            at.rotate(-Math.PI/2); // rotation should changed accordingly to the direction
+            at.scale(2 * (double)GRID_SIZE/RobotImage.getHeight(),2 * (double)GRID_SIZE/RobotImage.getWidth());
+            at.translate(-RobotImage.getWidth()/2, -RobotImage.getHeight()/2);
+
+
+            ((Graphics2D) g).drawImage(RobotImage, at, null);
 		}
 
 	}

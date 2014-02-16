@@ -9,6 +9,7 @@ public class Point {
 	public double positionY;
 	public int gridX;
 	public int gridY;
+    public int direction;
 	public Point[] neighbors;
 	public static final int UP = 0, DOWN = 1, LEFT = 2, RIGHT = 3; 
 	
