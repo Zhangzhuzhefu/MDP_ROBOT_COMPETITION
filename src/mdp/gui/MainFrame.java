@@ -13,15 +13,15 @@ public class MainFrame extends JFrame{
 	private static final long serialVersionUID = 1L;
 	MapPanel map;
 	ControlPanel control;
-	int[] position = new int[4];
+	int[] size = new int[4];
 	
 	public MainFrame() {
 		//initialization 
 		setResizable(true);
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setTitle("MDP Control Center");
-		position = Config.FRAME_LOCATION;
-		setSize(1050,700);
+		size = Config.FRAME_SIZE;
+		setSize(size[0],size[1]);
 		setLocationRelativeTo(null);
 
 		//setLayout(new BorderLayout());

@@ -139,6 +139,7 @@ public class ControlPanel extends Panel{
 		jbReset.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				mapSwitch.doClick();
 				Simulator.reset();
 			}
 		});
