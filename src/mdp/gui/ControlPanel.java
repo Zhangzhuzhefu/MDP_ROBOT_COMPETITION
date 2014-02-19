@@ -10,6 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
 
 public class ControlPanel extends Panel{
 	private static final long serialVersionUID = 1L;
@@ -36,6 +37,8 @@ public class ControlPanel extends Panel{
 		JPanel panel1 = new JPanel();
 		JPanel panel2 = new JPanel();
 		JPanel panel3 = new JPanel();
+		EmptyBorder emptyBorder = new EmptyBorder(0,8,5,8);
+		GridLayout gridLayout = new GridLayout(4,1);
 		
 		//Panel1
 		lbPanel1 = new JLabel("map controller");
@@ -51,7 +54,8 @@ public class ControlPanel extends Panel{
 		panel1.add(lbPanel1);
 		panel1.add(jbRandomPath);
 		panel1.add(jbshortestPath);
-		panel1.setLayout(new GridLayout(4,1));
+		panel1.setLayout(gridLayout);
+		panel1.setBorder(emptyBorder);
 		panel1.setBackground(new Color(245,255,250));
 		
 		//Panel2
@@ -64,7 +68,8 @@ public class ControlPanel extends Panel{
 		
 		panel2.add(lbPanel2);
 		panel2.add(jbExpolore);
-		panel2.setLayout(new GridLayout(4,1));
+		panel2.setLayout(gridLayout);
+		panel2.setBorder(emptyBorder);
 		panel2.setBackground(new Color(255,250,240));
 		
 		//Panel3
@@ -82,7 +87,8 @@ public class ControlPanel extends Panel{
 		panel3.add(lbPanel3);
 		panel3.add(mapSwitch);
 		panel3.add(jbReset);
-		panel3.setLayout(new GridLayout(4,1));
+		panel3.setLayout(gridLayout);
+		panel3.setBorder(emptyBorder);
 		panel3.setBackground(new Color(240,248,255));
 		
 		add(panel1);
