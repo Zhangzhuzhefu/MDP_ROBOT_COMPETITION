@@ -4,6 +4,7 @@ package mdp;
 public class Config {
 	//simulation test file
 	public static String mapFileName = "zheMap.in";
+	public static String background = "black_dark.jpg";
 	public static String robotFileName = "Wall.E.png";
 	public static boolean trackingOn = false;
 	public static boolean debugOn = true;
@@ -15,7 +16,7 @@ public class Config {
 	
 	//simulation variables
 	public static final int PANEL_GRID_SIZE = 35;
-	public static final int[] FRAME_LOCATION ={250, 100, 850, 700};
+	public static final int[] FRAME_LOCATION ={250, 100, 1050, 700};
 
 	//Robot
 	public static final int robotWaitingTime = 50;

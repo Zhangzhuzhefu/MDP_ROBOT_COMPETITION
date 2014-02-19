@@ -6,6 +6,10 @@ public class Explorer {
 		
 	}
 	
+	public void reset(){
+		
+	}
+
 	public void explore(){
 		
 	}

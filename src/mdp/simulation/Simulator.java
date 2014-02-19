@@ -8,17 +8,16 @@ import mdp.gui.MapPanel;
 
 public class Simulator {
 
-	MapPanel simulatorMapPanel;
-	RobotManager robotManager;
-	Robot robot;
+	public static MapPanel simulatorMapPanel;
+	public static RobotManager robotManager;
+	public static Robot robot;
 	
 	
 	
-	public Simulator() {
-		// GUI
-		MainFrame mainFrame = new MainFrame();
+	public Simulator(MainFrame mainFrame) {
+		//GUI
 		simulatorMapPanel = mainFrame.getMap();
-
+		
 		// setup robot
 		robotManager = new RobotManager();
 		robot = robotManager.getRobot();
@@ -30,9 +29,7 @@ public class Simulator {
 	public void startSimulation() {
 		
 		explore();
-		findPath();
 		secondRun();
-		robotManager.start();
 	}
 	
 	public void explore(){
@@ -49,13 +46,22 @@ public class Simulator {
 		simulatorMapPanel.updateMap(robot.getMapKnowledgeBase().getArrayMap());
 	}
 	
-	public void findPath(){
-		simulatorMapPanel.updatePath(robot.generateShortestPath());
-		//simulatorMapPanel.updatePath(robot.generateRandomPath());
+	public void updateRandomPath(){
+		simulatorMapPanel.updatePath(robot.generateRandomPath());
 	}
 	
-	public void secondRun(){
-		
+	public void updateShortestPath(){
+		simulatorMapPanel.updatePath(robot.generateShortestPath());
+	}
+	
+	public static void secondRun(){
+		robotManager.robotRun();
+	}
+	
+	public static void reset(){
+		robot.reset();
+		simulatorMapPanel.updateRobot(ArenaMap.START_POINT);
+		simulatorMapPanel.updatePath(robot.getRoute());
 	}
 	
 	

@@ -19,13 +19,14 @@ public class ArenaMap {
 	int[][] map;
 	
 	public ArenaMap() {
-		
+		map = new int[MAXN][MAXM];
 		initializeMap();
 		printVirtualMap();
 	}
-	
+	public void reset(){
+		initializeMap();
+	}
 	public void initializeMap() {
-		map = new int[MAXN][MAXM];
 		
 		// set whole map status to be unknown
 		for (int[] rows : map)

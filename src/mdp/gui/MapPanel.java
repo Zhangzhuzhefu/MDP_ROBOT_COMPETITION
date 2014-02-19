@@ -50,15 +50,14 @@ public class MapPanel extends JPanel {
 		this.repaint();
 	}
 
-	public void updatePath(ArrayList<Point> path) {
+	/*public void updatePath(ArrayList<Point> path) {
 		if (path == null)
 			return;
 		this.path = new ArrayList<Point>();
-		this.path.add(robotPosition);
 		this.path.addAll(path);
 		this.revalidate();
 		this.repaint();
-	}
+	}*/
 	
 	public void updatePath(Stack<Point> path) {
 		if (path == null)
@@ -66,7 +65,6 @@ public class MapPanel extends JPanel {
 		this.path = new ArrayList<Point>();
 		
 		this.path.addAll(path);
-		this.path.add(robotPosition);
 		this.revalidate();
 		this.repaint();
 	}
