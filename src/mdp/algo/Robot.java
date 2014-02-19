@@ -32,9 +32,19 @@ public class Robot {
 		route = new Stack<Point>();
 	}
 	
-	public void start(){
+	public void reset(){
+		isExploring = false;
+		isMoving = false;
+		isOnTheWayReturning = false;
+		currentLocation = ArenaMap.START_POINT;
+		mapKnowledgeBase.reset();;
+		explorer.reset();
+		route.clear();
+	}
+	
+	public void startMoving(){
 		setCurrentLocation(ArenaMap.START_POINT);
-		isExploring = true;
+		isMoving = true;
 		isOnTheWayReturning = false;
 	}
 	
@@ -63,11 +73,15 @@ public class Robot {
 	public void move(){
 		if (route!=null && !route.empty() ){
 			if (Config.debugOn) System.out.println("Robot route exists");
+			if (route.peek().sameGridPoint(ArenaMap.END_POINT)){
+				isOnTheWayReturning = true;
+				if (Config.debugOn) System.out.println("isOnTheWayReturning = true");
+			}
 			currentLocation = route.pop();
 			updateLocation(currentLocation);
 		} else {
 			if (Config.debugOn) System.out.println("Robot route is empty..");
-			isExploring = false;
+			isMoving = false;
 		}
 	}
 	
@@ -119,6 +133,10 @@ public class Robot {
 
 	public void setSensors(VirtualPerceptron sensors) {
 		this.sensors = sensors;
+	}
+
+	public Stack<Point> getRoute() {
+		return route;
 	}
 
 }

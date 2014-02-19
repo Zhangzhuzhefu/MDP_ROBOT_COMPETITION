@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Panel;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -12,6 +14,9 @@ import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import mdp.Program;
+import mdp.simulation.Simulator;
+
 public class ControlPanel extends Panel{
 	private static final long serialVersionUID = 1L;
 	
@@ -19,6 +24,7 @@ public class ControlPanel extends Panel{
 	private JButton jbshortestPath;
 	
 	private JButton jbExpolore;
+	private JButton jbRun;
 	
 	
 	private JToggleButton mapSwitch;
@@ -47,9 +53,21 @@ public class ControlPanel extends Panel{
 		
 		jbRandomPath = new JButton("Random Path");
 		jbRandomPath.setFont(new Font("Chalkduster", Font.PLAIN, 12));
+		jbRandomPath.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Program.simulator.updateRandomPath();
+			}
+		});
 		
 		jbshortestPath = new JButton("Shortest Path");
-		jbshortestPath.setFont(new Font("Chalkduster", Font.PLAIN, 12));		
+		jbshortestPath.setFont(new Font("Chalkduster", Font.PLAIN, 12));	
+		jbshortestPath.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Program.simulator.updateShortestPath();
+			}
+		});
 
 		panel1.add(lbPanel1);
 		panel1.add(jbRandomPath);
@@ -64,10 +82,20 @@ public class ControlPanel extends Panel{
 		lbPanel2.setHorizontalAlignment(SwingConstants.CENTER);
 		
 		jbExpolore = new JButton("Explore");
-		jbExpolore.setFont(new Font("Chalkduster", Font.PLAIN, 12));	
+		jbExpolore.setFont(new Font("Chalkduster", Font.PLAIN, 12));
+		
+		jbRun = new JButton("Run");
+		jbRun.setFont(new Font("Chalkduster", Font.PLAIN, 12));
+		jbRun.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Simulator.secondRun();
+			}
+		});
 		
 		panel2.add(lbPanel2);
 		panel2.add(jbExpolore);
+		panel2.add(jbRun);
 		panel2.setLayout(gridLayout);
 		panel2.setBorder(emptyBorder);
 		panel2.setBackground(new Color(255,250,240));
@@ -81,7 +109,13 @@ public class ControlPanel extends Panel{
 		mapSwitch.setFont(new Font("Chalkduster", Font.PLAIN, 12));
 		
 		jbReset = new JButton("Reset");
-		jbReset.setFont(new Font("Chalkduster", Font.PLAIN, 12));	
+		jbReset.setFont(new Font("Chalkduster", Font.PLAIN, 12));
+		jbReset.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Simulator.reset();
+			}
+		});
 		
 		
 		panel3.add(lbPanel3);
@@ -94,7 +128,6 @@ public class ControlPanel extends Panel{
 		add(panel1);
 		add(panel2);
 		add(panel3);
-		
 	}
 
 }
