@@ -37,8 +37,9 @@ public class Robot {
 		isMoving = false;
 		isOnTheWayReturning = false;
 		currentLocation = ArenaMap.START_POINT;
-		mapKnowledgeBase.reset();;
+		mapKnowledgeBase.reset();
 		explorer.reset();
+		pathCalculator.reset();
 		route.clear();
 	}
 	

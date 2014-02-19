@@ -15,8 +15,8 @@ public class ArenaMap {
 	public static final Point END_POINT = PointManager.getPoint(Config.endPointX, Config.endPointY);
 	
 	public static final int UNKNOWN = 2, EMP = 0, OBS = 1, VWall = 3, UNSAFE=4;
-	
-	int[][] map;
+	public static int[][] actualMap;
+	static int[][] map;
 	
 	public ArenaMap() {
 		map = new int[MAXN][MAXM];
@@ -69,7 +69,7 @@ public class ArenaMap {
 		return map;
 	}
 	public void setArrayMap(int[][] map){
-		this.map=map;
+		ArenaMap.map=map;
 	}
 	
 }
