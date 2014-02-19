@@ -161,7 +161,7 @@ public class PathCalculator {
 	}
 	
 	public boolean validatePath(Stack <Point> p){
-		return (shortestPath!=null && shortestPath.size()>=destination.gridDistanceTo(start));
+		return (p!=null && p.size()>=destination.gridDistanceTo(start));
 	}
 	
 	public void reset(){
