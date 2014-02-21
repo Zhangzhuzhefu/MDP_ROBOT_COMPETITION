@@ -152,9 +152,10 @@ public class MapPanel extends JPanel {
 			int x = robotPosition.gridX;
 			int y = robotPosition.gridY;
             int d = robotPosition.direction;
-			if (Config.debugOn) 
+			if (Config.debugOn)
 				System.out.println("MapPanel painting robot: x="+x+"   " +"y="+y + "\tDirection= "+d);
-			
+
+
 			/*g.drawImage(RobotImage,
 					(int) ((y - 1) * GRID_SIZE),
 					(int) ((x - 1) * GRID_SIZE), 
@@ -162,8 +163,9 @@ public class MapPanel extends JPanel {
 					2 * GRID_SIZE, 
 					null);
             */
+
             AffineTransform at = new AffineTransform();
-            at.translate((int) ((y) * GRID_SIZE),(int) ((x) * GRID_SIZE) );
+            at.translate((int) ((y-1) * GRID_SIZE),(int) ((x) * GRID_SIZE) );
             at.rotate(-Math.PI/2); // rotation should changed accordingly to the direction
             at.scale(2 * (double)GRID_SIZE/RobotImage.getHeight(),2 * (double)GRID_SIZE/RobotImage.getWidth());
             at.translate(-RobotImage.getWidth()/2, -RobotImage.getHeight()/2);
