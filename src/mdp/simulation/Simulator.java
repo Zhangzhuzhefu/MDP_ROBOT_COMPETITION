@@ -1,5 +1,7 @@
 package mdp.simulation;
 
+import mdp.Config;
+import mdp.Utils;
 import mdp.algo.ArenaMap;
 import mdp.algo.Robot;
 import mdp.algo.RobotManager;
@@ -11,6 +13,7 @@ public class Simulator {
 	public static MapPanel simulatorMapPanel;
 	public static RobotManager robotManager;
 	public static Robot robot;
+	public static SimPerceptron simPerceptron; 
 	
 	
 	
@@ -21,36 +24,41 @@ public class Simulator {
 		// setup robot
 		robotManager = new RobotManager();
 		robot = robotManager.getRobot();
-		robot.setSensors(new SimPerceptron(simulatorMapPanel));
+		simPerceptron = new SimPerceptron(simulatorMapPanel);
+		robot.setSensors(simPerceptron);
 		
 	}
 	
 	//TODO
+	
 	public void startSimulation() {
+		ArenaMap.actualMap = Utils.loadMazeEnvironment(Config.mapFileName);
+		simulatorMapPanel.updateRobot(ArenaMap.START_POINT);
+		simulatorMapPanel.updateMap(robot.getMapKnowledgeBase().getArrayMap());
 		
-		explore();
-		secondRun();
+		//make sure perceptron is the same as knowledgebase
+		simPerceptron.setEnvironment(robot.getMapKnowledgeBase().getArrayMap());
 	}
 	
-	public void explore(){
+	public static void explore(){
 		//TODO
 		//Explore share not talk to mapPanel. 
-		//Instead, mapPanel share register an observer to Robots knowledgebase
+		//Instead, mapPanel share register an observer to Robots knowledge base
 		simulatorMapPanel.updateRobot(ArenaMap.START_POINT);
-		/*
-		 * test painting  *should be the knowledge base, not actual environment!
-		*/
+		
 		//update the full map to Robots knowledge base
+		simPerceptron.setEnvironment(ArenaMap.actualMap.clone());
 		robot.updatePerceptronToKnowledgebase();
+		
 		//draw the map
 		simulatorMapPanel.updateMap(robot.getMapKnowledgeBase().getArrayMap());
 	}
 	
-	public void updateRandomPath(){
+	public static void updateRandomPath(){
 		simulatorMapPanel.updatePath(robot.generateRandomPath());
 	}
 	
-	public void updateShortestPath(){
+	public static void updateShortestPath(){
 		simulatorMapPanel.updatePath(robot.generateShortestPath());
 	}
 	
@@ -60,7 +68,9 @@ public class Simulator {
 	
 	public static void reset(){
 		robot.reset();
+		ArenaMap.actualMap = Utils.loadMazeEnvironment(Config.mapFileName);
 		simulatorMapPanel.updateRobot(ArenaMap.START_POINT);
+		
 		simulatorMapPanel.updatePath(robot.getRoute());
 	}
 	

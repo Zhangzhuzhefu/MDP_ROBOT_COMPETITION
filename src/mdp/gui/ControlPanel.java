@@ -6,6 +6,8 @@ import java.awt.GridLayout;
 import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -14,7 +16,7 @@ import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-import mdp.Program;
+import mdp.algo.ArenaMap;
 import mdp.simulation.Simulator;
 
 public class ControlPanel extends Panel{
@@ -56,7 +58,7 @@ public class ControlPanel extends Panel{
 		jbRandomPath.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Program.simulator.updateRandomPath();
+				Simulator.updateRandomPath();
 			}
 		});
 		
@@ -65,7 +67,7 @@ public class ControlPanel extends Panel{
 		jbshortestPath.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Program.simulator.updateShortestPath();
+				Simulator.updateShortestPath();
 			}
 		});
 
@@ -83,6 +85,12 @@ public class ControlPanel extends Panel{
 		
 		jbExpolore = new JButton("Explore");
 		jbExpolore.setFont(new Font("Chalkduster", Font.PLAIN, 12));
+		jbExpolore.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Simulator.explore();
+			}
+		});
 		
 		jbRun = new JButton("Run");
 		jbRun.setFont(new Font("Chalkduster", Font.PLAIN, 12));
@@ -107,12 +115,31 @@ public class ControlPanel extends Panel{
 		
 		mapSwitch = new JToggleButton("Map Display");
 		mapSwitch.setFont(new Font("Chalkduster", Font.PLAIN, 12));
+		mapSwitch.setOpaque(false);
+		mapSwitch.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				if(e.getStateChange() == ItemEvent.SELECTED)
+		        {
+					mapSwitch.setText("Arena Map");
+					Simulator.simulatorMapPanel.updateMap(
+							ArenaMap.actualMap);
+		        }
+		        else
+		        {
+		        	mapSwitch.setText("Robot Map");
+		        	Simulator.simulatorMapPanel.updateMap(
+		        			Simulator.robot.getMapKnowledgeBase().getArrayMap());
+		        } 
+			}
+		});
 		
 		jbReset = new JButton("Reset");
 		jbReset.setFont(new Font("Chalkduster", Font.PLAIN, 12));
 		jbReset.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				if(mapSwitch.isSelected()) mapSwitch.doClick();
 				Simulator.reset();
 			}
 		});

@@ -130,22 +130,22 @@ public class MapPanel extends JPanel {
 		}
 
 		if (this.path != null) {
+			if (path.size()>2) {
+				for (int k = 0; k < path.size() - 1; k++) {
+					int firstpointx = path.get(k).gridX - 1;
+					int firstpointy = path.get(k).gridY - 1;
+					int secondpointx = path.get(k + 1).gridX - 1;
+					int secondpointy = path.get(k + 1).gridY - 1;
 
-			for (int k = 0; k < path.size() - 1; k++) {
-				int firstpointx = path.get(k).gridX-1;
-				int firstpointy = path.get(k).gridY-1;
-				int secondpointx = path.get(k + 1).gridX-1;
-				int secondpointy = path.get(k + 1).gridY-1;
+					ga.setPaint(Color.red);
+					ga.setStroke(new BasicStroke(5));
+					ga.drawLine((int) ((firstpointy + 1) * GRID_SIZE),
+							(int) ((firstpointx + 1) * GRID_SIZE),
+							(int) ((secondpointy + 1) * GRID_SIZE),
+							(int) ((secondpointx + 1) * GRID_SIZE));
 
-				ga.setPaint(Color.red);
-				ga.setStroke(new BasicStroke(5));
-				ga.drawLine((int) ((firstpointy + 1) * GRID_SIZE),
-						(int) ((firstpointx + 1) * GRID_SIZE),
-						(int) ((secondpointy + 1) * GRID_SIZE),
-						(int) ((secondpointx + 1) * GRID_SIZE));
-
+				}
 			}
-
 		}
 
 		if (this.robotPosition != null) {

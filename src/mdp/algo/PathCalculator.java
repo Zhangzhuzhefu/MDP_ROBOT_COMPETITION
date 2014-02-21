@@ -4,6 +4,8 @@ import java.util.Comparator;
 import java.util.PriorityQueue;
 import java.util.Stack;
 
+import mdp.Config;
+
 public class PathCalculator {
 	
 	final int infinity = Integer.MAX_VALUE/100;
@@ -31,7 +33,9 @@ public class PathCalculator {
 	}
 	
 	public boolean findShortestPath(){
-		if (!shortestPath.empty()) return true;
+		
+		if (validatePath(shortestPath)) return true;
+		
 		//initialize
 		Comparator<Point> comparator = new PointDistanceComparator();
 		PriorityQueue<Point> queue = new PriorityQueue<Point>(ArenaMapPointMAXM*ArenaMapPointMAXN,comparator);
@@ -77,14 +81,23 @@ public class PathCalculator {
 		}
 		
 		Point a = destination;
-		while (a!=start){
+		while (a!=null && a != start) {
+			if (Config.debugOn)
+				System.out.println("predecessors to stack "
+						+ predecessors.length);
 			shortestPath.push(a);
 			a = predecessors[a.gridX][a.gridY];
 		}
 		shortestPath.push(a);
-		if (shortestPath!=null)
+
+		if (Config.debugOn) 
+			System.out.println("Found shortest path of length: "+shortestPath.size());
+		if (validatePath(shortestPath))
 			return true;
-		else return false;
+		else {
+			shortestPath.clear();
+			return false;
+		}
 	}
 	
 	public boolean findRandomPath() {
@@ -96,7 +109,7 @@ public class PathCalculator {
 		
 		Point here = start;
 		while (!here.sameGridPoint(destination)){//ArenaMap.END_POINT)) {
-			System.out.println("here at ("+here.gridX+","+here.gridY+")");
+			System.out.println("random path here at ("+here.gridX+","+here.gridY+")");
 			visited[here.gridX][here.gridY] = true;
 			int next = -1;
 			for (int i = 0; i < 4; i++) {
@@ -139,10 +152,23 @@ public class PathCalculator {
 		}
 		aRandomPath = temp;
 		
-		return true;
+		if (validatePath(aRandomPath))
+			return true;
+		else {
+			aRandomPath.clear();
+			return false;
+		}
 	}
 	
+	public boolean validatePath(Stack <Point> p){
+		return (p!=null && p.size()>=destination.gridDistanceTo(start));
+	}
 	
+	public void reset(){
+		map = null;
+		aRandomPath.clear();
+		shortestPath.clear();
+	}
 
 	public int[][] getMap() {
 		return map;
