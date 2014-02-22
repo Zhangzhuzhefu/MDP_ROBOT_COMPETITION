@@ -37,6 +37,7 @@ public class Robot {
 		isMoving = false;
 		isOnTheWayReturning = false;
 		currentLocation = ArenaMap.START_POINT;
+        
 		mapKnowledgeBase.reset();
 		explorer.reset();
 		pathCalculator.reset();
@@ -70,38 +71,44 @@ public class Robot {
 		else 
 			return null;
 	}
+
+    public void explore(){
+
+        if (Config.debugOn) System.out.println("Exploring");
+
+        explorer.explore(mapKnowledgeBase,currentLocation);
+
+        updateLocation(currentLocation);
+        setMapKnowledgeBase(mapKnowledgeBase);
+        if (currentLocation.gridX == 16 && currentLocation.gridY == 21) {
+            if (Config.debugOn) {
+                System.out.println("Explore Done");
+                mapKnowledgeBase.printVirtualMap();
+
+            }
+            isExploring = false;
+        }
+        if (Config.debugOn) {
+            //mapKnowledgeBase.printVirtualMap();
+        }
+
+    }
 	
 	public void move(){
-        if (isExploring) {
-            if (Config.debugOn) System.out.println("Exploring");
 
-            explorer.explore(mapKnowledgeBase,currentLocation);
-
+        if (route!=null && !route.empty() ){
+            if (Config.debugOn) System.out.println("Robot route exists");
+            if (route.peek().sameGridPoint(ArenaMap.END_POINT)){
+                isOnTheWayReturning = true;
+                if (Config.debugOn) System.out.println("isOnTheWayReturning = true");
+            }
+            currentLocation = route.pop();
             updateLocation(currentLocation);
-            if (currentLocation.gridX == 15 && currentLocation.gridY == 20) {
-                if (Config.debugOn) System.out.println("Explore Done");
-                isExploring = false;
-            }
-            if (Config.debugOn) {
-                //mapKnowledgeBase.printVirtualMap();
-            }
-
-
+        } else {
+            if (Config.debugOn) System.out.println("Robot route is empty..");
+            isMoving = false;
         }
-        else{
-            if (route!=null && !route.empty() ){
-                if (Config.debugOn) System.out.println("Robot route exists");
-                if (route.peek().sameGridPoint(ArenaMap.END_POINT)){
-                    isOnTheWayReturning = true;
-                    if (Config.debugOn) System.out.println("isOnTheWayReturning = true");
-                }
-                currentLocation = route.pop();
-                updateLocation(currentLocation);
-            } else {
-                if (Config.debugOn) System.out.println("Robot route is empty..");
-                isMoving = false;
-            }
-        }
+
 
 
 	}
@@ -159,5 +166,7 @@ public class Robot {
 	public Stack<Point> getRoute() {
 		return route;
 	}
+
+    public void setExploring() { isExploring = true;}
 
 }

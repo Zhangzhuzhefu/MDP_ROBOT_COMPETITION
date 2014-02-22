@@ -26,20 +26,21 @@ public class Explorer {
         int[][] map2 = newMap.getArrayMap();
         int turn = 0;
 
-        if ((curLoc.gridX ) < 17){
+        if ((curLoc.gridX ) <= 17){
 
             SimPerceptron sp = new SimPerceptron(mp);
+            sp.setEnvironment(ArenaMap.actualMap.clone());
 
             int unknownF1, unknownF2,unknownL1,unknownL2, unknownR1, unknownR2;
 
-            Point front1 = new Point(curLoc.gridX-1,curLoc.gridY+1);
-            Point front2 = new Point(curLoc.gridX,curLoc.gridY+1);
+            Point front1 = new Point(curLoc.gridX-1,curLoc.gridY);
+            Point front2 = new Point(curLoc.gridX-2,curLoc.gridY);
 
-            Point left1 = new Point(curLoc.gridX-2,curLoc.gridY);
-            Point left2 = new Point(curLoc.gridX-2,curLoc.gridY-1);
+            Point left1 = new Point(curLoc.gridX-3,curLoc.gridY-1);
+            Point left2 = new Point(curLoc.gridX-3,curLoc.gridY-2);
 
-            Point right1 = new Point(curLoc.gridX+1,curLoc.gridY);
-            Point right2 = new Point(curLoc.gridX+1,curLoc.gridY-1);
+            Point right1 = new Point(curLoc.gridX,curLoc.gridY-1);
+            Point right2 = new Point(curLoc.gridX,curLoc.gridY-2);
 
 
             unknownF1 = sp.percept(front1);
@@ -54,26 +55,32 @@ public class Explorer {
                 map2[front1.gridX][front1.gridY] = 1;
 
             }
+            else {
+                map2[front1.gridX][front1.gridY] = 0;
+
+            }
             if (unknownF2 == 1){
                 map2[front2.gridX][front2.gridY] = 1;
 
-            }
+            }else map2[front2.gridX][front2.gridY] = 0;
+
             if (unknownR1 == 1){
                 map2[right1.gridX][right1.gridY] = 1;
 
-            }
+            }else  map2[right1.gridX][right1.gridY] = 0;
+
             if (unknownR2 == 1){
                 map2[right2.gridX][right2.gridY] = 1;
 
-            }
+            }else map2[right2.gridX][right2.gridY] = 0;
             if (unknownL1 == 1){
                 map2[left1.gridX][left1.gridY] = 1;
 
-            }
+            }else map2[left1.gridX][left1.gridY] = 0;
             if (unknownL2 == 1){
                 map2[left2.gridX][left2.gridY] = 1;
 
-            }
+            }else  map2[left2.gridX][left2.gridY] = 0;
 
 
             System.out.println("Robot X: " + curLoc.gridX + "\tY: " + curLoc.gridY + "cur: " + sp.percept(curLoc));
@@ -114,6 +121,8 @@ public class Explorer {
 
         }
         newMap.setArrayMap(map2);
+
+
 
 	}
 

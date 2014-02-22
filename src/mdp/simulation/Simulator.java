@@ -45,9 +45,10 @@ public class Simulator {
 		//Explore share not talk to mapPanel. 
 		//Instead, mapPanel share register an observer to Robots knowledge base
 		simulatorMapPanel.updateRobot(ArenaMap.START_POINT);
-		
+		robot.explore();
 		//update the full map to Robots knowledge base
-		simPerceptron.setEnvironment(ArenaMap.actualMap.clone());
+		//simPerceptron.setEnvironment(ArenaMap.actualMap.clone());
+        simPerceptron.setEnvironment(robot.getMapKnowledgeBase().getArrayMap());
 		robot.updatePerceptronToKnowledgebase();
 		
 		//draw the map
