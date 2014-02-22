@@ -1,5 +1,6 @@
 package mdp.algo;
 
+import mdp.Config;
 import mdp.simulation.SimPerceptron;
 import mdp.gui.MapPanel;
 import java.util.Stack;
@@ -11,18 +12,24 @@ public class Explorer {
     Point start = ArenaMap.START_POINT;
     private Stack<Point> path;
 
+
 	public Explorer() {
         int[] naLoc;
         path = new Stack<Point>();
 		
 	}
 	
-	public void reset(){
+	public void reset(Point curLoc){
+        System.out.println("reset!");
 
+        curLoc.gridX = 3;
+        curLoc.gridY = 3;
+        System.out.println("Robot X: " + PointManager.getPoint(Config.startPointX,Config.startPointY).gridX + "\tY: " + curLoc.gridY );
 		
 	}
 
 	public void explore(ArenaMap newMap, Point curLoc){
+        System.out.println("Explore!");
         int[][] map2 = newMap.getArrayMap();
         int turn = 0;
 
@@ -53,33 +60,30 @@ public class Explorer {
             //set knowledge base
             if (unknownF1 == 1){
                 map2[front1.gridX][front1.gridY] = 1;
-
             }
             else {
                 map2[front1.gridX][front1.gridY] = 0;
-
             }
+
             if (unknownF2 == 1){
                 map2[front2.gridX][front2.gridY] = 1;
-
             }else map2[front2.gridX][front2.gridY] = 0;
 
             if (unknownR1 == 1){
                 map2[right1.gridX][right1.gridY] = 1;
-
             }else  map2[right1.gridX][right1.gridY] = 0;
 
             if (unknownR2 == 1){
                 map2[right2.gridX][right2.gridY] = 1;
-
             }else map2[right2.gridX][right2.gridY] = 0;
+
             if (unknownL1 == 1){
                 map2[left1.gridX][left1.gridY] = 1;
 
             }else map2[left1.gridX][left1.gridY] = 0;
+
             if (unknownL2 == 1){
                 map2[left2.gridX][left2.gridY] = 1;
-
             }else  map2[left2.gridX][left2.gridY] = 0;
 
 
@@ -92,11 +96,13 @@ public class Explorer {
                 System.out.println("Go Front");
                 curLoc.gridY = curLoc.gridY + 1;
             }
+
             else if (unknownR1 == 0 && unknownR2 == 0 && (turn == 0 || turn == 1)){
                 System.out.println("Go Right");
                 curLoc.gridX = curLoc.gridX + 1;
                 turn = 0;
             }
+
             else if(unknownL1 == 0 && unknownL2 == 0) {
                 System.out.println("Go left");
                 curLoc.gridX = curLoc.gridX - 1;

@@ -37,9 +37,8 @@ public class Robot {
 		isMoving = false;
 		isOnTheWayReturning = false;
 		currentLocation = ArenaMap.START_POINT;
-        
 		mapKnowledgeBase.reset();
-		explorer.reset();
+		explorer.reset(currentLocation);
 		pathCalculator.reset();
 		route.clear();
 	}
@@ -79,11 +78,13 @@ public class Robot {
         explorer.explore(mapKnowledgeBase,currentLocation);
 
         updateLocation(currentLocation);
-        setMapKnowledgeBase(mapKnowledgeBase);
+        //setMapKnowledgeBase(mapKnowledgeBase);
         if (currentLocation.gridX == 16 && currentLocation.gridY == 21) {
             if (Config.debugOn) {
                 System.out.println("Explore Done");
                 mapKnowledgeBase.printVirtualMap();
+                explorer.reset(currentLocation);
+
 
             }
             isExploring = false;
