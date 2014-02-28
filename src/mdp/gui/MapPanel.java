@@ -113,6 +113,14 @@ public class MapPanel extends JPanel {
 						ga.drawRect((j + 1) * GRID_SIZE, (i + 1) * GRID_SIZE,
 								width, height);
 						break;
+                    case ArenaMap.UNSAFE:
+                        ga.setPaint(Color.red);
+                        ga.fillRect((j + 1) * GRID_SIZE, (i + 1) * GRID_SIZE,
+                                width, height);
+                        ga.setPaint(Color.black);
+                        ga.drawRect((j + 1) * GRID_SIZE, (i + 1) * GRID_SIZE,
+                                width, height);
+                        break;
 					default:
 						ga.setPaint(Color.cyan);
 						ga.fillRect((j + 1) * GRID_SIZE, (i + 1) * GRID_SIZE,
