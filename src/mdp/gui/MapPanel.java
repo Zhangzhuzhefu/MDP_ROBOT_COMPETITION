@@ -93,43 +93,33 @@ public class MapPanel extends JPanel {
 					switch (map[i][j]) {
 					case ArenaMap.OBS:
 						ga.setPaint(Color.black);
-						ga.fillRect((j + 1) * GRID_SIZE, (i + 1) * GRID_SIZE,
-								width, height);
+						ga.fillRect((i + 1) * GRID_SIZE, (j + 1) * GRID_SIZE, width, height);
 						ga.setPaint(Color.white);
-						ga.drawRect((j + 1) * GRID_SIZE, (i + 1) * GRID_SIZE,
-								width, height);
+						ga.drawRect((i + 1) * GRID_SIZE, (j + 1) * GRID_SIZE, width, height);
 						break;
 					case ArenaMap.UNKNOWN:
 						ga.setPaint(Color.GRAY);
-						ga.fillRect((j + 1) * GRID_SIZE, (i + 1) * GRID_SIZE,
-								width, height);
+						ga.fillRect((i + 1) * GRID_SIZE, (j + 1) * GRID_SIZE, width, height);
 						ga.setPaint(Color.black);
-						ga.drawRect((j + 1) * GRID_SIZE, (i + 1) * GRID_SIZE,
-								width, height);
+						ga.drawRect((i + 1) * GRID_SIZE, (j + 1) * GRID_SIZE, width, height);
 						break;
 					case ArenaMap.VWall:
 						ga.setPaint(Color.blue);
-						ga.fillRect((j + 1) * GRID_SIZE, (i + 1) * GRID_SIZE,
-								width, height);
+						ga.fillRect((i + 1) * GRID_SIZE, (j + 1) * GRID_SIZE, width, height);
 						ga.setPaint(Color.black);
-						ga.drawRect((j + 1) * GRID_SIZE, (i + 1) * GRID_SIZE,
-								width, height);
+						ga.drawRect((i + 1) * GRID_SIZE, (j + 1) * GRID_SIZE, width, height);
 						break;
                     case ArenaMap.UNSAFE:
                         ga.setPaint(Color.red);
-                        ga.fillRect((j + 1) * GRID_SIZE, (i + 1) * GRID_SIZE,
-                                width, height);
+                        ga.fillRect((i + 1) * GRID_SIZE, (j + 1) * GRID_SIZE, width, height);
                         ga.setPaint(Color.black);
-                        ga.drawRect((j + 1) * GRID_SIZE, (i + 1) * GRID_SIZE,
-                                width, height);
+                        ga.drawRect((i + 1) * GRID_SIZE, (j + 1) * GRID_SIZE, width, height);
                         break;
 					default:
 						ga.setPaint(Color.cyan);
-						ga.fillRect((j + 1) * GRID_SIZE, (i + 1) * GRID_SIZE,
-								width, height);
+						ga.fillRect((i + 1) * GRID_SIZE, (j + 1) * GRID_SIZE, width, height);
 						ga.setPaint(Color.black);
-						ga.drawRect((j + 1) * GRID_SIZE, (i + 1) * GRID_SIZE,
-								width, height);
+						ga.drawRect((i + 1) * GRID_SIZE, (j + 1) * GRID_SIZE, width, height);
 						break;
 
 					}

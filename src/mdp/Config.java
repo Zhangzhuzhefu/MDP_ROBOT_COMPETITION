@@ -16,8 +16,8 @@ public class Config {
 	
 	//simulation variables
 	public static final int PANEL_GRID_SIZE = 35;
-	public static final int[] FRAME_LOCATION ={250, 100, 1050, 700};
-	public static final int[] FRAME_SIZE ={1050,700};
+	public static final int[] FRAME_LOCATION ={250, 100, 850, 1050};
+	public static final int[] FRAME_SIZE ={900,1050};
 
 	//Robot
 	public static final int robotWaitingTime = 100;
