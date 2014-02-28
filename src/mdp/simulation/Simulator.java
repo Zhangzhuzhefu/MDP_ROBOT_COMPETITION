@@ -33,7 +33,7 @@ public class Simulator {
 	
 	public void startSimulation() {
 		ArenaMap.actualMap = Utils.loadMazeEnvironment(Config.mapFileName);
-		simulatorMapPanel.updateRobot(ArenaMap.START_POINT);
+		simulatorMapPanel.updateRobot(ArenaMap.START_POINT,robot.getDirection());
 		simulatorMapPanel.updateMap(robot.getMapKnowledgeBase().getArrayMap());
 		
 		//make sure perceptron is the same as knowledgebase
@@ -44,7 +44,7 @@ public class Simulator {
 		//TODO
 		//Explore share not talk to mapPanel. 
 		//Instead, mapPanel share register an observer to Robots knowledge base
-		simulatorMapPanel.updateRobot(ArenaMap.START_POINT);
+		simulatorMapPanel.updateRobot(ArenaMap.START_POINT,robot.getDirection());
 		robot.explore();
 		//update the full map to Robots knowledge base
 		//simPerceptron.setEnvironment(ArenaMap.actualMap.clone());
@@ -70,8 +70,8 @@ public class Simulator {
 	public static void reset(){
 		robot.reset();
 		ArenaMap.actualMap = Utils.loadMazeEnvironment(Config.mapFileName);
-		simulatorMapPanel.updateRobot(ArenaMap.START_POINT);
-		
+		robot.setDirectionDegree(0);
+		simulatorMapPanel.updateRobot(ArenaMap.START_POINT,robot.getDirection());
 		simulatorMapPanel.updatePath(robot.getRoute());
 	}
 	

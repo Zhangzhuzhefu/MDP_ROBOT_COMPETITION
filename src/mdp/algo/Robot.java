@@ -18,6 +18,7 @@ public class Robot {
 	
 	boolean isExploring, isMoving, isOnTheWayReturning; 
 	private Point currentLocation;
+	public Direction direction;
 	private Stack<Point> route;
 	
 	
@@ -30,6 +31,7 @@ public class Robot {
 		explorer = new Explorer();
 		pathCalculator = new PathCalculator();
 		route = new Stack<Point>();
+		direction = new Direction(0);
 	}
 	
 	public void reset(){
@@ -118,7 +120,7 @@ public class Robot {
 		if (sensors.communicator instanceof SimCommunicator){
 			SimCommunicator s ;
 			s = (SimCommunicator) sensors.communicator;
-			s.getMapPanel().updateRobot(p);
+			s.getMapPanel().updateRobot(p,direction);
 		} else if (sensors.communicator instanceof Communicator){
 			//TODO
 		}
@@ -169,5 +171,17 @@ public class Robot {
 	}
 
     public void setExploring() { isExploring = true;}
+
+	public Direction getDirection() {
+		return direction;
+	}
+
+	public void setDirection(Direction direction) {
+		this.direction = direction;
+	}
+	
+	public void setDirectionDegree(double d) {
+		this.direction.setDegree(d);
+	}
 
 }

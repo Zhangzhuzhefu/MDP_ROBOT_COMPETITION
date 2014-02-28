@@ -4,20 +4,20 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Stack;
-import java.awt.geom.AffineTransform;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 import mdp.Config;
 import mdp.algo.ArenaMap;
+import mdp.algo.Direction;
 import mdp.algo.Point;
-import mdp.algo.Robot;
 
 public class MapPanel extends JPanel {
 	
@@ -25,6 +25,7 @@ public class MapPanel extends JPanel {
 	
 	int[][] map;
 	Point robotPosition;
+	Direction direction;
 	ArrayList<Point> path;
 	public static int GRID_SIZE = Config.PANEL_GRID_SIZE;
 
@@ -44,8 +45,9 @@ public class MapPanel extends JPanel {
 		this.repaint();
 	}
 
-	public void updateRobot(Point robotPoint) {
+	public void updateRobot(Point robotPoint,Direction direction) {
 		robotPosition = robotPoint;
+		this.direction = direction;  
 		this.revalidate();
 		this.repaint();
 	}
@@ -159,22 +161,11 @@ public class MapPanel extends JPanel {
 		if (this.robotPosition != null) {
 			int x = robotPosition.gridX;
 			int y = robotPosition.gridY;
-            int d = robotPosition.direction;
-			if (Config.debugOn)
-				System.out.println("MapPanel painting robot: x="+x+"   " +"y="+y + "\tDirection= "+d);
-
-
-			/*g.drawImage(RobotImage,
-					(int) ((y - 1) * GRID_SIZE),
-					(int) ((x - 1) * GRID_SIZE), 
-					2 * GRID_SIZE,
-					2 * GRID_SIZE, 
-					null);
-            */
+            double d = direction.getDegree();
 
             AffineTransform at = new AffineTransform();
             at.translate((int) ((y) * GRID_SIZE),(int) ((x) * GRID_SIZE) );
-            at.rotate(-Math.PI/2); // rotation should changed accordingly to the direction
+            at.rotate(-d/180*Math.PI); // rotation should changed accordingly to the direction
             at.scale(2 * (double)GRID_SIZE/RobotImage.getHeight(),2 * (double)GRID_SIZE/RobotImage.getWidth());
             at.translate(-RobotImage.getWidth()/2, -RobotImage.getHeight()/2);
 

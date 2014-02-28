@@ -36,7 +36,7 @@ public class Explorer {
         int[][] map2 = newMap.getArrayMap();
         int turn = 0;
 
-        if ((curLoc.gridX ) <= 17 || (curLoc.gridY <= 21)){
+        if ((curLoc.gridX ) <= 15 && (curLoc.gridY <= 20)){
 
             SimPerceptron sp = new SimPerceptron(mp);
             sp.setEnvironment(ArenaMap.actualMap.clone());
