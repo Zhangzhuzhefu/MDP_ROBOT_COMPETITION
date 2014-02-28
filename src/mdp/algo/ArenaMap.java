@@ -57,8 +57,8 @@ public class ArenaMap {
 	
 	public void printVirtualMap() {
 		System.out.println("Printing robot knowledge base: ");
-		for (int i=0; i<MAXN; i++){
-			for (int j=0; j<MAXM; j++) {
+		for (int j = MAXM - 1; j >= 0; j--) {
+			for (int i = 0; i < MAXN; i++) {
 				System.out.print(map[i][j]);
 			}
 			System.out.println();
