@@ -45,13 +45,29 @@ public class Simulator {
 		//Explore share not talk to mapPanel. 
 		//Instead, mapPanel share register an observer to Robots knowledge base
 		simulatorMapPanel.updateRobot(ArenaMap.START_POINT,robot.getDirection());
-		robot.explore();
 		//update the full map to Robots knowledge base
-		//simPerceptron.setEnvironment(ArenaMap.actualMap.clone());
-        simPerceptron.setEnvironment(robot.getMapKnowledgeBase().getArrayMap());
+		simPerceptron.setEnvironment(ArenaMap.actualMap.clone());
+        //simPerceptron.setEnvironment(robot.getMapKnowledgeBase().getArrayMap());
 		robot.updatePerceptronToKnowledgebase();
 		
 		//draw the map
+		simulatorMapPanel.updateMap(robot.getMapKnowledgeBase().getArrayMap());
+	}
+	
+	public static void explore_floodFill(){
+		//TODO
+		simulatorMapPanel.updateRobot(ArenaMap.START_POINT,robot.getDirection());
+		robot.explore();
+        simPerceptron.setEnvironment(robot.getMapKnowledgeBase().getArrayMap());
+		robot.updatePerceptronToKnowledgebase();
+		simulatorMapPanel.updateMap(robot.getMapKnowledgeBase().getArrayMap());
+	}
+	public static void explore_AStar(){
+		//TODO
+		simulatorMapPanel.updateRobot(ArenaMap.START_POINT,robot.getDirection());
+		robot.explore();
+        simPerceptron.setEnvironment(robot.getMapKnowledgeBase().getArrayMap());
+		robot.updatePerceptronToKnowledgebase();
 		simulatorMapPanel.updateMap(robot.getMapKnowledgeBase().getArrayMap());
 	}
 	

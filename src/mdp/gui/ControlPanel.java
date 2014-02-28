@@ -25,6 +25,8 @@ public class ControlPanel extends Panel{
 	private JButton jbRandomPath;
 	private JButton jbshortestPath;
 	
+	private JButton algo1;
+	private JButton algo2;
 	private JButton jbExpolore;
 	private JButton jbRun;
 	
@@ -83,6 +85,23 @@ public class ControlPanel extends Panel{
 		lbPanel2.setFont(new Font("Chalkduster", Font.PLAIN, 12));
 		lbPanel2.setHorizontalAlignment(SwingConstants.CENTER);
 		
+		algo1 = new JButton("Fld Fill");
+		algo1.setFont(new Font("Chalkduster", Font.PLAIN, 12));
+		algo1.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Simulator.explore_floodFill();
+			}
+		});
+		algo2 = new JButton("A*");
+		algo2.setFont(new Font("Chalkduster", Font.PLAIN, 12));
+		algo2.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Simulator.explore_AStar();
+			}
+		});
+		
 		jbExpolore = new JButton("Explore");
 		jbExpolore.setFont(new Font("Chalkduster", Font.PLAIN, 12));
 		jbExpolore.addActionListener(new ActionListener() {
@@ -101,7 +120,12 @@ public class ControlPanel extends Panel{
 			}
 		});
 		
+		JPanel panel21 = new JPanel(new GridLayout(1,2));
+		panel21.add(algo1);
+		panel21.add(algo2);
+		
 		panel2.add(lbPanel2);
+		panel2.add(panel21);
 		panel2.add(jbExpolore);
 		panel2.add(jbRun);
 		panel2.setLayout(gridLayout);
