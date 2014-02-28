@@ -22,9 +22,7 @@ public class Config {
 	//Robot
 	public static final int robotWaitingTime = 100;
 	public static final double startPointX = 30.0;
-	public static final double startPointY = 30.0;
+	public static final double startPointY = 210.0;
 	public static final double endPointX = 160.0;
-	public static final double endPointY = 210.0;
-//	public static final Point RETURN_POINT = new Point(132.5, 182.5);
-//	public static final Point RETURN_START = new Point(12.5, 12.5);
+	public static final double endPointY = 30.0;
 }

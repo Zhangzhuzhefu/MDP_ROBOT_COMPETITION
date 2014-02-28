@@ -132,10 +132,10 @@ public class MapPanel extends JPanel {
 		if (this.path != null) {
 			if (path.size()>2) {
 				for (int k = 0; k < path.size() - 1; k++) {
-					int firstpointx = path.get(k).gridX - 1;
-					int firstpointy = path.get(k).gridY - 1;
-					int secondpointx = path.get(k + 1).gridX - 1;
-					int secondpointy = path.get(k + 1).gridY - 1;
+					int firstpointx = path.get(k).gridY - 1;
+					int firstpointy = path.get(k).gridX - 1;
+					int secondpointx = path.get(k + 1).gridY - 1;
+					int secondpointy = path.get(k + 1).gridX - 1;
 
 					ga.setPaint(Color.red);
 					ga.setStroke(new BasicStroke(5));
@@ -154,7 +154,7 @@ public class MapPanel extends JPanel {
             double d = direction.getDegree();
 
             AffineTransform at = new AffineTransform();
-            at.translate((int) ((y) * GRID_SIZE),(int) ((x) * GRID_SIZE) );
+            at.translate((int) ((x) * GRID_SIZE),(int) ((y) * GRID_SIZE));
             at.rotate(-(d+90)/180*Math.PI); // rotation should changed accordingly to the direction
             at.scale(2 * (double)GRID_SIZE/RobotImage.getHeight(),2 * (double)GRID_SIZE/RobotImage.getWidth());
             at.translate(-RobotImage.getWidth()/2, -RobotImage.getHeight()/2);
