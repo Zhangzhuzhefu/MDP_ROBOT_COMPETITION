@@ -84,7 +84,7 @@ public class Robot {
         if (currentLocation.gridX == 16 && currentLocation.gridY == 21) {
             if (Config.debugOn) {
                 System.out.println("Explore Done");
-                mapKnowledgeBase.printVirtualMap();
+                //mapKnowledgeBase.printVirtualMap();
                 explorer.reset(currentLocation);
 
 

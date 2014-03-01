@@ -3,6 +3,7 @@ package mdp.algo;
 import java.util.Arrays;
 
 import mdp.Config;
+import mdp.Utils;
 
 public class ArenaMap {
 
@@ -21,7 +22,8 @@ public class ArenaMap {
 	public ArenaMap() {
 		map = new int[MAXN][MAXM];
 		initializeMap();
-		printVirtualMap();
+		System.out.println("Printing robot knowledge base: ");
+		Utils.printVirtualMap(map);
 	}
 	public void reset(){
 		initializeMap();
@@ -53,16 +55,6 @@ public class ArenaMap {
 			map[MAXN-1][i] = OBS;
 		}
 		
-	}
-	
-	public void printVirtualMap() {
-		System.out.println("Printing robot knowledge base: ");
-		for (int j = MAXM - 1; j >= 0; j--) {
-			for (int i = 0; i < MAXN; i++) {
-				System.out.print(map[i][j]);
-			}
-			System.out.println();
-		}
 	}
 	
 	public int[][] getArrayMap(){

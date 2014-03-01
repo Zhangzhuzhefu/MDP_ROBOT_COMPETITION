@@ -85,6 +85,8 @@ public class MapPanel extends JPanel {
 				System.out.print("map.length: " + map.length + "    ");
 				System.out.println("map.width: " + map[0].length);
 			}
+			System.out.println("Painting moving...");
+			//Utils.printVirtualMap(map);
 
 			// ConvertMap mapimage = new ConvertMap(map);
 			for (int i = 0; i < map.length; i++) {
@@ -93,33 +95,33 @@ public class MapPanel extends JPanel {
 					switch (map[i][j]) {
 					case ArenaMap.OBS:
 						ga.setPaint(Color.black);
-						ga.fillRect((i + 1) * GRID_SIZE, (j + 1) * GRID_SIZE, width, height);
+						ga.fillRect((i + 1) * GRID_SIZE, (map[0].length-j) * GRID_SIZE, width, height);
 						ga.setPaint(Color.white);
-						ga.drawRect((i + 1) * GRID_SIZE, (j + 1) * GRID_SIZE, width, height);
+						ga.drawRect((i + 1) * GRID_SIZE, (map[0].length-j) * GRID_SIZE, width, height);
 						break;
 					case ArenaMap.UNKNOWN:
 						ga.setPaint(Color.GRAY);
-						ga.fillRect((i + 1) * GRID_SIZE, (j + 1) * GRID_SIZE, width, height);
+						ga.fillRect((i + 1) * GRID_SIZE, (map[0].length-j) * GRID_SIZE, width, height);
 						ga.setPaint(Color.black);
-						ga.drawRect((i + 1) * GRID_SIZE, (j + 1) * GRID_SIZE, width, height);
+						ga.drawRect((i + 1) * GRID_SIZE, (map[0].length-j) * GRID_SIZE, width, height);
 						break;
 					case ArenaMap.VWall:
 						ga.setPaint(Color.blue);
-						ga.fillRect((i + 1) * GRID_SIZE, (j + 1) * GRID_SIZE, width, height);
+						ga.fillRect((i + 1) * GRID_SIZE, (map[0].length-j) * GRID_SIZE, width, height);
 						ga.setPaint(Color.black);
-						ga.drawRect((i + 1) * GRID_SIZE, (j + 1) * GRID_SIZE, width, height);
+						ga.drawRect((i + 1) * GRID_SIZE, (map[0].length-j) * GRID_SIZE, width, height);
 						break;
                     case ArenaMap.UNSAFE:
                         ga.setPaint(Color.red);
-                        ga.fillRect((i + 1) * GRID_SIZE, (j + 1) * GRID_SIZE, width, height);
+                        ga.fillRect((i + 1) * GRID_SIZE, (map[0].length-j) * GRID_SIZE, width, height);
                         ga.setPaint(Color.black);
-                        ga.drawRect((i + 1) * GRID_SIZE, (j + 1) * GRID_SIZE, width, height);
+                        ga.drawRect((i + 1) * GRID_SIZE, (map[0].length-j) * GRID_SIZE, width, height);
                         break;
 					default:
 						ga.setPaint(Color.cyan);
-						ga.fillRect((i + 1) * GRID_SIZE, (j + 1) * GRID_SIZE, width, height);
+						ga.fillRect((i + 1) * GRID_SIZE, (map[0].length-j) * GRID_SIZE, width, height);
 						ga.setPaint(Color.black);
-						ga.drawRect((i + 1) * GRID_SIZE, (j + 1) * GRID_SIZE, width, height);
+						ga.drawRect((i + 1) * GRID_SIZE, (map[0].length-j) * GRID_SIZE, width, height);
 						break;
 
 					}
@@ -132,10 +134,10 @@ public class MapPanel extends JPanel {
 		if (this.path != null) {
 			if (path.size()>2) {
 				for (int k = 0; k < path.size() - 1; k++) {
-					int firstpointx = path.get(k).gridY - 1;
-					int firstpointy = path.get(k).gridX - 1;
-					int secondpointx = path.get(k + 1).gridY - 1;
-					int secondpointy = path.get(k + 1).gridX - 1;
+					int firstpointx = map[0].length-path.get(k).gridY+1;
+					int firstpointy = path.get(k).gridX-1 ;
+					int secondpointx = map[0].length-path.get(k + 1).gridY+1;
+					int secondpointy = path.get(k + 1).gridX-1;
 
 					ga.setPaint(Color.red);
 					ga.setStroke(new BasicStroke(5));
@@ -150,7 +152,7 @@ public class MapPanel extends JPanel {
 
 		if (this.robotPosition != null) {
 			int x = robotPosition.gridX;
-			int y = robotPosition.gridY;
+			int y = map[0].length-robotPosition.gridY+2;
             double d = direction.getDegree();
 
             AffineTransform at = new AffineTransform();

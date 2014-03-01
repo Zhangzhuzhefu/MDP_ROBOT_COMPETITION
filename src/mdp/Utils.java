@@ -50,5 +50,15 @@ public class Utils {
 
 		return map;
 	}
+	
+	
+	public static void printVirtualMap(int [][] map) {
+		for (int j = map[0].length - 1; j >= 0; j--) {
+			for (int i = 0; i < map.length; i++) {
+				System.out.print(map[i][j]);
+			}
+			System.out.println();
+		}
+	}
 
 }
