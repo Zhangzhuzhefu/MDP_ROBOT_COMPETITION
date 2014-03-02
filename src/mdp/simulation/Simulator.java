@@ -6,6 +6,7 @@ import mdp.algo.ArenaMap;
 import mdp.algo.Explorer;
 import mdp.algo.Robot;
 import mdp.algo.RobotManager;
+import mdp.competition.Perceptron;
 import mdp.gui.MainFrame;
 import mdp.gui.MapPanel;
 
@@ -14,7 +15,7 @@ public class Simulator {
 	public static MapPanel simulatorMapPanel;
 	public static RobotManager robotManager;
 	public static Robot robot;
-	public static SimPerceptron simPerceptron; 
+	public static SimCommunicator simCommunicator; 
 	
 	
 	
@@ -25,8 +26,8 @@ public class Simulator {
 		// setup robot
 		robotManager = new RobotManager();
 		robot = robotManager.getRobot();
-		simPerceptron = new SimPerceptron(simulatorMapPanel);
-		robot.setSensors(simPerceptron);
+		simCommunicator = new SimCommunicator();
+		robot.getSensors().setCommunicator(simCommunicator);
 		
 	}
 	
@@ -38,7 +39,7 @@ public class Simulator {
 		simulatorMapPanel.updateMap(robot.getMapKnowledgeBase().getArrayMap());
 		
 		//make sure perceptron is the same as knowledgebase
-		simPerceptron.setEnvironment(robot.getMapKnowledgeBase().getArrayMap());
+		Perceptron.setEnvironment(robot.getMapKnowledgeBase().getArrayMap());
 	}
 	
 	public static void explore(){
@@ -47,7 +48,7 @@ public class Simulator {
 		//Instead, mapPanel share register an observer to Robots knowledge base
 		simulatorMapPanel.updateRobot(ArenaMap.START_POINT,robot.getDirection());
 		//update the full map to Robots knowledge base
-		simPerceptron.setEnvironment(ArenaMap.actualMap.clone());
+		Perceptron.setEnvironment(ArenaMap.actualMap.clone());
         //simPerceptron.setEnvironment(robot.getMapKnowledgeBase().getArrayMap());
 		robot.updatePerceptronToKnowledgebase();
 		
@@ -59,7 +60,7 @@ public class Simulator {
 		//TODO
 		simulatorMapPanel.updateRobot(ArenaMap.START_POINT,robot.getDirection());
 		robot.explore(Explorer.FLOODFILL);
-        simPerceptron.setEnvironment(robot.getMapKnowledgeBase().getArrayMap());
+        Perceptron.setEnvironment(robot.getMapKnowledgeBase().getArrayMap());
 		robot.updatePerceptronToKnowledgebase();
 		simulatorMapPanel.updateMap(robot.getMapKnowledgeBase().getArrayMap());
 	}
@@ -67,7 +68,7 @@ public class Simulator {
 		//TODO
 		simulatorMapPanel.updateRobot(ArenaMap.START_POINT,robot.getDirection());
 		robot.explore(Explorer.ASTAR);
-        simPerceptron.setEnvironment(robot.getMapKnowledgeBase().getArrayMap());
+        Perceptron.setEnvironment(robot.getMapKnowledgeBase().getArrayMap());
 		robot.updatePerceptronToKnowledgebase();
 		simulatorMapPanel.updateMap(robot.getMapKnowledgeBase().getArrayMap());
 	}

@@ -3,8 +3,8 @@ package mdp.algo;
 import java.util.Stack;
 
 import mdp.Config;
+import mdp.competition.Perceptron;
 import mdp.gui.MapPanel;
-import mdp.simulation.SimPerceptron;
 import mdp.simulation.Simulator;
 
 public class Explorer {
@@ -15,12 +15,14 @@ public class Explorer {
     Point start = ArenaMap.START_POINT;
     
     private Stack<Point> path;
-    private MapPanel mapPanel;
+    private Stack<Point> pathBehind;
+    private Stack<Point> pathEstimate;
 
 
 	public Explorer() {
-        path = new Stack<Point>();
-		
+		pathBehind = new Stack<Point>();
+		path = new Stack<Point>();
+		pathEstimate = new Stack<Point>();
 	}
 	
 	public void reset(){
@@ -50,8 +52,8 @@ public class Explorer {
 
         if ((curLoc.gridX ) <= 15 && (curLoc.gridY <= 20)){
 
-            SimPerceptron sp = new SimPerceptron(null);
-            sp.setEnvironment(ArenaMap.actualMap.clone());
+            Perceptron sp = new Perceptron();
+            Perceptron.setEnvironment(ArenaMap.actualMap.clone());
 
             int unknownF1, unknownF2,unknownL1,unknownL2, unknownR1, unknownR2;
 

@@ -1,14 +1,10 @@
 package mdp.simulation;
 
 import mdp.algo.VirtualCommunicator;
-import mdp.gui.MapPanel;
 
 public class SimCommunicator extends VirtualCommunicator{
-
-	public MapPanel mapPanel;
 	
-	public SimCommunicator(MapPanel p) {
-		mapPanel  = p;
+	public SimCommunicator() {
 	}
 
 	@Override
@@ -28,15 +24,5 @@ public class SimCommunicator extends VirtualCommunicator{
 		// TODO Auto-generated method stub
 		
 	}
-
-	public MapPanel getMapPanel() {
-		return mapPanel;
-	}
-
-	public void setMapPanel(MapPanel mapPanel) {
-		this.mapPanel = mapPanel;
-	}
-	
-	
 
 }

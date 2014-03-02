@@ -4,14 +4,16 @@ import java.util.Stack;
 
 import mdp.Config;
 import mdp.competition.Communicator;
+import mdp.competition.Perceptron;
 import mdp.simulation.SimCommunicator;
+import mdp.simulation.Simulator;
 
 
 
 public class Robot {
 
 	ArenaMap mapKnowledgeBase;
-	VirtualPerceptron sensors;
+	Perceptron sensors;
 	Explorer explorer;
 	PathCalculator pathCalculator;
 	
@@ -27,6 +29,7 @@ public class Robot {
 		isMoving = false;
 		isOnTheWayReturning = false;
 		currentLocation = ArenaMap.START_POINT;
+		sensors = new Perceptron();
 		mapKnowledgeBase = new ArenaMap();
 		explorer = new Explorer();
 		pathCalculator = new PathCalculator();
@@ -119,11 +122,11 @@ public class Robot {
 	}
 	
 	public void updateLocation(Point p){
-		if (sensors.communicator instanceof SimCommunicator){
-			SimCommunicator s ;
-			s = (SimCommunicator) sensors.communicator;
-			s.getMapPanel().updateRobot(p,direction);
-		} else if (sensors.communicator instanceof Communicator){
+		if (sensors.getCommunicator() instanceof SimCommunicator){
+//			SimCommunicator s ;
+//			s = (SimCommunicator) sensors.communicator;
+			Simulator.simulatorMapPanel.updateRobot(p,direction);
+		} else if (sensors.getCommunicator() instanceof Communicator){
 			//TODO
 		}
 	}
@@ -181,12 +184,8 @@ public class Robot {
 		this.mapKnowledgeBase = mapKnowledgeBase;
 	}
 
-	public VirtualPerceptron getSensors() {
+	public Perceptron getSensors() {
 		return sensors;
-	}
-
-	public void setSensors(VirtualPerceptron sensors) {
-		this.sensors = sensors;
 	}
 
 	public Stack<Point> getRoute() {
