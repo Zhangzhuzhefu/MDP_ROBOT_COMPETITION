@@ -10,6 +10,8 @@ public class Explorer {
     MapPanel mp;
     Point destination = ArenaMap.END_POINT;
     Point start = ArenaMap.START_POINT;
+    public static final String FLOODFILL = "FloodFill";
+    public static final String ASTAR = "AStar";
     private Stack<Point> path;
     private boolean[][] visited;
 
@@ -30,9 +32,16 @@ public class Explorer {
         System.out.println("Robot X: " + PointManager.getPoint(Config.startPointX,Config.startPointY).gridX + "\tY: " + curLoc.gridY );
 		
 	}
+	
+	public void exploreAStar(ArenaMap newMap, Point curLoc){
+        if(Config.debugOn)
+        	System.out.println("Explorer: flood fill");
+        
+	}
 
-	public void explore(ArenaMap newMap, Point curLoc){
-        System.out.println("Explore!");
+	public void exploreFloodFill(ArenaMap newMap, Point curLoc){
+        if(Config.debugOn)
+        	System.out.println("Explorer: flood fill");
         int[][] map2 = newMap.getArrayMap();
         int turn = 0;
 

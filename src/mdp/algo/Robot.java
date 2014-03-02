@@ -35,7 +35,7 @@ public class Robot {
 	}
 	
 	public void reset(){
-		isExploring = false;
+		isExploring = true;
 		isMoving = false;
 		isOnTheWayReturning = false;
 		currentLocation = ArenaMap.START_POINT;
@@ -73,27 +73,35 @@ public class Robot {
 			return null;
 	}
 
-    public void explore(){
-
-        if (Config.debugOn) System.out.println("Exploring");
-
-        explorer.explore(mapKnowledgeBase,currentLocation);
-
-        updateLocation(currentLocation);
-        //setMapKnowledgeBase(mapKnowledgeBase);
-        if (currentLocation.gridX == 16 && currentLocation.gridY == 21) {
-            if (Config.debugOn) {
-                System.out.println("Explore Done");
-                //mapKnowledgeBase.printVirtualMap();
-                explorer.reset(currentLocation);
-
-
-            }
-            isExploring = false;
-        }
-        if (Config.debugOn) {
-            //mapKnowledgeBase.printVirtualMap();
-        }
+    public void explore(String s){
+		switch (s) {
+		case Explorer.FLOODFILL:
+			if (Config.debugOn)
+				System.out.println("Exploring Floodfill");
+			explorer.exploreFloodFill(mapKnowledgeBase, currentLocation);
+			updateLocation(currentLocation);
+			if (currentLocation.gridX == 16 && currentLocation.gridY == 21) {
+				if (Config.debugOn) {
+					System.out.println("Explore Done");
+					explorer.reset(currentLocation);
+				}
+				isExploring = false;
+			}
+			break;
+		case Explorer.ASTAR: 
+			if (Config.debugOn)
+				System.out.println("Exploring A*");
+			explorer.exploreAStar(mapKnowledgeBase, currentLocation);
+			updateLocation(currentLocation);
+			if (currentLocation.gridX == 16 && currentLocation.gridY == 21) {
+				if (Config.debugOn) {
+					System.out.println("Explore Done");
+					explorer.reset(currentLocation);
+				}
+				isExploring = false;
+			}
+			break;
+		}
 
     }
 	

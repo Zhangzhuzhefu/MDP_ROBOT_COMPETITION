@@ -3,6 +3,7 @@ package mdp.simulation;
 import mdp.Config;
 import mdp.Utils;
 import mdp.algo.ArenaMap;
+import mdp.algo.Explorer;
 import mdp.algo.Robot;
 import mdp.algo.RobotManager;
 import mdp.gui.MainFrame;
@@ -57,7 +58,7 @@ public class Simulator {
 	public static void explore_floodFill(){
 		//TODO
 		simulatorMapPanel.updateRobot(ArenaMap.START_POINT,robot.getDirection());
-		robot.explore();
+		robot.explore(Explorer.FLOODFILL);
         simPerceptron.setEnvironment(robot.getMapKnowledgeBase().getArrayMap());
 		robot.updatePerceptronToKnowledgebase();
 		simulatorMapPanel.updateMap(robot.getMapKnowledgeBase().getArrayMap());
@@ -65,7 +66,7 @@ public class Simulator {
 	public static void explore_AStar(){
 		//TODO
 		simulatorMapPanel.updateRobot(ArenaMap.START_POINT,robot.getDirection());
-		robot.explore();
+		robot.explore(Explorer.ASTAR);
         simPerceptron.setEnvironment(robot.getMapKnowledgeBase().getArrayMap());
 		robot.updatePerceptronToKnowledgebase();
 		simulatorMapPanel.updateMap(robot.getMapKnowledgeBase().getArrayMap());
