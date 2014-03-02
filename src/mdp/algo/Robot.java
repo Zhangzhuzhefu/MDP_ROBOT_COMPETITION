@@ -40,7 +40,7 @@ public class Robot {
 		isOnTheWayReturning = false;
 		currentLocation = ArenaMap.START_POINT;
 		mapKnowledgeBase.reset();
-		explorer.reset(currentLocation);
+		explorer.reset();
 		pathCalculator.reset();
 		route.clear();
 	}
@@ -83,7 +83,6 @@ public class Robot {
 			if (currentLocation.gridX == 16 && currentLocation.gridY == 21) {
 				if (Config.debugOn) {
 					System.out.println("Explore Done");
-					explorer.reset(currentLocation);
 				}
 				isExploring = false;
 			}
@@ -91,12 +90,11 @@ public class Robot {
 		case Explorer.ASTAR: 
 			if (Config.debugOn)
 				System.out.println("Exploring A*");
-			explorer.exploreAStar(mapKnowledgeBase, currentLocation);
+			explorer.exploreAStar(this);
 			updateLocation(currentLocation);
 			if (currentLocation.gridX == 16 && currentLocation.gridY == 21) {
 				if (Config.debugOn) {
 					System.out.println("Explore Done");
-					explorer.reset(currentLocation);
 				}
 				isExploring = false;
 			}
@@ -106,7 +104,6 @@ public class Robot {
     }
 	
 	public void move(){
-
         if (route!=null && !route.empty() ){
             if (Config.debugOn) System.out.println("Robot route exists");
             if (route.peek().sameGridPoint(ArenaMap.END_POINT)){
@@ -119,9 +116,6 @@ public class Robot {
             if (Config.debugOn) System.out.println("Robot route is empty..");
             isMoving = false;
         }
-
-
-
 	}
 	
 	public void updateLocation(Point p){
@@ -135,15 +129,36 @@ public class Robot {
 	}
 
 	public void moveForwardByOneStep(){
-		
+		switch (direction.getDirection()){
+		case Direction.DOWN:
+			if (currentLocation.gridY==ArenaMap.START_POINT.gridY) return;
+			currentLocation=PointManager.getPoint(currentLocation.gridX, currentLocation.gridY-1);
+			break;
+		case Direction.UP:
+			if (currentLocation.gridY==ArenaMap.END_POINT.gridY) return;
+			currentLocation=PointManager.getPoint(currentLocation.gridX, currentLocation.gridY+1);
+			break;
+		case Direction.LEFT:
+			if (currentLocation.gridX==ArenaMap.START_POINT.gridX) return;
+			currentLocation=PointManager.getPoint(currentLocation.gridX-1, currentLocation.gridY);
+			break;
+		case Direction.RIGHT:
+			if (currentLocation.gridX==ArenaMap.END_POINT.gridX) return;
+			currentLocation=PointManager.getPoint(currentLocation.gridX+1, currentLocation.gridY);
+			break;
+		}
 	}
 	
 	public void turnLeft(){
-		
+		direction.rotate(Direction.LEFT);
 	}
 	
 	public void turnRight(){
+		direction.rotate(Direction.RIGHT);
+	}
 	
+	public void turnBack(){
+		direction.rotate(Direction.BACK);
 	}
 	
 	public void updatePerceptronToKnowledgebase(){
@@ -178,7 +193,7 @@ public class Robot {
 		return route;
 	}
 
-    public void setExploring() { isExploring = true;}
+    public void setExploringToBeTrue() { isExploring = true;}
 
 	public Direction getDirection() {
 		return direction;

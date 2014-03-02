@@ -1,42 +1,45 @@
 package mdp.algo;
 
-import mdp.Config;
-import mdp.simulation.SimPerceptron;
-import mdp.gui.MapPanel;
 import java.util.Stack;
 
+import mdp.Config;
+import mdp.gui.MapPanel;
+import mdp.simulation.SimPerceptron;
+import mdp.simulation.Simulator;
+
 public class Explorer {
-    VirtualPerceptron vp;
-    MapPanel mp;
-    Point destination = ArenaMap.END_POINT;
-    Point start = ArenaMap.START_POINT;
     public static final String FLOODFILL = "FloodFill";
     public static final String ASTAR = "AStar";
+    
+    Point destination = ArenaMap.END_POINT;
+    Point start = ArenaMap.START_POINT;
+    
     private Stack<Point> path;
-    private boolean[][] visited;
+    private MapPanel mapPanel;
 
 
 	public Explorer() {
-        int[] naLoc;
         path = new Stack<Point>();
-
-
-
 		
 	}
 	
-	public void reset(Point curLoc){
-        System.out.println("reset!");
-        curLoc.gridX = 3;
-        curLoc.gridY = 3;
-        System.out.println("Robot X: " + PointManager.getPoint(Config.startPointX,Config.startPointY).gridX + "\tY: " + curLoc.gridY );
-		
+	public void reset(){
+        if(Config.trackingOn) System.out.println("Explorer reset!");
 	}
 	
-	public void exploreAStar(ArenaMap newMap, Point curLoc){
+	public void exploreAStar(Robot robot){
         if(Config.debugOn)
-        	System.out.println("Explorer: flood fill");
+        	System.out.println("Explorer: A*");
         
+        Point curLoc = robot.getCurrentLocation();
+        ArenaMap mapKnowledgeBase = robot.mapKnowledgeBase;
+        MapPanel mapPanel = Simulator.simulatorMapPanel;
+        
+        while ((curLoc.gridX ) <= 15 || (curLoc.gridY <= 20)){
+        	
+        	
+        	
+        }
 	}
 
 	public void exploreFloodFill(ArenaMap newMap, Point curLoc){
@@ -47,19 +50,19 @@ public class Explorer {
 
         if ((curLoc.gridX ) <= 15 && (curLoc.gridY <= 20)){
 
-            SimPerceptron sp = new SimPerceptron(mp);
+            SimPerceptron sp = new SimPerceptron(null);
             sp.setEnvironment(ArenaMap.actualMap.clone());
 
             int unknownF1, unknownF2,unknownL1,unknownL2, unknownR1, unknownR2;
 
-            Point front1 = new Point(curLoc.gridX-1,curLoc.gridY);
-            Point front2 = new Point(curLoc.gridX-2,curLoc.gridY);
+            Point front1 = PointManager.getPoint(curLoc.gridX-1,curLoc.gridY);
+            Point front2 = PointManager.getPoint(curLoc.gridX-2,curLoc.gridY);
 
-            Point left1 = new Point(curLoc.gridX-3,curLoc.gridY-1);
-            Point left2 = new Point(curLoc.gridX-3,curLoc.gridY-2);
+            Point left1 = PointManager.getPoint(curLoc.gridX-3,curLoc.gridY-1);
+            Point left2 = PointManager.getPoint(curLoc.gridX-3,curLoc.gridY-2);
 
-            Point right1 = new Point(curLoc.gridX,curLoc.gridY-1);
-            Point right2 = new Point(curLoc.gridX,curLoc.gridY-2);
+            Point right1 = PointManager.getPoint(curLoc.gridX,curLoc.gridY-1);
+            Point right2 = PointManager.getPoint(curLoc.gridX,curLoc.gridY-2);
 
 
             unknownF1 = sp.percept(front1);

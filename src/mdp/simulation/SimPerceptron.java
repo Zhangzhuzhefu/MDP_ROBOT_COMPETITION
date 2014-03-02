@@ -5,6 +5,7 @@ import mdp.algo.VirtualPerceptron;
 import mdp.gui.MapPanel;
 
 public class SimPerceptron extends VirtualPerceptron{
+	//protected VirtualCommunicator communicator;
 	int[][] environment;
 	
 	
@@ -44,6 +45,7 @@ public class SimPerceptron extends VirtualPerceptron{
 		return environment;
 	}
 
+	//only for simulator
 	public void setEnvironment(int [][] e) {
 		environment = e;
 	}
