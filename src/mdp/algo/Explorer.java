@@ -3,9 +3,7 @@ package mdp.algo;
 import java.util.Stack;
 
 import mdp.Config;
-import mdp.competition.Perceptron;
-import mdp.gui.MapPanel;
-import mdp.simulation.Simulator;
+import mdp.simulation.SimPerceptron;
 
 public class Explorer {
     public static final String FLOODFILL = "FloodFill";
@@ -35,25 +33,27 @@ public class Explorer {
         
         Point curLoc = robot.getCurrentLocation();
         ArenaMap mapKnowledgeBase = robot.mapKnowledgeBase;
-        MapPanel mapPanel = Simulator.simulatorMapPanel;
         
         while ((curLoc.gridX ) <= 15 || (curLoc.gridY <= 20)){
-        	
+        	robot.getSensors().perceptEnvironment();
         	
         	
         }
 	}
 
-	public void exploreFloodFill(ArenaMap newMap, Point curLoc){
+	public Stack<Point> exploreFloodFill(Robot r){
         if(Config.debugOn)
         	System.out.println("Explorer: flood fill");
+        ArenaMap newMap = r.getMapKnowledgeBase();
+        Point curLoc = r.getCurrentLocation();
         int[][] map2 = newMap.getArrayMap();
         int turn = 0;
+        
 
         if ((curLoc.gridX ) <= 15 && (curLoc.gridY <= 20)){
 
-            Perceptron sp = new Perceptron();
-            Perceptron.setEnvironment(ArenaMap.actualMap.clone());
+            SimPerceptron sp = r.getSensors();
+            r.getSensors().setEnvironment(ArenaMap.actualMap.clone());
 
             int unknownF1, unknownF2,unknownL1,unknownL2, unknownR1, unknownR2;
 
@@ -170,13 +170,10 @@ public class Explorer {
             }
 
 
-
-
-
         }
         newMap.setArrayMap(map2);
 
-
+        return path;
 
 	}
 

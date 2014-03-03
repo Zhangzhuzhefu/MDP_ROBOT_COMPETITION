@@ -4,7 +4,7 @@ import java.util.Stack;
 
 import mdp.Config;
 import mdp.competition.Communicator;
-import mdp.competition.Perceptron;
+import mdp.simulation.SimPerceptron;
 import mdp.simulation.SimCommunicator;
 import mdp.simulation.Simulator;
 
@@ -13,7 +13,7 @@ import mdp.simulation.Simulator;
 public class Robot {
 
 	ArenaMap mapKnowledgeBase;
-	Perceptron sensors;
+	SimPerceptron sensors;
 	Explorer explorer;
 	PathCalculator pathCalculator;
 	
@@ -29,12 +29,12 @@ public class Robot {
 		isMoving = false;
 		isOnTheWayReturning = false;
 		currentLocation = ArenaMap.START_POINT;
-		sensors = new Perceptron();
 		mapKnowledgeBase = new ArenaMap();
 		explorer = new Explorer();
 		pathCalculator = new PathCalculator();
 		route = new Stack<Point>();
 		direction = new Direction(0);
+		sensors = new SimPerceptron(this);
 	}
 	
 	public void reset(){
@@ -81,7 +81,7 @@ public class Robot {
 		case Explorer.FLOODFILL:
 			if (Config.debugOn)
 				System.out.println("Exploring Floodfill");
-			explorer.exploreFloodFill(mapKnowledgeBase, currentLocation);
+			route = explorer.exploreFloodFill(this);
 			updateLocation(currentLocation);
 			if (currentLocation.gridX == 16 && currentLocation.gridY == 21) {
 				if (Config.debugOn) {
@@ -184,7 +184,7 @@ public class Robot {
 		this.mapKnowledgeBase = mapKnowledgeBase;
 	}
 
-	public Perceptron getSensors() {
+	public SimPerceptron getSensors() {
 		return sensors;
 	}
 

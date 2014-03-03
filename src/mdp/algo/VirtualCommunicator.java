@@ -2,8 +2,8 @@ package mdp.algo;
 
 public abstract class VirtualCommunicator {
 	
-	public abstract void updatePath();
-	public abstract void updateRobot();
-	public abstract void updateMap();
+	public abstract int[] ultraSonic();
+	public abstract int leftSensor();
+	public abstract int rightSensor();
 
 }
