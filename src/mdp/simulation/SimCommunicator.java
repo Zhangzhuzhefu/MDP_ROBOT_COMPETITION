@@ -42,13 +42,13 @@ public class SimCommunicator extends VirtualCommunicator{
 			break;
 		case Direction.DOWN:
 			for(int i=0; i<Config.FrontSensorDetectDist;i++){
-				if (actualMap[curLoc.gridX-1][curLoc.gridY-2-i]==ArenaMap.OBS) {
+				if (actualMap[curLoc.gridX-1][curLoc.gridY-3-i]==ArenaMap.OBS) {
 					detectInt[0] = i;
 					break;
 				}
 			}
 			for(int i=0; i<Config.FrontSensorDetectDist;i++){
-				if (actualMap[curLoc.gridX-1-1][curLoc.gridY-2-i]==ArenaMap.OBS) {
+				if (actualMap[curLoc.gridX-2][curLoc.gridY-3-i]==ArenaMap.OBS) {
 					detectInt[2] = i;
 					break;
 				}
@@ -83,22 +83,97 @@ public class SimCommunicator extends VirtualCommunicator{
 			}
 			break;
 		}
-		
-		
-		//detectInt[0] = 
 		return detectInt;
 	}
 
 	@Override
 	public int leftSensor() {
-		// TODO Auto-generated method stub
-		return 0;
+		int detectInt;
+		int[][] actualMap;
+		actualMap = ArenaMap.actualMap;
+		Point curLoc = robot.getCurrentLocation();
+		Direction dir = robot.getDirection();
+		detectInt = Config.SideSensorDetectDist;
+		switch (dir.getDirection()) {
+		case Direction.UP:
+			for(int i=0; i<Config.SideSensorDetectDist;i++){
+				if (actualMap[curLoc.gridX-3-i][curLoc.gridY-1]==ArenaMap.OBS) {
+					detectInt = i;
+					break;
+				}
+			}
+			break;
+		case Direction.DOWN:
+			for(int i=0; i<Config.SideSensorDetectDist;i++){
+				if (actualMap[curLoc.gridX+i][curLoc.gridY-2]==ArenaMap.OBS) {
+					detectInt = i;
+					break;
+				}
+			}
+			break;
+		case Direction.LEFT:
+			for(int i=0; i<Config.SideSensorDetectDist;i++){
+				if (actualMap[curLoc.gridX-2][curLoc.gridY-3-i]==ArenaMap.OBS) {
+					detectInt = i;
+					break;
+				}
+			}
+			break;
+		case Direction.RIGHT:
+			for(int i=0; i<Config.SideSensorDetectDist;i++){
+				if (actualMap[curLoc.gridX-1][curLoc.gridY+i]==ArenaMap.OBS) {
+					detectInt = i;
+					break;
+				}
+			}
+			break;
+		}		
+		return detectInt;
 	}
 
 	@Override
 	public int rightSensor() {
-		// TODO Auto-generated method stub
-		return 0;
+		int detectInt;
+		int[][] actualMap;
+		actualMap = ArenaMap.actualMap;
+		Point curLoc = robot.getCurrentLocation();
+		Direction dir = robot.getDirection();
+		detectInt = Config.SideSensorDetectDist;
+		switch (dir.getDirection()) {
+		case Direction.UP:
+			for(int i=0; i<Config.SideSensorDetectDist;i++){
+				if (actualMap[curLoc.gridX+i][curLoc.gridY-1]==ArenaMap.OBS) {
+					detectInt = i;
+					break;
+				}
+			}
+			break;
+		case Direction.DOWN:
+			for(int i=0; i<Config.SideSensorDetectDist;i++){
+				if (actualMap[curLoc.gridX-3-i][curLoc.gridY-2]==ArenaMap.OBS) {
+					detectInt = i;
+					break;
+				}
+			}
+			break;
+		case Direction.LEFT:
+			for(int i=0; i<Config.SideSensorDetectDist;i++){
+				if (actualMap[curLoc.gridX-2][curLoc.gridY+i]==ArenaMap.OBS) {
+					detectInt = i;
+					break;
+				}
+			}
+			break;
+		case Direction.RIGHT:
+			for(int i=0; i<Config.SideSensorDetectDist;i++){
+				if (actualMap[curLoc.gridX-1][curLoc.gridY-3-i]==ArenaMap.OBS) {
+					detectInt = i;
+					break;
+				}
+			}
+			break;
+		}		
+		return detectInt;
 	}
 
 

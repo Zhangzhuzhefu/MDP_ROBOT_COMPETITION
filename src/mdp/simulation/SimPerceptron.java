@@ -53,17 +53,17 @@ public class SimPerceptron{
 		case Direction.DOWN:
 			farFront = Math.min(Config.FrontSensorDetectDist, ulLeft);
 			for (int i=0; i<farFront; i++){
-				environment[curLoc.gridX-1][curLoc.gridY-i-2]=ArenaMap.EMP;
+				environment[curLoc.gridX-1][curLoc.gridY-i-3]=ArenaMap.EMP;
 			}
 			if (farFront<Config.FrontSensorDetectDist){
-				environment[curLoc.gridX-1][curLoc.gridY-ulLeft-2]=ArenaMap.OBS;
+				environment[curLoc.gridX-1][curLoc.gridY-ulLeft-3]=ArenaMap.OBS;
 			}
 			farFront = Math.min(Config.FrontSensorDetectDist, ulRight);
 			for (int i=0; i<farFront; i++){
-				environment[curLoc.gridX-1-1][curLoc.gridY-i-2]=ArenaMap.EMP;
+				environment[curLoc.gridX-2][curLoc.gridY-i-3]=ArenaMap.EMP;
 			}
 			if (farFront<Config.FrontSensorDetectDist){
-				environment[curLoc.gridX-1-1][curLoc.gridY-ulRight-2]=ArenaMap.OBS;
+				environment[curLoc.gridX-2][curLoc.gridY-ulRight-3]=ArenaMap.OBS;
 			}
 			break;
 		case Direction.LEFT:
@@ -103,12 +103,94 @@ public class SimPerceptron{
 	}
 
 	public int perceptLeft() {
+		Point curLoc = robot.getCurrentLocation();
+		int uInt =communicator.leftSensor(); 
+		int farFront;
 		
+		switch (robot.getDirection().getDirection()) {
+		case Direction.UP:
+			farFront = Math.min(Config.SideSensorDetectDist, uInt);
+			for (int i=0; i<farFront; i++){
+				environment[curLoc.gridX-1-1-1-i][curLoc.gridY-1]=ArenaMap.EMP;
+			}
+			if (farFront<Config.SideSensorDetectDist){
+				environment[curLoc.gridX-1-1-1-uInt][curLoc.gridY-1]=ArenaMap.OBS;
+			}
+			break;
+		case Direction.DOWN:
+			farFront = Math.min(Config.SideSensorDetectDist, uInt);
+			for (int i=0; i<farFront; i++){
+				environment[curLoc.gridX+i][curLoc.gridY-2]=ArenaMap.EMP;
+			}
+			if (farFront<Config.SideSensorDetectDist){
+				environment[curLoc.gridX+uInt][curLoc.gridY-2]=ArenaMap.OBS;
+			}
+			break;
+		case Direction.LEFT:
+			farFront = Math.min(Config.SideSensorDetectDist, uInt);
+			for (int i=0; i<farFront; i++){
+				environment[curLoc.gridX-2][curLoc.gridY-3-i]=ArenaMap.EMP;
+			}
+			if (farFront<Config.SideSensorDetectDist){
+				environment[curLoc.gridX-2][curLoc.gridY-3-uInt]=ArenaMap.OBS;
+			}
+			break;
+		case Direction.RIGHT:
+			farFront = Math.min(Config.SideSensorDetectDist, uInt);
+			for (int i=0; i<farFront; i++){
+				environment[curLoc.gridX-1][curLoc.gridY+i]=ArenaMap.EMP;
+			}
+			if (farFront<Config.SideSensorDetectDist){
+				environment[curLoc.gridX-1][curLoc.gridY+uInt]=ArenaMap.OBS;
+			}
+			break;
+		}
 		return 0;
 	}
 
 	public int perceptRight() {
-		// TODO Auto-generated method stub
+		Point curLoc = robot.getCurrentLocation();
+		int uInt =communicator.rightSensor(); 
+		int farFront;
+		
+		switch (robot.getDirection().getDirection()) {
+		case Direction.UP:
+			farFront = Math.min(Config.SideSensorDetectDist, uInt);
+			for (int i=0; i<farFront; i++){
+				environment[curLoc.gridX+i][curLoc.gridY-1]=ArenaMap.EMP;
+			}
+			if (farFront<Config.SideSensorDetectDist){
+				environment[curLoc.gridX+uInt][curLoc.gridY-1]=ArenaMap.OBS;
+			}
+			break;
+		case Direction.DOWN:
+			farFront = Math.min(Config.SideSensorDetectDist, uInt);
+			for (int i=0; i<farFront; i++){
+				environment[curLoc.gridX-3-i][curLoc.gridY-2]=ArenaMap.EMP;
+			}
+			if (farFront<Config.SideSensorDetectDist){
+				environment[curLoc.gridX-3-uInt][curLoc.gridY-2]=ArenaMap.OBS;
+			}
+			break;
+		case Direction.LEFT:
+			farFront = Math.min(Config.SideSensorDetectDist, uInt);
+			for (int i=0; i<farFront; i++){
+				environment[curLoc.gridX-2][curLoc.gridY+i]=ArenaMap.EMP;
+			}
+			if (farFront<Config.SideSensorDetectDist){
+				environment[curLoc.gridX-2][curLoc.gridY+uInt]=ArenaMap.OBS;
+			}
+			break;
+		case Direction.RIGHT:
+			farFront = Math.min(Config.SideSensorDetectDist, uInt);
+			for (int i=0; i<farFront; i++){
+				environment[curLoc.gridX-1][curLoc.gridY-3-i]=ArenaMap.EMP;
+			}
+			if (farFront<Config.SideSensorDetectDist){
+				environment[curLoc.gridX-1][curLoc.gridY-3-uInt]=ArenaMap.OBS;
+			}
+			break;
+		}
 		return 0;
 	}
 

@@ -27,7 +27,7 @@ public class Config {
 	public static final double startPointY = 30.0;
 	public static final double endPointX = 160.0;
 	public static final double endPointY = 210.0;
-	public static final int FrontSensorDetectDist = 20;
+	public static final int FrontSensorDetectDist = 13;
 	public static final int SideSensorDetectDist = 7;
 	
 }
