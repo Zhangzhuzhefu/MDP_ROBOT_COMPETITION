@@ -33,7 +33,6 @@ public class Simulator {
 	//TODO
 	
 	public void startSimulation() {
-		ArenaMap.actualMap = Utils.loadMazeEnvironment(Config.mapFileName);
 		simulatorMapPanel.updateRobot(ArenaMap.START_POINT,robot.getDirection());
 		simulatorMapPanel.updateMap(robot.getMapKnowledgeBase().getArrayMap());
 		
@@ -65,6 +64,13 @@ public class Simulator {
 	}
 	public static void explore_AStar(){
 		//TODO
+		//robot.turnLeft();
+		
+		robot.moveForwardByOneStep();robot.moveForwardByOneStep();
+		robot.moveForwardByOneStep();robot.moveForwardByOneStep();
+		robot.moveForwardByOneStep();robot.moveForwardByOneStep();
+		robot.moveForwardByOneStep();
+		robot.turnLeft();
 		simulatorMapPanel.updateRobot(ArenaMap.START_POINT,robot.getDirection());
 		robot.explore(Explorer.ASTAR);
 		robot.getSensors().setEnvironment(robot.getMapKnowledgeBase().getArrayMap());
@@ -86,7 +92,6 @@ public class Simulator {
 	
 	public static void reset(){
 		robot.reset();
-		ArenaMap.actualMap = Utils.loadMazeEnvironment(Config.mapFileName);
 		robot.setDirectionDegree(0);
 		simulatorMapPanel.updateRobot(ArenaMap.START_POINT,robot.getDirection());
 		simulatorMapPanel.updatePath(robot.getRoute());

@@ -31,32 +31,72 @@ public class SimPerceptron{
 		int ulLeft =  uInt[0];
 		//int ulCenter = uInt[1]; 
 		int ulRight = uInt[2]; 
+		int farFront;
 		
-		switch (robot.direction.getDirection()) {
+		switch (robot.getDirection().getDirection()) {
 		case Direction.UP:
-			int farFront = Math.min(Config.FrontSensorDetectDist, ulLeft);
+			farFront = Math.min(Config.FrontSensorDetectDist, ulLeft);
 			for (int i=0; i<farFront; i++){
-				environment[curLoc.gridX-1][curLoc.gridY+i]=ArenaMap.EMP;
+				environment[curLoc.gridX-1-1][curLoc.gridY+i]=ArenaMap.EMP;
 			}
-			if (farFront==ulLeft){
-				environment[curLoc.gridX-1][curLoc.gridY+ulLeft]=ArenaMap.OBS;
+			if (farFront<Config.FrontSensorDetectDist){
+				environment[curLoc.gridX-1-1][curLoc.gridY+ulLeft]=ArenaMap.OBS;
 			}
 			farFront = Math.min(Config.FrontSensorDetectDist, ulRight);
 			for (int i=0; i<farFront; i++){
-				environment[curLoc.gridX][curLoc.gridY+i]=ArenaMap.EMP;
+				environment[curLoc.gridX-1][curLoc.gridY+i]=ArenaMap.EMP;
 			}
-			if (farFront==ulRight){
-				environment[curLoc.gridX][curLoc.gridY+ulRight]=ArenaMap.OBS;
+			if (farFront<Config.FrontSensorDetectDist){
+				environment[curLoc.gridX-1][curLoc.gridY+ulRight]=ArenaMap.OBS;
 			}
 			break;
 		case Direction.DOWN:
-
+			farFront = Math.min(Config.FrontSensorDetectDist, ulLeft);
+			for (int i=0; i<farFront; i++){
+				environment[curLoc.gridX-1][curLoc.gridY-i-2]=ArenaMap.EMP;
+			}
+			if (farFront<Config.FrontSensorDetectDist){
+				environment[curLoc.gridX-1][curLoc.gridY-ulLeft-2]=ArenaMap.OBS;
+			}
+			farFront = Math.min(Config.FrontSensorDetectDist, ulRight);
+			for (int i=0; i<farFront; i++){
+				environment[curLoc.gridX-1-1][curLoc.gridY-i-2]=ArenaMap.EMP;
+			}
+			if (farFront<Config.FrontSensorDetectDist){
+				environment[curLoc.gridX-1-1][curLoc.gridY-ulRight-2]=ArenaMap.OBS;
+			}
 			break;
 		case Direction.LEFT:
-
+			farFront = Math.min(Config.FrontSensorDetectDist, ulLeft);
+			for (int i=0; i<farFront; i++){
+				environment[curLoc.gridX-2-i][curLoc.gridY-1-1]=ArenaMap.EMP;
+			}
+			if (farFront<Config.FrontSensorDetectDist){
+				environment[curLoc.gridX-2-ulLeft][curLoc.gridY-1-1]=ArenaMap.OBS;
+			}
+			farFront = Math.min(Config.FrontSensorDetectDist, ulRight);
+			for (int i=0; i<farFront; i++){
+				environment[curLoc.gridX-2-i][curLoc.gridY-1]=ArenaMap.EMP;
+			}
+			if (farFront<Config.FrontSensorDetectDist){
+				environment[curLoc.gridX-2-ulRight][curLoc.gridY-1]=ArenaMap.OBS;
+			}
 			break;
 		case Direction.RIGHT:
-
+			farFront = Math.min(Config.FrontSensorDetectDist, ulLeft);
+			for (int i=0; i<farFront; i++){
+				environment[curLoc.gridX+i][curLoc.gridY-1]=ArenaMap.EMP;
+			}
+			if (farFront<Config.FrontSensorDetectDist){
+				environment[curLoc.gridX+ulLeft][curLoc.gridY-1]=ArenaMap.OBS;
+			}
+			farFront = Math.min(Config.FrontSensorDetectDist, ulRight);
+			for (int i=0; i<farFront; i++){
+				environment[curLoc.gridX+i][curLoc.gridY-1-1]=ArenaMap.EMP;
+			}
+			if (farFront<Config.FrontSensorDetectDist){
+				environment[curLoc.gridX+ulRight][curLoc.gridY-1-1]=ArenaMap.OBS;
+			}
 			break;
 		}
 		return 0;

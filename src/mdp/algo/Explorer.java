@@ -4,6 +4,7 @@ import java.util.Stack;
 
 import mdp.Config;
 import mdp.simulation.SimPerceptron;
+import mdp.simulation.Simulator;
 
 public class Explorer {
     public static final String FLOODFILL = "FloodFill";
@@ -32,13 +33,11 @@ public class Explorer {
         	System.out.println("Explorer: A*");
         
         Point curLoc = robot.getCurrentLocation();
-        ArenaMap mapKnowledgeBase = robot.mapKnowledgeBase;
         
-        while ((curLoc.gridX ) <= 15 || (curLoc.gridY <= 20)){
+       // while ((curLoc.gridX ) <= 15 || (curLoc.gridY <= 20)){
         	robot.getSensors().perceptEnvironment();
-        	
-        	
-        }
+        	Simulator.simulatorMapPanel.updateMap(robot.getMapKnowledgeBase().getArrayMap());
+      //  }
 	}
 
 	public Stack<Point> exploreFloodFill(Robot r){

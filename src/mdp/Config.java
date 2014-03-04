@@ -8,6 +8,7 @@ public class Config {
 	public static String robotFileName = "Wall.E.png";
 	public static boolean trackingOn = false;
 	public static boolean debugOn = true;
+	public static boolean Simulator = true;
 	
 	//environment variables
 	public static final int MAZE_LENGTH = 200, MAZE_WIDTH = 150, GRID_LEN = 10;
@@ -15,6 +16,7 @@ public class Config {
 	public static final int EPS = 2;//cm
 	
 	//simulation variables
+	
 	public static final int PANEL_GRID_SIZE = 35;
 	public static final int[] FRAME_LOCATION ={250, 100, 850, 1050};
 	public static final int[] FRAME_SIZE ={900,1050};
@@ -25,7 +27,7 @@ public class Config {
 	public static final double startPointY = 30.0;
 	public static final double endPointX = 160.0;
 	public static final double endPointY = 210.0;
-	public static final int FrontSensorDetectDist = 13;
+	public static final int FrontSensorDetectDist = 20;
 	public static final int SideSensorDetectDist = 7;
 	
 }

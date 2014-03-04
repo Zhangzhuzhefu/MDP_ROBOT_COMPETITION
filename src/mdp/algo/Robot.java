@@ -20,7 +20,7 @@ public class Robot {
 	
 	boolean isExploring, isMoving, isOnTheWayReturning; 
 	private Point currentLocation;
-	public Direction direction;
+	private Direction direction;
 	private Stack<Point> route;
 	
 	
@@ -92,13 +92,12 @@ public class Robot {
 			break;
 		case Explorer.ASTAR: 
 			if (Config.debugOn)
-				System.out.println("Exploring A*");
+				System.out.println("Robot: Exploring A*");
 			explorer.exploreAStar(this);
 			updateLocation(currentLocation);
 			if (currentLocation.gridX == 16 && currentLocation.gridY == 21) {
-				if (Config.debugOn) {
+				if (Config.debugOn)
 					System.out.println("Explore Done");
-				}
 				isExploring = false;
 			}
 			break;
