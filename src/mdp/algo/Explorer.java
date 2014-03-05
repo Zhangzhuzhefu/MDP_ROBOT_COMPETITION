@@ -1,10 +1,8 @@
 package mdp.algo;
 
 import java.util.Stack;
-import java.math.*;
+
 import mdp.Config;
-import mdp.Utils;
-import mdp.simulation.SimPerceptron;
 import mdp.simulation.Simulator;
 
 public class Explorer {
@@ -18,13 +16,13 @@ public class Explorer {
 	boolean[][] visited = new boolean[18][23];
 	boolean[][] unsafe = new boolean[18][23];
 
-	private Stack<Point> path;
+	private Stack<Point> floodFillPath;
 	private Stack<Point> pathBehind;
 	private Stack<Point> pathEstimate;
 
 	public Explorer() {
 		pathBehind = new Stack<Point>();
-		path = new Stack<Point>();
+		floodFillPath = new Stack<Point>();
 		pathEstimate = new Stack<Point>();
 		// initialize visited map array
 
@@ -43,23 +41,23 @@ public class Explorer {
 	}
 
 	public void reset() {
-		path.clear();
+		floodFillPath.clear();
 		pathBehind.clear();
 		pathEstimate.clear();
 		if (Config.trackingOn)
 			System.out.println("Explorer reset!");
 	}
 
-	public Stack<Point> exploreAStar(Robot robot) {
-		RandomExplorer rExp = new RandomExplorer(robot);
+	public Stack<Point> exploreFloodFill(Robot robot) {
+		FloodFillExplorer rExp = new FloodFillExplorer(robot);
 		rExp.start();
-		return path;
+		return floodFillPath;
 	}
 
-	public class RandomExplorer extends Thread {
+	public class FloodFillExplorer extends Thread {
 		Robot robot;
 
-		public RandomExplorer(Robot r) {
+		public FloodFillExplorer(Robot r) {
 			this.robot = r;
 		}
 
@@ -117,6 +115,9 @@ public class Explorer {
 									.getMapKnowledgeBase().getArrayMap())) {
 								robot.moveForwardByOneStep();
 								robot.updateLocation(robot.getCurrentLocation());
+								floodFillPath.push(here);
+								floodFillPath.push(hereNext);
+								Simulator.simulatorMapPanel.updatePath(floodFillPath);
 								next = i;
 								break;
 							}
@@ -126,32 +127,30 @@ public class Explorer {
 					}
 				}
 				if (next != -1) {
-					path.push(here);
-					Simulator.simulatorMapPanel.updatePath(path);
 					here = here.getNeighbors(next);
 				} else {
-					if (path.isEmpty()) {
+					if (floodFillPath.isEmpty()) {
 						System.out.println("Expolorer: " + this.getClass()
 								+ ": path not found");
 						return;
 					} else {
-						here = path.pop();
-						Simulator.simulatorMapPanel.updatePath(path);
+						here = floodFillPath.pop();
+						Simulator.simulatorMapPanel.updatePath(floodFillPath);
 						robot.jumpToPoint(here.gridX, here.gridY);
 						robot.updateLocation(robot.getCurrentLocation());
 					}
 				}
 
 			}
-			path.push(here);
-			Simulator.simulatorMapPanel.updatePath(path);
+			floodFillPath.push(here);
+			Simulator.simulatorMapPanel.updatePath(floodFillPath);
 
 			// To reverse the randomPath stack
 			Stack<Point> temp = new Stack<Point>();
-			while (!path.isEmpty()) {
-				temp.push(path.pop());
+			while (!floodFillPath.isEmpty()) {
+				temp.push(floodFillPath.pop());
 			}
-			path = temp;
+			floodFillPath = temp;
 			this.stop();
 		}
 	}
@@ -159,7 +158,18 @@ public class Explorer {
 	public boolean validatePath(Stack<Point> p) {
 		return (p != null && p.size() >= destination.gridDistanceTo(start));
 	}
-
+	
+	public Stack<Point> getfloodFillPath() {
+		return floodFillPath;
+	}
+	
+	public Stack<Point> exploreAStar(Robot robot) {
+		FloodFillExplorer rExp = new FloodFillExplorer(robot);
+		rExp.start();
+		return floodFillPath;
+	}
+	
+/*
 	public Stack<Point> exploreFloodFill(Robot robot) {
 		// if(Config.debugOn)
 		// System.out.println("Explorer: flood fill");
@@ -475,9 +485,8 @@ public class Explorer {
 		return path;
 	}
 
-	public Stack<Point> getPath() {
-		return path;
-	}
+	
+	
 
 	private Point compare(Point p1, Point p2) {
 		if (Math.sqrt(Math.pow(p1.gridX, 2) + Math.pow(p1.gridY, 2)) >= Math
@@ -572,7 +581,7 @@ public class Explorer {
 			break;
 		}
 	}
-
+	
 	private void turnRight(Direction direction) {
 		System.out.println("turn Right!");
 		direction.rotate(90);
@@ -582,5 +591,5 @@ public class Explorer {
 		System.out.println("turn Left!");
 		direction.rotate(-90);
 	}
-
+*/
 }

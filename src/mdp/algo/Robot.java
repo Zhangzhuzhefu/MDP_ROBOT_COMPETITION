@@ -81,15 +81,12 @@ public class Robot {
 			if (Config.debugOn)
 				System.out.println("Exploring Floodfill");
 			route = explorer.exploreFloodFill(this);
-			updateLocation(currentLocation);
-			if (currentLocation.gridX == 16 && currentLocation.gridY == 21) {
-				if (Config.debugOn) {
+			if (route!=null) {
+				if (Config.debugOn)
 					System.out.println("Explore Done");
-				}
 				isExploring = false;
-			}
-			if (route!=null) return route;
-			else return null;
+				return route;
+			} else return null;
 		case Explorer.ASTAR: 
 			if (Config.debugOn)
 				System.out.println("Robot: Exploring A*");
