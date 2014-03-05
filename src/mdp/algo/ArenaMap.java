@@ -33,6 +33,19 @@ public class ArenaMap {
 		ArenaMap.actualMap = Utils.loadMazeEnvironment(Config.mapFileName);
 	}
 	
+	public boolean enoughExploration(){
+		int count = 0;
+		for (int i=0; i<MAXN; i++){
+			for (int j=0;j<MAXM; j++){
+				if(map[i][j]==ArenaMap.EMP||map[i][j]==ArenaMap.OBS)
+					count++;
+			}
+		}
+		count -= 74;
+		System.out.println(this.getClass().toString()+" count: "+count);
+		return (count/((MAXM-1)*(MAXN-1)) < Config.PERCENTAGEOFEXPLORATION);
+	}
+	
 	public void initializeMap() {
 		
 		// set whole map status to be unknown

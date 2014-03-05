@@ -58,7 +58,7 @@ public class Explorer {
 
 			Point here = start;
 			//while (!here.sameGridPoint(destination)) {
-			while (!here.sameGridPoint(destination)) {
+			while (robot.getMapKnowledgeBase().enoughExploration()) {
 				System.out.println("explore: random path here at ("
 						+ here.gridX + "," + here.gridY + ")");
 				try {
@@ -142,9 +142,14 @@ public class Explorer {
 					Simulator.simulatorMapPanel.updatePath(path);
 					here = here.getNeighbors(next);
 				} else {
-					if (path.isEmpty())
+					if (path.isEmpty()){
 						System.out.println("Expolorer: "+this.getClass()+": path not found");
-					here = path.pop();
+						return;
+					}
+					else {
+						here = path.pop();
+						Simulator.simulatorMapPanel.updatePath(path);
+					}
 					try {
 						Thread.sleep(Config.robotWaitingTime);
 					} catch (InterruptedException e) {
@@ -164,7 +169,6 @@ public class Explorer {
 				temp.push(path.pop());
 			}
 			path = temp;
-			
 			this.stop();
 		}
 	}

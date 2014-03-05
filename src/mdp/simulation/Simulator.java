@@ -33,7 +33,7 @@ public class Simulator {
 	public void startSimulation() {
 		simulatorMapPanel.updateRobot(ArenaMap.START_POINT,robot.getDirection());
 		simulatorMapPanel.updateMap(robot.getMapKnowledgeBase().getArrayMap());
-		
+		robot.getMapKnowledgeBase().enoughExploration();
 		//make sure perceptron is the same as knowledgebase
 		 //robot.getSensors().setEnvironment(robot.getMapKnowledgeBase().getArrayMap());
 	}
@@ -64,10 +64,10 @@ public class Simulator {
 		//TODO
 		simulatorMapPanel.updateRobot(ArenaMap.START_POINT,robot.getDirection());
 		robot.explore(Explorer.ASTAR);
-		robot.getSensors().setEnvironment(robot.getMapKnowledgeBase().getArrayMap());
-		robot.updatePerceptronToKnowledgebase();
-		simulatorMapPanel.updateMap(robot.getMapKnowledgeBase().getArrayMap());
-		simulatorMapPanel.updatePath(robot.getRoute());
+		//robot.getSensors().setEnvironment(robot.getMapKnowledgeBase().getArrayMap());
+		//robot.updatePerceptronToKnowledgebase();
+		//simulatorMapPanel.updateMap(robot.getMapKnowledgeBase().getArrayMap());
+		//simulatorMapPanel.updatePath(robot.getRoute());
 	}
 	
 	public static void updateRandomPath(){

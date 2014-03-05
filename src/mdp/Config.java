@@ -16,7 +16,7 @@ public class Config {
 	public static final int EPS = 2;//cm
 	
 	//simulation variables
-	
+	public static final double PERCENTAGEOFEXPLORATION = 0.8;
 	public static final int PANEL_GRID_SIZE = 35;
 	public static final int[] FRAME_LOCATION ={250, 100, 850, 1050};
 	public static final int[] FRAME_SIZE ={900,1050};
