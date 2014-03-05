@@ -80,11 +80,6 @@ public class Explorer {
 			while (robot.getMapKnowledgeBase().enoughExploration()) {
 				System.out.println("explore: random path here at ("
 						+ here.gridX + "," + here.gridY + ")");
-				try {
-					Thread.sleep(Config.robotWaitingTime);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
 				robot.getSensors().perceptEnvironment();
 				Simulator.simulatorMapPanel.updateMap(robot
 						.getMapKnowledgeBase().getArrayMap());
@@ -98,46 +93,21 @@ public class Explorer {
 								.getNeighbors(i).gridY]) {
 							switch (i) {
 							case 0:
-								try {
-									Thread.sleep(Config.robotWaitingTime);
-								} catch (InterruptedException e) {
-									e.printStackTrace();
-								}
 								robot.turnWest();
 								robot.updateLocation(robot.getCurrentLocation());
 								break;
 							case 1:
-								try {
-									Thread.sleep(Config.robotWaitingTime);
-								} catch (InterruptedException e) {
-									e.printStackTrace();
-								}
 								robot.turnEast();
 								robot.updateLocation(robot.getCurrentLocation());
 								break;
 							case 2:
-								try {
-									Thread.sleep(Config.robotWaitingTime);
-								} catch (InterruptedException e) {
-									e.printStackTrace();
-								}
 								robot.turnSouth();
 								robot.updateLocation(robot.getCurrentLocation());
 								break;
 							case 3:
-								try {
-									Thread.sleep(Config.robotWaitingTime);
-								} catch (InterruptedException e) {
-									e.printStackTrace();
-								}
 								robot.turnNorth();
 								robot.updateLocation(robot.getCurrentLocation());
 								break;
-							}
-							try {
-								Thread.sleep(Config.robotWaitingTime);
-							} catch (InterruptedException e) {
-								e.printStackTrace();
 							}
 							robot.getSensors().perceptEnvironment();
 							Simulator.simulatorMapPanel.updateMap(robot
@@ -145,11 +115,6 @@ public class Explorer {
 							Point hereNext = here.getNeighbors(i);
 							if (hereNext.robotMovable(robot
 									.getMapKnowledgeBase().getArrayMap())) {
-								try {
-									Thread.sleep(Config.robotWaitingTime);
-								} catch (InterruptedException e) {
-									e.printStackTrace();
-								}
 								robot.moveForwardByOneStep();
 								robot.updateLocation(robot.getCurrentLocation());
 								next = i;
@@ -172,14 +137,9 @@ public class Explorer {
 					} else {
 						here = path.pop();
 						Simulator.simulatorMapPanel.updatePath(path);
+						robot.jumpToPoint(here.gridX, here.gridY);
+						robot.updateLocation(robot.getCurrentLocation());
 					}
-					try {
-						Thread.sleep(Config.robotWaitingTime);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-					robot.jumpToPoint(here.gridX, here.gridY);
-					robot.updateLocation(robot.getCurrentLocation());
 				}
 
 			}

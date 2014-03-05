@@ -131,6 +131,11 @@ public class Robot {
 	}
 
 	public void moveForwardByOneStep(){
+		try {
+			Thread.sleep(Config.robotWaitingTime);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		switch (direction.getDirection()){
 		case Direction.DOWN:
 			if (currentLocation.gridY==ArenaMap.START_POINT.gridY) return;
@@ -172,12 +177,27 @@ public class Robot {
 		case Direction.UP:
 			break;
 		case Direction.DOWN:
+			try {
+				Thread.sleep(Config.robotWaitingTime);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 			this.turnBack();
 			break;
 		case Direction.LEFT:
 			this.turnRight();
+			try {
+				Thread.sleep(Config.robotWaitingTime);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 			break;
 		case Direction.RIGHT:
+			try {
+				Thread.sleep(Config.robotWaitingTime);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 			this.turnLeft();
 			break;
 		}
@@ -186,14 +206,29 @@ public class Robot {
 	public void turnSouth(){
 		switch (direction.getDirection()){
 		case Direction.UP:
+			try {
+				Thread.sleep(Config.robotWaitingTime);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 			this.turnBack();
 			break;
 		case Direction.DOWN:
 			break;
 		case Direction.LEFT:
+			try {
+				Thread.sleep(Config.robotWaitingTime);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 			this.turnLeft();
 			break;
 		case Direction.RIGHT:
+			try {
+				Thread.sleep(Config.robotWaitingTime);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 			this.turnRight();
 			break;
 		}
@@ -202,14 +237,29 @@ public class Robot {
 	public void turnWest(){
 		switch (direction.getDirection()){
 		case Direction.UP:
+			try {
+				Thread.sleep(Config.robotWaitingTime);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 			this.turnLeft();
 			break;
 		case Direction.DOWN:
+			try {
+				Thread.sleep(Config.robotWaitingTime);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 			this.turnRight();
 			break;
 		case Direction.LEFT:
 			break;
 		case Direction.RIGHT:
+			try {
+				Thread.sleep(Config.robotWaitingTime);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 			this.turnBack();
 			break;
 		}
@@ -218,12 +268,27 @@ public class Robot {
 	public void turnEast(){
 		switch (direction.getDirection()){
 		case Direction.UP:
+			try {
+				Thread.sleep(Config.robotWaitingTime);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 			this.turnRight();
 			break;
 		case Direction.DOWN:
+			try {
+				Thread.sleep(Config.robotWaitingTime);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 			this.turnLeft();
 			break;
 		case Direction.LEFT:
+			try {
+				Thread.sleep(Config.robotWaitingTime);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 			this.turnBack();
 			break;
 		case Direction.RIGHT:

@@ -43,7 +43,7 @@ public class ArenaMap {
 		}
 		count -= 74;
 		System.out.println(this.getClass().toString()+" count: "+count);
-		return (count/((MAXM-1)*(MAXN-1)) < Config.PERCENTAGEOFEXPLORATION);
+		return ((double)count/((MAXM-1)*(MAXN-1)) < Config.PERCENTAGEOFEXPLORATION);
 	}
 	
 	public void initializeMap() {
