@@ -34,9 +34,10 @@ public class PathCalculator {
 	
 	public boolean findShortestPath(){
 		
-		if (validatePath(shortestPath)) return true;
+		//if (validatePath(shortestPath)) return true;
 		
 		//initialize
+		shortestPath.clear();
 		Comparator<Point> comparator = new PointDistanceComparator();
 		PriorityQueue<Point> queue = new PriorityQueue<Point>(ArenaMapPointMAXM*ArenaMapPointMAXN,comparator);
 		
@@ -101,7 +102,8 @@ public class PathCalculator {
 	}
 	
 	public boolean findRandomPath() {
-		if (!aRandomPath.empty()) return true;
+		//if (!aRandomPath.empty()) return true;
+		aRandomPath.clear();
 		boolean [][] visited = new boolean[ArenaMapPointMAXN][ArenaMapPointMAXM];
 		for (int i=0;i<ArenaMapPointMAXN;i++)
 			for (int j=0;j<ArenaMapPointMAXM;j++)

@@ -27,10 +27,12 @@ public class ArenaMap {
 		if (Config.Simulator)
 			ArenaMap.actualMap = Utils.loadMazeEnvironment(Config.mapFileName);
 	}
+	
 	public void reset(){
 		initializeMap();
 		ArenaMap.actualMap = Utils.loadMazeEnvironment(Config.mapFileName);
 	}
+	
 	public void initializeMap() {
 		
 		// set whole map status to be unknown

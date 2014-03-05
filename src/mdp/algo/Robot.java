@@ -45,7 +45,8 @@ public class Robot {
 		mapKnowledgeBase.reset();
 		explorer.reset();
 		pathCalculator.reset();
-		route.clear();
+		if (route!=null)
+			route.clear();
 	}
 	
 	public void startMoving(){
@@ -54,29 +55,27 @@ public class Robot {
 		isOnTheWayReturning = false;
 	}
 	
-	@SuppressWarnings("unchecked")
 	public Stack<Point> generateShortestPath(){
 		pathCalculator.setMap(getMapKnowledgeBase().getArrayMap());
 		if(pathCalculator.findShortestPath()){
-			route = (Stack<Point>) pathCalculator.getShortestPath().clone();
+			route = (Stack<Point>) pathCalculator.getShortestPath();
 			return pathCalculator.getShortestPath();
 		}
 		else 
 			return null;
 	}
 	
-	@SuppressWarnings("unchecked")
 	public Stack<Point> generateRandomPath(){
 		pathCalculator.setMap(this.getMapKnowledgeBase().getArrayMap());
 		if(pathCalculator.findRandomPath()){
-			route = (Stack<Point>) pathCalculator.getRandomPath().clone();
+			route = (Stack<Point>) pathCalculator.getRandomPath();
 			return pathCalculator.getRandomPath();
 		}
 		else 
 			return null;
 	}
 
-    public void explore(String s){
+    public Stack <Point> explore(String s){
 		switch (s) {
 		case Explorer.FLOODFILL:
 			if (Config.debugOn)
@@ -89,19 +88,20 @@ public class Robot {
 				}
 				isExploring = false;
 			}
-			break;
+			if (route!=null) return route;
+			else return null;
 		case Explorer.ASTAR: 
 			if (Config.debugOn)
 				System.out.println("Robot: Exploring A*");
-			explorer.exploreAStar(this);
-			updateLocation(currentLocation);
-			if (currentLocation.gridX == 16 && currentLocation.gridY == 21) {
+			route = (Stack<Point>) explorer.exploreAStar(this);
+			if (route!=null) {
 				if (Config.debugOn)
 					System.out.println("Explore Done");
 				isExploring = false;
-			}
-			break;
+				return route;
+			} else return null;
 		}
+		return null;
 
     }
 	
@@ -151,6 +151,10 @@ public class Robot {
 		}
 	}
 	
+	public void jumpToPoint(int x, int y){
+		currentLocation = PointManager.getPoint(x,y); 
+	}
+	
 	public void turnLeft(){
 		direction.rotate(Direction.LEFT);
 	}
@@ -161,6 +165,70 @@ public class Robot {
 	
 	public void turnBack(){
 		direction.rotate(Direction.BACK);
+	}
+	
+	public void turnNorth(){
+		switch (direction.getDirection()){
+		case Direction.UP:
+			break;
+		case Direction.DOWN:
+			this.turnBack();
+			break;
+		case Direction.LEFT:
+			this.turnRight();
+			break;
+		case Direction.RIGHT:
+			this.turnLeft();
+			break;
+		}
+	}
+	
+	public void turnSouth(){
+		switch (direction.getDirection()){
+		case Direction.UP:
+			this.turnBack();
+			break;
+		case Direction.DOWN:
+			break;
+		case Direction.LEFT:
+			this.turnLeft();
+			break;
+		case Direction.RIGHT:
+			this.turnRight();
+			break;
+		}
+	}
+	
+	public void turnWest(){
+		switch (direction.getDirection()){
+		case Direction.UP:
+			this.turnLeft();
+			break;
+		case Direction.DOWN:
+			this.turnRight();
+			break;
+		case Direction.LEFT:
+			break;
+		case Direction.RIGHT:
+			this.turnBack();
+			break;
+		}
+	}
+	
+	public void turnEast(){
+		switch (direction.getDirection()){
+		case Direction.UP:
+			this.turnRight();
+			break;
+		case Direction.DOWN:
+			this.turnLeft();
+			break;
+		case Direction.LEFT:
+			this.turnBack();
+			break;
+		case Direction.RIGHT:
+			break;
+		}
 	}
 	
 	public void updatePerceptronToKnowledgebase(){
@@ -203,6 +271,10 @@ public class Robot {
 	
 	public void setDirectionDegree(double d) {
 		this.direction.setDegree(d);
+	}
+
+	public void setRoute(Stack<Point> route) {
+		this.route = route;
 	}
 
 }
