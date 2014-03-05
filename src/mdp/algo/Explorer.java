@@ -14,13 +14,13 @@ public class Explorer {
     
     Point destination = ArenaMap.END_POINT;
     Point start = ArenaMap.START_POINT;
-    
-    private Stack<Point> path;
-    private Stack<Point> pathBehind;
-    private Stack<Point> pathEstimate;
+
     boolean [][] visited = new boolean[18][23];
     boolean [][] unsafe = new boolean[18][23];
 
+	private Stack<Point> path;
+	private Stack<Point> pathBehind;
+	private Stack<Point> pathEstimate;
 
 	public Explorer() {
 		pathBehind = new Stack<Point>();
@@ -42,22 +42,12 @@ public class Explorer {
 
 
 	}
+
 	
 	public void reset(){
         if(Config.trackingOn) System.out.println("Explorer reset!");
 	}
-	
-	public void exploreAStar(Robot robot){
-        if(Config.debugOn)
-        	System.out.println("Explorer: A*");
-        
-        Point curLoc = robot.getCurrentLocation();
-        
-       // while ((curLoc.gridX ) <= 15 || (curLoc.gridY <= 20)){
-        	robot.getSensors().perceptEnvironment();
-        	Simulator.simulatorMapPanel.updateMap(robot.getMapKnowledgeBase().getArrayMap());
-      //  }
-	}
+
 
 	public Stack<Point> exploreFloodFill(Robot robot){
         //if(Config.debugOn)
@@ -181,6 +171,157 @@ public class Explorer {
                     break;
             }
 
+
+	public void reset() {
+		path.clear();
+		pathBehind.clear();
+		pathEstimate.clear();
+		if (Config.trackingOn)
+			System.out.println("Explorer reset!");
+	}
+
+	public Stack<Point> exploreAStar(Robot robot) {
+		RandomExplorer rExp = new RandomExplorer(robot);
+		rExp.start();
+		return path;
+	}
+
+
+	public class RandomExplorer extends Thread {
+		Robot robot;
+
+		public RandomExplorer(Robot r) {
+			this.robot = r;
+		}
+
+		@SuppressWarnings("deprecation")
+		@Override
+		public void run() {
+			if (Config.debugOn)
+				System.out.println("Explorer: A*");
+			int ArenaMapPointMAXN = ArenaMap.MAXN + 1;
+			int ArenaMapPointMAXM = ArenaMap.MAXM + 1;
+			boolean[][] visited = new boolean[ArenaMapPointMAXN][ArenaMapPointMAXM];
+			for (int i = 0; i < ArenaMapPointMAXN; i++)
+				for (int j = 0; j < ArenaMapPointMAXM; j++)
+					visited[i][j] = false;
+
+			Point here = start;
+			//while (!here.sameGridPoint(destination)) {
+			while (!here.sameGridPoint(destination)) {
+				System.out.println("explore: random path here at ("
+						+ here.gridX + "," + here.gridY + ")");
+				try {
+					Thread.sleep(Config.robotWaitingTime);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				robot.getSensors().perceptEnvironment();
+				Simulator.simulatorMapPanel.updateMap(robot.getMapKnowledgeBase().getArrayMap());
+				
+				visited[here.gridX][here.gridY] = true;
+				int next = -1;
+				for (int i = 0; i < 4; i++) {
+					System.out.println("i: " + i + " next: " + next);
+					if (here.getNeighbors(i) != null) {
+						if (!visited[here.getNeighbors(i).gridX][here.getNeighbors(i).gridY]) {
+							switch (i) {
+							case 0:
+								try {
+									Thread.sleep(Config.robotWaitingTime);
+								} catch (InterruptedException e) {
+									e.printStackTrace();
+								}
+								robot.turnWest();
+								robot.updateLocation(robot.getCurrentLocation());
+								break;
+							case 1:
+								try {
+									Thread.sleep(Config.robotWaitingTime);
+								} catch (InterruptedException e) {
+									e.printStackTrace();
+								}
+								robot.turnEast();
+								robot.updateLocation(robot.getCurrentLocation());
+								break;
+							case 2:
+								try {
+									Thread.sleep(Config.robotWaitingTime);
+								} catch (InterruptedException e) {
+									e.printStackTrace();
+								}
+								robot.turnSouth();
+								robot.updateLocation(robot.getCurrentLocation());
+								break;
+							case 3:
+								try {
+									Thread.sleep(Config.robotWaitingTime);
+								} catch (InterruptedException e) {
+									e.printStackTrace();
+								}
+								robot.turnNorth();
+								robot.updateLocation(robot.getCurrentLocation());
+								break;
+							}
+							try {
+								Thread.sleep(Config.robotWaitingTime);
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
+							robot.getSensors().perceptEnvironment();
+							Simulator.simulatorMapPanel.updateMap(robot.getMapKnowledgeBase().getArrayMap());
+							Point hereNext=here.getNeighbors(i);
+							if (hereNext.robotMovable(robot.getMapKnowledgeBase().getArrayMap())) {
+								try {
+									Thread.sleep(Config.robotWaitingTime);
+								} catch (InterruptedException e) {
+									e.printStackTrace();
+								}
+								robot.moveForwardByOneStep();
+								robot.updateLocation(robot.getCurrentLocation());
+								next = i;
+								break;
+							}
+						} else {
+						}
+					} else {
+					}
+				}
+				if (next != -1) {
+					path.push(here);
+					Simulator.simulatorMapPanel.updatePath(path);
+					here = here.getNeighbors(next);
+				} else {
+					if (path.isEmpty())
+						System.out.println("Expolorer: "+this.getClass()+": path not found");
+					here = path.pop();
+					try {
+						Thread.sleep(Config.robotWaitingTime);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					robot.jumpToPoint(here.gridX, here.gridY);
+					robot.updateLocation(robot.getCurrentLocation());
+				}
+
+			}
+			path.push(here);
+			Simulator.simulatorMapPanel.updatePath(path);
+
+			// To reverse the randomPath stack
+			Stack<Point> temp = new Stack<Point>();
+			while (!path.isEmpty()) {
+				temp.push(path.pop());
+			}
+			path = temp;
+			
+			this.stop();
+		}
+	}
+
+	public boolean validatePath(Stack<Point> p) {
+		return (p != null && p.size() >= destination.gridDistanceTo(start));
+	}
 
 
             int F1 = map[front1.gridX][front1.gridY];
@@ -383,7 +524,10 @@ public class Explorer {
         System.out.println("\n");
         return path;
 
+	public Stack<Point> getPath() {
+		return path;
 	}
+
 
     private Point compare(Point p1, Point p2){
         if (Math.sqrt(Math.pow(p1.gridX,2) + Math.pow(p1.gridY,2)) >= Math.sqrt( (p2.gridX)^2 + (p2.gridY)^2 )){
@@ -394,6 +538,7 @@ public class Explorer {
             return p2;
         }
     }
+
     private Point compareV(Point p1, Point p2){
         if (Math.sqrt(Math.pow(p1.gridX,2) + Math.pow(p1.gridY,2)) <= Math.sqrt( (p2.gridX)^2 + (p2.gridY)^2 )){
 

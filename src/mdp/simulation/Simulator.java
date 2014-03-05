@@ -62,12 +62,12 @@ public class Simulator {
 	}
 	public static void explore_AStar(){
 		//TODO
-		
 		simulatorMapPanel.updateRobot(ArenaMap.START_POINT,robot.getDirection());
 		robot.explore(Explorer.ASTAR);
 		robot.getSensors().setEnvironment(robot.getMapKnowledgeBase().getArrayMap());
 		robot.updatePerceptronToKnowledgebase();
 		simulatorMapPanel.updateMap(robot.getMapKnowledgeBase().getArrayMap());
+		simulatorMapPanel.updatePath(robot.getRoute());
 	}
 	
 	public static void updateRandomPath(){
@@ -85,6 +85,7 @@ public class Simulator {
 	public static void reset(){
 		robot.reset();
 		robot.setDirectionDegree(0);
+		simulatorMapPanel.updateMap(robot.getMapKnowledgeBase().getArrayMap());
 		simulatorMapPanel.updateRobot(ArenaMap.START_POINT,robot.getDirection());
 		simulatorMapPanel.updatePath(robot.getRoute());
 	}

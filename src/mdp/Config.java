@@ -22,12 +22,12 @@ public class Config {
 	public static final int[] FRAME_SIZE ={900,1050};
 
 	//Robot
-	public static final int robotWaitingTime = 50;
+	public static final int robotWaitingTime = 4;
 	public static final double startPointX = 30.0;
 	public static final double startPointY = 30.0;
 	public static final double endPointX = 160.0;
 	public static final double endPointY = 210.0;
-	public static final int FrontSensorDetectDist = 13;
-	public static final int SideSensorDetectDist = 7;
+	public static final int FrontSensorDetectDist = 3;
+	public static final int SideSensorDetectDist = 3;
 	
 }

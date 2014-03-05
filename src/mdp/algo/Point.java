@@ -28,6 +28,13 @@ public class Point {
 		initNeighbors();
 	}
 	
+	public boolean robotMovable(int[][] map){
+		return (map[this.gridX-1][this.gridY-1]==ArenaMap.EMP
+				&& map[this.gridX-1][this.gridY-2]==ArenaMap.EMP
+				&& map[this.gridX-2][this.gridY-1]==ArenaMap.EMP
+				&& map[this.gridX-2][this.gridY-2]==ArenaMap.EMP);
+	}
+	
 	private void initNeighbors(){
 		neighbors = new Point[4];
 	}
