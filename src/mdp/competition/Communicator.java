@@ -140,7 +140,7 @@ public class Communicator extends VirtualCommunicator {
 
     }
 
-    public static String writeJson(String cmd,String map, String p1,String p2,String m,String r,String d,String x){
+    public String writeJson(String cmd,String map, String p1,String p2,String m,String r,String d,String x){
         JSONObject obj = new JSONObject();
         JSONObject obj1 = new JSONObject();
         JSONArray list = new JSONArray();
