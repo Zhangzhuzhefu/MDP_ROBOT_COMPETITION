@@ -121,9 +121,7 @@ public class Explorer {
 							Simulator.simulatorMapPanel.updateMap(robot
 									.getMapKnowledgeBase().getArrayMap());
 
-						} else {
 						}
-					} else {
 					}
 				}
 				if (next != -1) {

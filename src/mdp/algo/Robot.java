@@ -154,6 +154,11 @@ public class Robot {
 	}
 	
 	public void jumpToPoint(int x, int y){
+		try {
+			Thread.sleep(Config.robotWaitingTime);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		currentLocation = PointManager.getPoint(x,y); 
 	}
 	
