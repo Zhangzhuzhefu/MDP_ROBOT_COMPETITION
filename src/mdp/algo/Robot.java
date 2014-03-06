@@ -109,30 +109,39 @@ public class Robot {
                 isOnTheWayReturning = true;
                 if (Config.debugOn) System.out.println("isOnTheWayReturning = true");
             }
+            Point nextLoc = route.peek();;
+            int xDiff, yDiff;
+			xDiff = nextLoc.gridX - currentLocation.gridX;
+			yDiff = nextLoc.gridY - currentLocation.gridY;
+			if (xDiff>0) {
+				this.turnEast(true);
+			} else if (xDiff<0) {
+				this.turnWest(true);
+			} else if (yDiff>0) {
+				this.turnNorth(true);
+			} else if (yDiff<0) {
+				this.turnSouth(true);
+			}
             currentLocation = route.pop();
-            updateLocation(currentLocation);
+            updateRobotLoc();
+            
         } else {
             if (Config.debugOn) System.out.println("Robot route is empty..");
             isMoving = false;
         }
 	}
 	
-	public void updateLocation(Point p){
+	public void updateRobotLoc(){
 		if (sensors.getCommunicator() instanceof SimCommunicator){
 //			SimCommunicator s ;
 //			s = (SimCommunicator) sensors.communicator;
-			Simulator.simulatorMapPanel.updateRobot(p,direction);
+			Simulator.simulatorMapPanel.updateRobot(currentLocation,direction);
 		} else if (sensors.getCommunicator() instanceof Communicator){
 			//TODO
 		}
 	}
 
-	public void moveForwardByOneStep(){
-		try {
-			Thread.sleep(Config.robotWaitingTime);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+	public void moveForwardByOneStep(boolean delay){
 		switch (direction.getDirection()){
 		case Direction.DOWN:
 			if (currentLocation.gridY==ArenaMap.START_POINT.gridY) return;
@@ -151,147 +160,99 @@ public class Robot {
 			currentLocation=PointManager.getPoint(currentLocation.gridX+1, currentLocation.gridY);
 			break;
 		}
+		delay(delay);
 	}
 	
-	public void jumpToPoint(int x, int y){
-		try {
-			Thread.sleep(Config.robotWaitingTime);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+	public void jumpToPoint(int x, int y, boolean delay){
+		currentLocation = PointManager.getPoint(x,y);
+		delay(delay);
+	}
+	
+	public void delay(boolean delay){
+		if (delay) {
+			try {
+				Thread.sleep(Config.robotWaitingTime);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
-		currentLocation = PointManager.getPoint(x,y); 
 	}
-	
-	public void turnLeft(){
+	public void turnLeft(boolean delay){
 		direction.rotate(Direction.LEFT);
+		updateRobotLoc();
+		delay(delay);
 	}
 	
-	public void turnRight(){
+	public void turnRight(boolean delay){
 		direction.rotate(Direction.RIGHT);
+		updateRobotLoc();
+		delay(delay);
 	}
 	
-	public void turnBack(){
+	public void turnBack(boolean delay){
 		direction.rotate(Direction.BACK);
+		updateRobotLoc();
+		delay(delay);
 	}
 	
-	public void turnNorth(){
+	public void turnNorth(boolean delay){
 		switch (direction.getDirection()){
 		case Direction.UP:
 			break;
 		case Direction.DOWN:
-			try {
-				Thread.sleep(Config.robotWaitingTime);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			this.turnBack();
+			this.turnBack(delay);
 			break;
 		case Direction.LEFT:
-			this.turnRight();
-			try {
-				Thread.sleep(Config.robotWaitingTime);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+			this.turnRight(delay);
 			break;
 		case Direction.RIGHT:
-			try {
-				Thread.sleep(Config.robotWaitingTime);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			this.turnLeft();
+			this.turnLeft(delay);
 			break;
 		}
 	}
 	
-	public void turnSouth(){
+	public void turnSouth(boolean delay){
 		switch (direction.getDirection()){
 		case Direction.UP:
-			try {
-				Thread.sleep(Config.robotWaitingTime);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			this.turnBack();
+			this.turnBack(delay);
 			break;
 		case Direction.DOWN:
 			break;
 		case Direction.LEFT:
-			try {
-				Thread.sleep(Config.robotWaitingTime);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			this.turnLeft();
+			this.turnLeft(delay);
 			break;
 		case Direction.RIGHT:
-			try {
-				Thread.sleep(Config.robotWaitingTime);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			this.turnRight();
+			this.turnRight(delay);
 			break;
 		}
 	}
 	
-	public void turnWest(){
+	public void turnWest(boolean delay){
 		switch (direction.getDirection()){
 		case Direction.UP:
-			try {
-				Thread.sleep(Config.robotWaitingTime);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			this.turnLeft();
+			this.turnLeft(delay);
 			break;
 		case Direction.DOWN:
-			try {
-				Thread.sleep(Config.robotWaitingTime);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			this.turnRight();
+			this.turnRight(delay);
 			break;
 		case Direction.LEFT:
 			break;
 		case Direction.RIGHT:
-			try {
-				Thread.sleep(Config.robotWaitingTime);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			this.turnBack();
+			this.turnBack(delay);
 			break;
 		}
 	}
 	
-	public void turnEast(){
+	public void turnEast(boolean delay){
 		switch (direction.getDirection()){
 		case Direction.UP:
-			try {
-				Thread.sleep(Config.robotWaitingTime);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			this.turnRight();
+			this.turnRight(delay);
 			break;
 		case Direction.DOWN:
-			try {
-				Thread.sleep(Config.robotWaitingTime);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			this.turnLeft();
+			this.turnLeft(delay);
 			break;
 		case Direction.LEFT:
-			try {
-				Thread.sleep(Config.robotWaitingTime);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			this.turnBack();
+			this.turnBack(delay);
 			break;
 		case Direction.RIGHT:
 			break;

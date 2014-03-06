@@ -63,19 +63,22 @@ public class PathCalculator {
 			Point v ;
 			determinedPointSet[u.gridX][u.gridY] = true;
 			for (int i = 0; i < 4; i++) {
-				v=u.getNeighbors(i);
-				if (v!=null) {
-					//System.out.println("distance["+u.gridX+"]["+u.gridY+"]+u.gridDistanceTo("+v.gridX+" "+v.gridY+")"+distance[u.gridX][u.gridY]);
-					if (distance[v.gridX][v.gridY] > (distance[u.gridX][u.gridY]+u.gridDistanceTo(v))){
-						if (map[v.gridX-1][v.gridY-1]==ArenaMap.EMP && 
-							map[v.gridX-2][v.gridY-1]==ArenaMap.EMP &&
-							map[v.gridX-1][v.gridY-2]==ArenaMap.EMP &&
-							map[v.gridX-2][v.gridY-2]==ArenaMap.EMP){
-						queue.remove(v);
-						distance[v.gridX][v.gridY] = distance[u.gridX][u.gridY]+u.gridDistanceTo(v);
-						predecessors[v.gridX][v.gridY] = u;
-						queue.add(v);
+				v = u.getNeighbors(i);
+				if (v != null) {
+					// System.out.println("distance["+u.gridX+"]["+u.gridY+"]+u.gridDistanceTo("+v.gridX+" "+v.gridY+")"+distance[u.gridX][u.gridY]);
+					if (distance[v.gridX][v.gridY] > (distance[u.gridX][u.gridY] + u.gridDistanceTo(v))) {
+						if (map[v.gridX - 1][v.gridY - 1] == ArenaMap.EMP
+								&& map[v.gridX - 2][v.gridY - 1] == ArenaMap.EMP
+								&& map[v.gridX - 1][v.gridY - 2] == ArenaMap.EMP
+								&& map[v.gridX - 2][v.gridY - 2] == ArenaMap.EMP) {
+							queue.remove(v);
+							distance[v.gridX][v.gridY] = distance[u.gridX][u.gridY]
+									+ u.gridDistanceTo(v);
+							predecessors[v.gridX][v.gridY] = u;
+							queue.add(v);
 						}
+					} else if (distance[v.gridX][v.gridY] == (distance[u.gridX][u.gridY] + u.gridDistanceTo(v))){
+						
 					}
 				}
 			}

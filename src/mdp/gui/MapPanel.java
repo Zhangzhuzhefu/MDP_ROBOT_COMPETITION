@@ -139,7 +139,7 @@ public class MapPanel extends JPanel {
 					int secondpointx = map[0].length-path.get(k + 1).gridY+1;
 					int secondpointy = path.get(k + 1).gridX-1;
 
-					ga.setPaint(Color.red);
+					ga.setPaint(new Color(139,131,134));
 					ga.setStroke(new BasicStroke(5));
 					ga.drawLine((int) ((firstpointy + 1) * GRID_SIZE),
 							(int) ((firstpointx + 1) * GRID_SIZE),

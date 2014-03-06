@@ -9,7 +9,9 @@ public class Explorer {
 	public static final String FLOODFILL = "FloodFill";
 	public static final String ASTAR = "AStar";
 	public static final int North = 1, South = 3, East = 0, West = 2;
-
+	long timeStart;
+	long timeEnd;
+	
 	Point destination = ArenaMap.END_POINT;
 	Point start = ArenaMap.START_POINT;
 
@@ -26,6 +28,9 @@ public class Explorer {
 		pathEstimate = new Stack<Point>();
 		// initialize visited map array
 
+		timeStart = System.currentTimeMillis();
+		timeEnd = timeStart + (Config.EXP_TIMER_MIN * 60 + Config.EXP_TIMER_SEC) * 1000; 
+		
 		for (int i = 0; i <= 17; i++) {
 			for (int j = 0; j <= 22; j++) {
 				visited[i][j] = false;
@@ -74,8 +79,9 @@ public class Explorer {
 					visited[i][j] = false;
 
 			Point here = start;
-			// while (!here.sameGridPoint(destination)) {
-			while (robot.getMapKnowledgeBase().enoughExploration()) {
+			
+			while (robot.getMapKnowledgeBase().enoughExploration() 
+					&& System.currentTimeMillis() < timeEnd) {
 				System.out.println("explore: random path here at ("
 						+ here.gridX + "," + here.gridY + ")");
 				robot.getSensors().perceptEnvironment();
@@ -94,21 +100,21 @@ public class Explorer {
 									.getMapKnowledgeBase().getArrayMap())) {
 								switch (i) {
 								case 0:
-									robot.turnWest();
+									robot.turnWest(true);
 									break;
 								case 1:
-									robot.turnEast();
+									robot.turnEast(true);
 									break;
 								case 2:
-									robot.turnSouth();
+									robot.turnSouth(true);
 									break;
 								case 3:
-									robot.turnNorth();
+									robot.turnNorth(true);
 									break;
 								}
-								robot.updateLocation(robot.getCurrentLocation());
-								robot.moveForwardByOneStep();
-								robot.updateLocation(robot.getCurrentLocation());
+								robot.updateRobotLoc();
+								robot.moveForwardByOneStep(true);
+								robot.updateRobotLoc();
 								floodFillPath.push(here);
 								floodFillPath.push(hereNext);
 								Simulator.simulatorMapPanel
@@ -134,8 +140,20 @@ public class Explorer {
 					} else {
 						here = floodFillPath.pop();
 						Simulator.simulatorMapPanel.updatePath(floodFillPath);
-						robot.jumpToPoint(here.gridX, here.gridY);
-						robot.updateLocation(robot.getCurrentLocation());
+						int xDiff, yDiff;
+						xDiff = here.gridX - robot.getCurrentLocation().gridX;
+						yDiff = here.gridY - robot.getCurrentLocation().gridY;
+						if (xDiff>0) {
+							robot.turnEast(true);
+						} else if (xDiff<0) {
+							robot.turnWest(true);
+						} else if (yDiff>0) {
+							robot.turnNorth(true);
+						} else if (yDiff<0) {
+							robot.turnSouth(true);
+						}
+						robot.jumpToPoint(here.gridX, here.gridY, true);
+						robot.updateRobotLoc();
 					}
 				}
 

@@ -35,7 +35,7 @@ public class Utils {
 					// map[i+2][j+2] = tempchar - '0';
 				}
 
-			System.out.println("Print environment:");
+			System.out.println("Ultils: Print environment:");
 			for (int j = ArenaMap.MAXM-1; j >= 0; j--) {
 				for (int i = 0; i < ArenaMap.MAXN; i++) {
 					System.out.print(map[i][j]);
@@ -53,9 +53,13 @@ public class Utils {
 	
 	
 	public static void printVirtualMap(int [][] map) {
+		System.out.println("Ultils: Print virtualMap:");
 		for (int j = map[0].length - 1; j >= 0; j--) {
 			for (int i = 0; i < map.length; i++) {
-				System.out.print(map[i][j]);
+				if (map[i][j]>1000)
+					System.out.print("\t*");
+				else
+					System.out.print("\t"+map[i][j]);
 			}
 			System.out.println();
 		}

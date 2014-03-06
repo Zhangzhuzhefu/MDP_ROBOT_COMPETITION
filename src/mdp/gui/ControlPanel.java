@@ -55,7 +55,7 @@ public class ControlPanel extends Panel{
 		lbPanel1.setFont(new Font("Chalkduster", Font.PLAIN, 12));
 		lbPanel1.setHorizontalAlignment(SwingConstants.CENTER);
 		
-		jbRandomPath = new JButton("Random Path");
+		jbRandomPath = new JButton("FloodFill Path");
 		jbRandomPath.setFont(new Font("Chalkduster", Font.PLAIN, 12));
 		jbRandomPath.addActionListener(new ActionListener() {
 			@Override
@@ -102,7 +102,7 @@ public class ControlPanel extends Panel{
 			}
 		});
 		
-		jbExpolore = new JButton("Explore");
+		jbExpolore = new JButton("Spy Satellite");
 		jbExpolore.setFont(new Font("Chalkduster", Font.PLAIN, 12));
 		jbExpolore.addActionListener(new ActionListener() {
 			@Override
@@ -137,7 +137,7 @@ public class ControlPanel extends Panel{
 		lbPanel3.setFont(new Font("Chalkduster", Font.PLAIN, 12));
 		lbPanel3.setHorizontalAlignment(SwingConstants.CENTER);
 		
-		mapSwitch = new JToggleButton("Map Display");
+		mapSwitch = new JToggleButton("God's Eyes");
 		mapSwitch.setFont(new Font("Chalkduster", Font.PLAIN, 12));
 		mapSwitch.setOpaque(false);
 		mapSwitch.addItemListener(new ItemListener() {
@@ -145,13 +145,13 @@ public class ControlPanel extends Panel{
 			public void itemStateChanged(ItemEvent e) {
 				if(e.getStateChange() == ItemEvent.SELECTED)
 		        {
-					mapSwitch.setText("Arena Map");
+					mapSwitch.setText("God's Eyes");
 					Simulator.simulatorMapPanel.updateMap(
 							ArenaMap.actualMap);
 		        }
 		        else
 		        {
-		        	mapSwitch.setText("Robot Map");
+		        	mapSwitch.setText("Robot's Eyes");
 		        	Simulator.simulatorMapPanel.updateMap(
 		        			Simulator.robot.getMapKnowledgeBase().getArrayMap());
 		        } 
