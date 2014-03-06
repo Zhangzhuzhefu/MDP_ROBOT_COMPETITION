@@ -1,5 +1,6 @@
 package mdp.simulation;
 
+import mdp.Utils;
 import mdp.algo.ArenaMap;
 import mdp.algo.Explorer;
 import mdp.algo.Robot;
@@ -60,7 +61,7 @@ public class Simulator {
 	public static void explore_AStar(){
 		//TODO
 		simulatorMapPanel.updateRobot(ArenaMap.START_POINT,robot.getDirection());
-		robot.explore(Explorer.ASTAR);
+		//robot.explore(Explorer.ASTAR);
 		//robot.getSensors().setEnvironment(robot.getMapKnowledgeBase().getArrayMap());
 		//robot.updatePerceptronToKnowledgebase();
 		//simulatorMapPanel.updateMap(robot.getMapKnowledgeBase().getArrayMap());

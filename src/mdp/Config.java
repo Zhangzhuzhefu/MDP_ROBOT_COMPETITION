@@ -7,7 +7,8 @@ public class Config {
 	public static String background = "black_dark.jpg";
 	public static String robotFileName = "Wall.E.png";
 	public static boolean trackingOn = false;
-	public static boolean debugOn = true;
+	public static boolean printBitMapStreamOn = true;
+	public static boolean debugOn = false;
 	public static boolean Simulator = true;
 	
 	//environment variables

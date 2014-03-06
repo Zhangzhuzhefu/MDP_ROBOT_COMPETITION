@@ -15,6 +15,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 import mdp.Config;
+import mdp.Utils;
 import mdp.algo.ArenaMap;
 import mdp.algo.Direction;
 import mdp.algo.Point;
@@ -85,7 +86,6 @@ public class MapPanel extends JPanel {
 				System.out.print("map.length: " + map.length + "    ");
 				System.out.println("map.width: " + map[0].length);
 			}
-			System.out.println("Painting moving...");
 			//Utils.printVirtualMap(map);
 
 			// ConvertMap mapimage = new ConvertMap(map);
@@ -129,6 +129,8 @@ public class MapPanel extends JPanel {
 				}
 				if (Config.trackingOn) System.out.println();
 			}
+			
+			if (Config.printBitMapStreamOn) Utils.printExplorationBitMap(map);
 		}
 
 		if (this.path != null) {

@@ -82,7 +82,7 @@ public class Explorer {
 			
 			while (robot.getMapKnowledgeBase().enoughExploration() 
 					&& System.currentTimeMillis() < timeEnd) {
-				System.out.println("explore: random path here at ("
+				if (Config.trackingOn) System.out.println("explore: random path here at ("
 						+ here.gridX + "," + here.gridY + ")");
 				robot.getSensors().perceptEnvironment();
 				Simulator.simulatorMapPanel.updateMap(robot
@@ -91,7 +91,7 @@ public class Explorer {
 				visited[here.gridX][here.gridY] = true;
 				int next = -1;
 				for (int i = 0; i < 4; i++) {
-					System.out.println("i: " + i + " next: " + next);
+					if (Config.trackingOn) System.out.println("i: " + i + " next: " + next);
 					if (here.getNeighbors(i) != null) {
 						if (!visited[here.getNeighbors(i).gridX][here
 								.getNeighbors(i).gridY]) {

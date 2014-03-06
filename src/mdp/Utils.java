@@ -35,13 +35,6 @@ public class Utils {
 					// map[i+2][j+2] = tempchar - '0';
 				}
 
-			System.out.println("Ultils: Print environment:");
-			for (int j = ArenaMap.MAXM-1; j >= 0; j--) {
-				for (int i = 0; i < ArenaMap.MAXN; i++) {
-					System.out.print(map[i][j]);
-				}
-				System.out.println();
-			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -53,13 +46,43 @@ public class Utils {
 	
 	
 	public static void printVirtualMap(int [][] map) {
-		System.out.println("Ultils: Print virtualMap:");
+		for (int j = map[0].length - 1; j >= 0; j--) {
+			for (int i = 0; i < map.length; i++) {
+					System.out.print(map[i][j]);
+			}
+			System.out.println();
+		}
+	}
+	
+	public static void printDistanceMap(int [][] map) {
+		System.out.println("Ultils: Print DistanceMap:");
 		for (int j = map[0].length - 1; j >= 0; j--) {
 			for (int i = 0; i < map.length; i++) {
 				if (map[i][j]>1000)
 					System.out.print("\t*");
 				else
 					System.out.print("\t"+map[i][j]);
+			}
+			System.out.println();
+		}
+	}
+	
+	public static void printExplorationBitMap(int [][] map) {
+		System.out.println("Ultils: print exploration bit stream:");
+		System.out.println("11");
+		for (int j = map[0].length - 2; j >= 1; j--) {
+			for (int i = 1; i < map.length-1; i++) {
+				System.out.print(map[i][j]==2?0:1);
+			}
+			System.out.println();
+		}
+		System.out.println("11");
+		
+		System.out.println("Ultils: print empty/obstacle bit stream:");
+		for (int j = map[0].length - 2; j >= 1; j--) {
+			for (int i = 1; i < map.length-1; i++) {
+				if (map[i][j]!=2)
+					System.out.print(map[i][j]==0?0:1);
 			}
 			System.out.println();
 		}
