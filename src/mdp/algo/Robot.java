@@ -4,8 +4,8 @@ import java.util.Stack;
 
 import mdp.Config;
 import mdp.competition.Communicator;
-import mdp.simulation.SimPerceptron;
 import mdp.simulation.SimCommunicator;
+import mdp.simulation.SimPerceptron;
 import mdp.simulation.Simulator;
 
 
@@ -82,21 +82,21 @@ public class Robot {
 				System.out.println("Exploring Floodfill");
 			route = explorer.exploreFloodFill(this);
 			if (route!=null) {
-				if (Config.debugOn)
-					System.out.println("Explore Done");
-				isExploring = false;
 				return route;
-			} else return null;
+			} else {
+				System.out.println("Floodfill null route");
+				return null;
+			}
 		case Explorer.ASTAR: 
 			if (Config.debugOn)
 				System.out.println("Robot: Exploring A*");
-			route = (Stack<Point>) explorer.exploreAStar(this);
+			route = explorer.exploreAStar(this);
 			if (route!=null) {
-				if (Config.debugOn)
-					System.out.println("Explore Done");
-				isExploring = false;
 				return route;
-			} else return null;
+			} else {
+				System.out.println("Astar null route");
+				return null;
+			}
 		}
 		return null;
 

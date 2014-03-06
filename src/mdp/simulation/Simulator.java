@@ -56,9 +56,6 @@ public class Simulator {
 		//TODO
 		simulatorMapPanel.updateRobot(ArenaMap.START_POINT,robot.getDirection());
 		robot.explore(Explorer.FLOODFILL);
-		robot.getSensors().setEnvironment(robot.getMapKnowledgeBase().getArrayMap());
-		robot.updatePerceptronToKnowledgebase();
-		simulatorMapPanel.updateMap(robot.getMapKnowledgeBase().getArrayMap());
 	}
 	public static void explore_AStar(){
 		//TODO
