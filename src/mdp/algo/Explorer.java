@@ -1,5 +1,6 @@
 package mdp.algo;
 
+import java.io.IOException;
 import java.util.Stack;
 
 import mdp.Config;
@@ -99,10 +100,37 @@ public class Explorer {
 							if (hereNext.robotMovable(robot
 									.getMapKnowledgeBase().getArrayMap())) {
 								switch (i) {
-								case 0: robot.turnWest(true); break;
-								case 1: robot.turnEast(true); break;
-								case 2: robot.turnSouth(true); break;
-								case 3: robot.turnNorth(true); break;
+								case 0:
+                                    try{
+                                        robot.turnWest(true);
+                                    } catch (IOException e){
+
+                                    }
+
+									break;
+								case 1:
+                                    try{
+									robot.turnEast(true);}
+                                    catch (IOException e){
+
+                                    }
+									break;
+								case 2:
+                                    try{
+                                        robot.turnSouth(true);
+                                    }catch (IOException e){
+
+                                    }
+
+									break;
+								case 3:
+                                    try {
+                                        robot.turnNorth(true);
+                                    } catch(IOException e){
+
+                                    }
+
+									break;
 								}
 								robot.updateRobotLoc();
 								robot.moveForwardByOneStep(true);
@@ -135,13 +163,29 @@ public class Explorer {
 						xDiff = here.gridX - robot.getCurrentLocation().gridX;
 						yDiff = here.gridY - robot.getCurrentLocation().gridY;
 						if (xDiff>0) {
-							robot.turnEast(true);
+                            try{
+                                robot.turnEast(true);}
+                            catch (IOException e){
+
+                            }
 						} else if (xDiff<0) {
-							robot.turnWest(true);
+                            try{
+                                robot.turnWest(true);
+                            } catch (IOException e){
+
+                            }
 						} else if (yDiff>0) {
-							robot.turnNorth(true);
+                            try {
+                                robot.turnNorth(true);
+                            } catch(IOException e){
+
+                            }
 						} else if (yDiff<0) {
-							robot.turnSouth(true);
+                            try{
+                                robot.turnSouth(true);
+                            }catch (IOException e){
+
+                            }
 						}
 						robot.jumpToPoint(here.gridX, here.gridY, true);
 						robot.updateRobotLoc();

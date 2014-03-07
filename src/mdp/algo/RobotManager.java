@@ -2,11 +2,13 @@ package mdp.algo;
 
 import mdp.Config;
 
+import java.io.IOException;
+
 
 public class RobotManager{
 	Robot robot;
 	RobotRunner robotRunner;
-	public RobotManager() {
+	public RobotManager() throws IOException{
 		this.robot = new Robot();
 	}
 	
@@ -26,7 +28,12 @@ public class RobotManager{
 			robot.startMoving();
 			System.out.println("RobotManager: Robot started!");
 			while (robot.isMoving) {
-				robot.move();
+                try {
+                    robot.move();
+                } catch (IOException e){
+
+                }
+
 				try {
 					Thread.sleep(Config.robotWaitingTime);
 				} catch (InterruptedException e) {

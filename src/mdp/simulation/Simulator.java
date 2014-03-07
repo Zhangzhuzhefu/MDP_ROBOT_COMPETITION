@@ -7,16 +7,18 @@ import mdp.algo.RobotManager;
 import mdp.gui.MainFrame;
 import mdp.gui.MapPanel;
 
+import java.io.IOException;
+
 public class Simulator {
 
 	public static MapPanel simulatorMapPanel;
 	public static RobotManager robotManager;
 	public static Robot robot;
-	public static SimCommunicator simCommunicator; 
+	public static SimCommunicator simCommunicator;
 	
 	
 	
-	public Simulator(MainFrame mainFrame) {
+	public Simulator(MainFrame mainFrame) throws IOException{
 		//GUI
 		simulatorMapPanel = mainFrame.getMap();
 		

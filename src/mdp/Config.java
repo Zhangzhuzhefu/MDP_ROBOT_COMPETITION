@@ -34,5 +34,8 @@ public class Config {
 	public static final double endPointY = 210.0;
 	public static final int FrontSensorDetectDist = 3;
 	public static final int SideSensorDetectDist = 3;
-	
+
+    //Rapsberry Pi
+    public static final String host = "192.168.4.4";
+    public static final int port = 4014;
 }
