@@ -52,9 +52,13 @@ public class ArenaMap {
 		for (int[] rows : map)
 			Arrays.fill(rows, UNKNOWN);
 		// set robot area empty
-		int range = Config.TARGET_GRID_SIZE/ArenaMap.GRID_LEN;
+		int range = Config.START_GRID_SIZE/ArenaMap.GRID_LEN;
 		for (int i=1; i<=range; i++)
 			for (int j=1; j<=range; j++)
+				map[i][j] = EMP;
+		range = Config.END_GRID_SIZE/ArenaMap.GRID_LEN;
+		for (int i=MAXN-1; i>=MAXN-range-1; i--)
+			for (int j=MAXM-1; j>=MAXM-range-1; j--)
 				map[i][j] = EMP;
 		
 		/*//necessary? 

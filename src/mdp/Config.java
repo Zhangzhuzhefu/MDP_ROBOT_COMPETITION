@@ -13,7 +13,8 @@ public class Config {
 	
 	//environment variables
 	public static final int MAZE_LENGTH = 200, MAZE_WIDTH = 150, GRID_LEN = 10;
-	public static final int TARGET_GRID_SIZE = 20;
+	public static final int START_GRID_SIZE = 30;
+	public static final int END_GRID_SIZE = 30;
 	public static final int EPS = 2;//cm
 	
 	//simulation variables
