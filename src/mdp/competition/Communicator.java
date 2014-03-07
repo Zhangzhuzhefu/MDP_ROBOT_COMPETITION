@@ -1,11 +1,15 @@
 package mdp.competition;
 
 import java.io.*;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.Iterator;
 
+
+import mdp.Config;
+import mdp.algo.Robot;
+import mdp.simulation.Simulator;
 import org.json.simple.*;
 
 
@@ -16,9 +20,10 @@ import org.json.simple.parser.ParseException;
 
 public class Communicator extends VirtualCommunicator {
 
-    String host = "192.168.4.4";
-    int BUFFER_SIZE = 1024;
-    int port = 4014;
+    private Robot robot;
+
+    String host = Config.host;
+    int port = Config.port;
     String testmessage = "wifi handshake";
 
     boolean termination = false;
@@ -34,14 +39,16 @@ public class Communicator extends VirtualCommunicator {
         try{
             //System.out.println("handshaking...");
             Socket socket = new Socket(host,port);
-
             DataOutputStream outp = new DataOutputStream(socket.getOutputStream());
 
             outp.writeBytes(testmessage);
-
             outp.flush();
             socket.close();
-            //System.out.println("handshaked");
+
+            if (Config.debugOn){
+                System.out.println("handshaked");
+            }
+
 
         } catch (UnknownHostException e){
             System.err.println(e);
@@ -68,31 +75,76 @@ public class Communicator extends VirtualCommunicator {
                         try{
                             Socket clientSocket = serverSocket.accept();
                             long startTime = System.currentTimeMillis();
-                            byte[] buffer = new byte[BUFFER_SIZE];
-                            int read;
-                            int totalRead = 0;
+
+
+
                             InputStream clientInputStream = clientSocket.getInputStream();
                             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(clientInputStream));
                             message = bufferedReader.readLine();
-                            System.out.println("Message Received: "+message);
-                            sendMessage("I received your message: "+ message);
-                            parser(message);
+                            //System.out.println("Message Received: "+message);
+                            //sendMessage("I received your message: "+ message);
+                            sendMessage("f"); // test for checklist
+                            sendMessage("f"); // test for checklist
+
+                            //String cmd = parser(message);
+
+                            switch (message){
+                                case "f":    // choose floodfill algorithm
+
+                                    Simulator.updateRandomPath();
+                                    Simulator.secondRun();
+                                    break;
+
+                                case "s":    // choose shortestpath algorithm
+                                    Simulator.updateShortestPath();
+                                    Simulator.secondRun();
+                                    break;
+
+                                case "a":   // move forward by one step
+                                    Simulator.robot.moveForwardByOneStep(false);
+                                    break;
+
+                                case "b":   // turn left
+                                    Simulator.robot.turnLeft(false);
+                                    break;
+
+                                case "c":   // turn right
+                                    Simulator.robot.turnRight(false);
+                                    break;
+
+                                case "d":   // turn back
+                                    Simulator.robot.turnBack(false);
+                                    break;
+
+                                case "e":   // explore
+                                    Simulator.explore_floodFill();
+                                    break;
+
+                                case "t":   // auto run
+
+                                    break;
+
+                                default:
+                                    break;
+                            }
+                            Simulator.robot.updateRobotLoc();
 
 
                             long endTime = System.currentTimeMillis();
-                            System.out.println(totalRead + " bytes read in " + (endTime - startTime) + " ms.");
+                            System.out.println("Message read in " + (endTime - startTime) + " ms.");
 
                         } catch (IOException e){
                             System.err.println(e.toString());
                         }
-                    }
+
+                    } // end while loop
 
                 } catch (IOException e){
                       System.err.println(e.toString());
                 }
             }
         }).start();
-
+        // end thread
 
 
 
@@ -108,14 +160,18 @@ public class Communicator extends VirtualCommunicator {
 
 
     // Send Message to Raspberry Pi
-    public void sendMessage(String message) throws IOException{
+    public static void sendMessage(String message) throws IOException{
+
         final String sentMessage;
         sentMessage = message;
+        final String host = Config.host;
+        final int port = Config.port;
+
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-
+                    // create socket
                     Socket socket = new Socket(host, port);
                     System.out.println("Connected to "+host);
 
@@ -140,6 +196,9 @@ public class Communicator extends VirtualCommunicator {
 
     }
 
+
+    // compile message into json
+    @SuppressWarnings("unchecked")
     public String writeJson(String cmd,String map, String p1,String p2,String m,String r,String d,String x){
         JSONObject obj = new JSONObject();
         JSONObject obj1 = new JSONObject();
@@ -160,75 +219,96 @@ public class Communicator extends VirtualCommunicator {
     }
 
 
+    // compile message with int cmd
+    @SuppressWarnings("unchecked")
+    public String writeJson(int cmd,String map, String p1,String p2,String m,String r,String d,String x){
+        JSONObject obj = new JSONObject();
+        JSONObject obj1 = new JSONObject();
+        JSONArray list = new JSONArray();
+        list.add(p1);
+        list.add(p2);
+        obj.put("cmd",cmd);
+        obj1.put("p",list);
+        obj1.put("m",m);
+        obj1.put("x",x);
+        obj1.put("r",r);
+        obj1.put("d",d);
+        obj.put("status",obj1);
+        obj.put("map",map);
 
-    public void parser(String message){
+        return obj.toString();
+
+    }
+
+
+    // parse JSON
+    //@SuppressWarnings("unchecked")
+    public String parser(String message){
         //JSON Parser
         JSONParser jp = new JSONParser();
         try {
             Object obj = jp.parse(message);
             JSONObject jsonObject = (JSONObject) obj;
 
+            // from Android
             String cmd = jsonObject.get("cmd").toString();
-            System.out.println("cmd: "+cmd);
-            String map = jsonObject.get("map").toString();
-            System.out.println("map: "+map);
 
-            Object status = jsonObject.get("status");
+            // from Arduino
+            String usl = jsonObject.get("usl").toString();
+            String usr = jsonObject.get("usr").toString();
+            String usc = jsonObject.get("usc").toString();
+            String irl = jsonObject.get("irl").toString();
+            String irr = jsonObject.get("irr").toString();
 
-            JSONObject stati = (JSONObject) status;
+            // pass values
+            uS[0] = Integer.getInteger(usl);
+            uS[1] = Integer.getInteger(usc);
+            uS[2] = Integer.getInteger(usr);
+            lS = Integer.getInteger(irl);
+            rS = Integer.getInteger(irr);
 
-            JSONArray p = (JSONArray) stati.get("p");
-            Iterator<String> pIT = p.iterator();
-            System.out.print("p: ");
-            while (pIT.hasNext()){
-                System.out.print(pIT.next()+",");
+            if (Config.debugOn){
+                System.out.println("usl: "+usl);
+                System.out.println("usc: "+usc);
+                System.out.println("usr: "+usr);
+                System.out.println("irl: "+irl);
+                System.out.println("irr: "+irr);
             }
 
-
-            String d = stati.get("d").toString();
-            System.out.println("\nd: "+d);
-
-            String m = stati.get("m").toString();
-            System.out.println("m: "+m);
-
-
-            String r = stati.get("r").toString();
-            System.out.println("r: "+r);
-
-
-            String x = stati.get("x").toString();
-            System.out.println("x: "+x);
-
+            return cmd;
 
         } catch (ParseException e){
             System.err.println(e);
+            return null;
         }
+
+
 
 
     }
 
     @Override
     public int[] ultraSonic() {
-        int [] detect = new int[3];
-        detect = uS;
+        int [] detectInt;
+        detectInt = uS;
 
-        return detect;
+        return detectInt;
     }
 
     @Override
     public int leftSensor() {
         // TODO Auto-generated method stub
-        int  detect;
-        detect = lS;
-        return detect;
+        int  detectInt;
+        detectInt = lS;
+        return detectInt;
     }
 
     @Override
     public int rightSensor() {
         // TODO Auto-generated method stub
-        int  detect;
-        detect = rS;
-        return detect;
+        int  detectInt;
+        detectInt = rS;
+        return detectInt;
     }
 
 

@@ -1,5 +1,6 @@
 package mdp.algo;
 
+import java.io.IOException;
 import java.util.Stack;
 
 import mdp.Config;
@@ -16,6 +17,7 @@ public class Robot {
 	SimPerceptron sensors;
 	Explorer explorer;
 	PathCalculator pathCalculator;
+    //Communicator communicator; // remove slash when testing with rPi
 	
 	
 	boolean isExploring, isMoving, isOnTheWayReturning; 
@@ -24,7 +26,7 @@ public class Robot {
 	private Stack<Point> route;
 	
 	
-	public Robot() {
+	public Robot() throws IOException{
 		isExploring = true;
 		isMoving = false;
 		isOnTheWayReturning = false;
@@ -35,6 +37,7 @@ public class Robot {
 		route = new Stack<Point>();
 		direction = new Direction(0);
 		sensors = new SimPerceptron(this);
+        //communicator = new Communicator(); // remove when testing with rPi
 	}
 	
 	public void reset(){
@@ -112,7 +115,7 @@ public class Robot {
 
     }
 	
-	public void move(){
+	public void move()throws IOException{
         if (route!=null && !route.empty() ){
             if (Config.debugOn) System.out.println("Robot route exists");
             if (route.peek().sameGridPoint(ArenaMap.END_POINT)){
@@ -152,25 +155,32 @@ public class Robot {
 	}
 
 	public void moveForwardByOneStep(boolean delay){
-		switch (direction.getDirection()){
-		case Direction.DOWN:
-			if (currentLocation.gridY==ArenaMap.START_POINT.gridY) return;
-			currentLocation=PointManager.getPoint(currentLocation.gridX, currentLocation.gridY-1);
-			break;
-		case Direction.UP:
-			if (currentLocation.gridY==ArenaMap.END_POINT.gridY) return;
-			currentLocation=PointManager.getPoint(currentLocation.gridX, currentLocation.gridY+1);
-			break;
-		case Direction.LEFT:
-			if (currentLocation.gridX==ArenaMap.START_POINT.gridX) return;
-			currentLocation=PointManager.getPoint(currentLocation.gridX-1, currentLocation.gridY);
-			break;
-		case Direction.RIGHT:
-			if (currentLocation.gridX==ArenaMap.END_POINT.gridX) return;
-			currentLocation=PointManager.getPoint(currentLocation.gridX+1, currentLocation.gridY);
-			break;
-		}
-		delay(delay);
+        try {
+            Communicator.sendMessage("m");
+            switch (direction.getDirection()){
+                case Direction.DOWN:
+                    if (currentLocation.gridY==ArenaMap.START_POINT.gridY) return;
+                    currentLocation=PointManager.getPoint(currentLocation.gridX, currentLocation.gridY-1);
+                    break;
+                case Direction.UP:
+                    if (currentLocation.gridY==ArenaMap.END_POINT.gridY) return;
+                    currentLocation=PointManager.getPoint(currentLocation.gridX, currentLocation.gridY+1);
+                    break;
+                case Direction.LEFT:
+                    if (currentLocation.gridX==ArenaMap.START_POINT.gridX) return;
+                    currentLocation=PointManager.getPoint(currentLocation.gridX-1, currentLocation.gridY);
+                    break;
+                case Direction.RIGHT:
+                    if (currentLocation.gridX==ArenaMap.END_POINT.gridX) return;
+                    currentLocation=PointManager.getPoint(currentLocation.gridX+1, currentLocation.gridY);
+                    break;
+            }
+            delay(delay);
+
+        }catch (IOException e){
+
+        }
+
 	}
 	
 	public void jumpToPoint(int x, int y, boolean delay){
@@ -187,25 +197,28 @@ public class Robot {
 			}
 		}
 	}
-	public void turnLeft(boolean delay){
+	public void turnLeft(boolean delay)throws IOException{
+        Communicator.sendMessage("l");
 		direction.rotate(Direction.LEFT);
 		updateRobotLoc();
 		delay(delay);
 	}
 	
-	public void turnRight(boolean delay){
+	public void turnRight(boolean delay)throws IOException{
+        Communicator.sendMessage("r");
 		direction.rotate(Direction.RIGHT);
 		updateRobotLoc();
 		delay(delay);
 	}
 	
-	public void turnBack(boolean delay){
+	public void turnBack(boolean delay)throws IOException{
+        Communicator.sendMessage("b");
 		direction.rotate(Direction.BACK);
 		updateRobotLoc();
 		delay(delay);
 	}
 	
-	public void turnNorth(boolean delay){
+	public void turnNorth(boolean delay)throws IOException{
 		switch (direction.getDirection()){
 		case Direction.UP:
 			break;
@@ -221,7 +234,7 @@ public class Robot {
 		}
 	}
 	
-	public void turnSouth(boolean delay){
+	public void turnSouth(boolean delay)throws IOException{
 		switch (direction.getDirection()){
 		case Direction.UP:
 			this.turnBack(delay);
@@ -237,7 +250,7 @@ public class Robot {
 		}
 	}
 	
-	public void turnWest(boolean delay){
+	public void turnWest(boolean delay)throws IOException{
 		switch (direction.getDirection()){
 		case Direction.UP:
 			this.turnLeft(delay);
@@ -253,7 +266,7 @@ public class Robot {
 		}
 	}
 	
-	public void turnEast(boolean delay){
+	public void turnEast(boolean delay)throws IOException{
 		switch (direction.getDirection()){
 		case Direction.UP:
 			this.turnRight(delay);
@@ -310,6 +323,10 @@ public class Robot {
 	public void setDirectionDegree(double d) {
 		this.direction.setDegree(d);
 	}
+
+    public void tellRPI(){
+
+    }
 
 	public void setRoute(Stack<Point> route) {
 		this.route = route;
