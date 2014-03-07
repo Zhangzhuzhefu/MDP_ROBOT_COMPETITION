@@ -215,6 +215,8 @@ public class Explorer {
 			}
 		}
 	}
+	
+	
 
 	/*
 	 * public Stack<Point> exploreFloodFill(Robot robot) { // if(Config.debugOn)
