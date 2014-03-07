@@ -104,12 +104,12 @@ public class ControlPanel extends Panel{
 				Simulator.explore_floodFill();
 			}
 		});
-		algo2 = new JButton("A*");
+		algo2 = new JButton("Flw Wall");
 		algo2.setFont(new Font("Chalkduster", Font.PLAIN, 12));
 		algo2.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Simulator.explore_AStar();
+				Simulator.explore_FollowWall();
 			}
 		});
 		

@@ -1,6 +1,5 @@
 package mdp.algo;
 
-import java.io.IOException;
 import java.util.Stack;
 
 import mdp.Config;
@@ -8,7 +7,7 @@ import mdp.simulation.Simulator;
 
 public class Explorer {
 	public static final String FLOODFILL = "FloodFill";
-	public static final String ASTAR = "AStar";
+	public static final String FLLWALL = "FallowWall";
 	public static final int North = 1, South = 3, East = 0, West = 2;
 	long timeStart;
 	long timeEnd;
@@ -20,11 +19,11 @@ public class Explorer {
 	boolean[][] unsafe = new boolean[18][23];
 
 	private Stack<Point> floodFillPath;
-	private Stack<Point> pathBehind;
+	private Stack<Point> followWallPath;
 	private Stack<Point> pathEstimate;
 
 	public Explorer() {
-		pathBehind = new Stack<Point>();
+		followWallPath = new Stack<Point>();
 		floodFillPath = new Stack<Point>();
 		pathEstimate = new Stack<Point>();
 		// initialize visited map array
@@ -48,7 +47,7 @@ public class Explorer {
 
 	public void reset() {
 		floodFillPath.clear();
-		pathBehind.clear();
+		followWallPath.clear();
 		pathEstimate.clear();
 		if (Config.trackingOn)
 			System.out.println("Explorer reset!");
@@ -101,35 +100,16 @@ public class Explorer {
 									.getMapKnowledgeBase().getArrayMap())) {
 								switch (i) {
 								case 0:
-                                    try{
-                                        robot.turnWest(true);
-                                    } catch (IOException e){
-
-                                    }
-
+									robot.turnWest(true);
 									break;
 								case 1:
-                                    try{
-									robot.turnEast(true);}
-                                    catch (IOException e){
-
-                                    }
+									robot.turnEast(true);
 									break;
 								case 2:
-                                    try{
-                                        robot.turnSouth(true);
-                                    }catch (IOException e){
-
-                                    }
-
+									robot.turnSouth(true);
 									break;
 								case 3:
-                                    try {
-                                        robot.turnNorth(true);
-                                    } catch(IOException e){
-
-                                    }
-
+									robot.turnNorth(true);
 									break;
 								}
 								robot.updateRobotLoc();
@@ -162,30 +142,14 @@ public class Explorer {
 						int xDiff, yDiff;
 						xDiff = here.gridX - robot.getCurrentLocation().gridX;
 						yDiff = here.gridY - robot.getCurrentLocation().gridY;
-						if (xDiff>0) {
-                            try{
-                                robot.turnEast(true);}
-                            catch (IOException e){
-
-                            }
-						} else if (xDiff<0) {
-                            try{
-                                robot.turnWest(true);
-                            } catch (IOException e){
-
-                            }
-						} else if (yDiff>0) {
-                            try {
-                                robot.turnNorth(true);
-                            } catch(IOException e){
-
-                            }
-						} else if (yDiff<0) {
-                            try{
-                                robot.turnSouth(true);
-                            }catch (IOException e){
-
-                            }
+						if (xDiff > 0) {
+							robot.turnEast(true);
+						} else if (xDiff < 0) {
+							robot.turnWest(true);
+						} else if (yDiff > 0) {
+							robot.turnNorth(true);
+						} else if (yDiff < 0) {
+							robot.turnSouth(true);
 						}
 						robot.jumpToPoint(here.gridX, here.gridY, true);
 						robot.updateRobotLoc();
@@ -214,24 +178,24 @@ public class Explorer {
 		return floodFillPath;
 	}
 
-	public Stack<Point> exploreAStar(Robot robot) {
-		AStarExplorer aStarExplorer = new AStarExplorer(robot);
-		aStarExplorer.start();
+	public Stack<Point> exploreFollowWall(Robot robot) {
+		FollowWall followWall = new FollowWall(robot);
+		followWall.start();
 
-		return pathBehind;
+		return followWallPath;
 	}
 
-	public class AStarExplorer extends Thread {
+	public class FollowWall extends Thread {
 		Robot robot;
 
-		public AStarExplorer(Robot r) {
+		public FollowWall(Robot r) {
 			this.robot = r;
 		}
 
 		@Override
 		public void run() {
 			if (Config.debugOn)
-				System.out.println("Explorer: A*");
+				System.out.println("Explorer: Follow Wall");
 			
 			int ArenaMapPointMAXN = ArenaMap.MAXN + 1;
 			int ArenaMapPointMAXM = ArenaMap.MAXM + 1;
@@ -247,15 +211,65 @@ public class Explorer {
 				}
 
 			Point here = start;
+			Point hereNext,hereLeft,hereRight;
+			boolean clockwise;
+			if (robot.getDirection().getDirection()==Direction.UP) 
+				clockwise = true;
+			else clockwise = false;
 			
 			while (robot.getMapKnowledgeBase().lessThanEnoughExploration() 
 					&& System.currentTimeMillis() < timeEnd) {
-				if (Config.trackingOn) System.out.println("explore: A* path here at ("
-						+ here.gridX + "," + here.gridY + ")");
+				//if (Config.trackingOn) 
+					System.out.println("explore: Fll-Wall path here at (" + here.gridX + "," + here.gridY + ")");
+				
+				visited[here.gridX][here.gridY] = true;
 				robot.getSensors().perceptEnvironment();
 				Simulator.simulatorMapPanel.updateMap(robot.getMapKnowledgeBase().getArrayMap());
-				visited[here.gridX][here.gridY] = true;
-				pathBehind.push(here);
+				
+				switch (robot.getDirection().getDirection()) {
+				case Direction.UP:
+					hereNext = PointManager.getPoint(here.gridX, here.gridY+1);
+					hereLeft = PointManager.getPoint(here.gridX-1, here.gridY);
+					hereRight = PointManager.getPoint(here.gridX + 1, here.gridY);
+					if (hereNext.robotMovable(map)) {
+						followWallPath.push(here);
+						followWallPath.push(hereNext);
+						Simulator.simulatorMapPanel.updatePath(followWallPath);
+						here = hereNext;
+						robot.moveForwardByOneStep(true);
+					} else if (hereLeft.robotMovable(map)) {
+						robot.turnLeft(true);
+					} else if (hereRight.robotMovable(map)) {
+						robot.turnRight(true);
+					} else {
+						here = followWallPath.pop();
+						Simulator.simulatorMapPanel.updatePath(followWallPath);
+						int xDiff, yDiff;
+						xDiff = here.gridX - robot.getCurrentLocation().gridX;
+						yDiff = here.gridY - robot.getCurrentLocation().gridY;
+						if (xDiff > 0) {
+							robot.turnEast(true);
+						} else if (xDiff < 0) {
+							robot.turnWest(true);
+						} else if (yDiff > 0) {
+							robot.turnNorth(true);
+						} else if (yDiff < 0) {
+							robot.turnSouth(true);
+						}
+						robot.jumpToPoint(here.gridX, here.gridY, true);
+					}
+					robot.updateRobotLoc();
+					robot.getSensors().perceptEnvironment();
+					Simulator.simulatorMapPanel.updateMap(robot.getMapKnowledgeBase().getArrayMap());
+					break;
+				case Direction.DOWN:
+					break;
+				case Direction.LEFT:
+					break;
+				case Direction.RIGHT:
+					break;
+				}
+				
 			}
 		}
 	}

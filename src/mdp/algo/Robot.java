@@ -35,7 +35,7 @@ public class Robot {
 		explorer = new Explorer();
 		pathCalculator = new PathCalculator();
 		route = new Stack<Point>();
-		direction = new Direction(0);
+		direction = new Direction(Config.RobotStartingDirection);
 		sensors = new SimPerceptron(this);
         //communicator = new Communicator(); // remove when testing with rPi
 	}
@@ -100,14 +100,14 @@ public class Robot {
 				System.out.println("Floodfill null route");
 				return null;
 			}
-		case Explorer.ASTAR: 
+		case Explorer.FLLWALL: 
 			if (Config.debugOn)
-				System.out.println("Robot: Exploring A*");
-			route = explorer.exploreAStar(this);
+				System.out.println("Robot: Exploring Follow Wall");
+			route = explorer.exploreFollowWall(this);
 			if (route!=null) {
 				return route;
 			} else {
-				System.out.println("Astar null route");
+				System.out.println("fallow-wall null route");
 				return null;
 			}
 		}
@@ -197,28 +197,43 @@ public class Robot {
 			}
 		}
 	}
-	public void turnLeft(boolean delay)throws IOException{
-        Communicator.sendMessage("l");
+	public void turnLeft(boolean delay){
+        try {
+			Communicator.sendMessage("l");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		direction.rotate(Direction.LEFT);
 		updateRobotLoc();
 		delay(delay);
 	}
 	
-	public void turnRight(boolean delay)throws IOException{
-        Communicator.sendMessage("r");
+	public void turnRight(boolean delay){
+        try {
+			Communicator.sendMessage("r");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		direction.rotate(Direction.RIGHT);
 		updateRobotLoc();
 		delay(delay);
 	}
 	
-	public void turnBack(boolean delay)throws IOException{
-        Communicator.sendMessage("b");
+	public void turnBack(boolean delay){
+        try {
+			Communicator.sendMessage("b");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		direction.rotate(Direction.BACK);
 		updateRobotLoc();
 		delay(delay);
 	}
 	
-	public void turnNorth(boolean delay)throws IOException{
+	public void turnNorth(boolean delay){
 		switch (direction.getDirection()){
 		case Direction.UP:
 			break;
@@ -234,7 +249,7 @@ public class Robot {
 		}
 	}
 	
-	public void turnSouth(boolean delay)throws IOException{
+	public void turnSouth(boolean delay) {
 		switch (direction.getDirection()){
 		case Direction.UP:
 			this.turnBack(delay);
@@ -250,7 +265,7 @@ public class Robot {
 		}
 	}
 	
-	public void turnWest(boolean delay)throws IOException{
+	public void turnWest(boolean delay) {
 		switch (direction.getDirection()){
 		case Direction.UP:
 			this.turnLeft(delay);
@@ -266,7 +281,7 @@ public class Robot {
 		}
 	}
 	
-	public void turnEast(boolean delay)throws IOException{
+	public void turnEast(boolean delay){
 		switch (direction.getDirection()){
 		case Direction.UP:
 			this.turnRight(delay);

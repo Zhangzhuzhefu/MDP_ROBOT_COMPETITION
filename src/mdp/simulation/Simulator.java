@@ -59,10 +59,10 @@ public class Simulator {
 		simulatorMapPanel.updateRobot(ArenaMap.START_POINT,robot.getDirection());
 		robot.explore(Explorer.FLOODFILL);
 	}
-	public static void explore_AStar(){
+	public static void explore_FollowWall(){
 		//TODO
 		simulatorMapPanel.updateRobot(ArenaMap.START_POINT,robot.getDirection());
-		robot.explore(Explorer.ASTAR);
+		robot.explore(Explorer.FLLWALL);
 		//robot.getSensors().setEnvironment(robot.getMapKnowledgeBase().getArrayMap());
 		//robot.updatePerceptronToKnowledgebase();
 		//simulatorMapPanel.updateMap(robot.getMapKnowledgeBase().getArrayMap());
