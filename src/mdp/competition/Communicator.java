@@ -4,9 +4,14 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Iterator;
+
+import org.json.simple.*;
 
 
 import mdp.algo.VirtualCommunicator;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 
 public class Communicator extends VirtualCommunicator {
@@ -135,10 +140,70 @@ public class Communicator extends VirtualCommunicator {
 
     }
 
+    public String writeJson(String cmd,String map, String p1,String p2,String m,String r,String d,String x){
+        JSONObject obj = new JSONObject();
+        JSONObject obj1 = new JSONObject();
+        JSONArray list = new JSONArray();
+        list.add(p1);
+        list.add(p2);
+        obj.put("cmd",cmd);
+        obj1.put("p",list);
+        obj1.put("m",m);
+        obj1.put("x",x);
+        obj1.put("r",r);
+        obj1.put("d",d);
+        obj.put("status",obj1);
+        obj.put("map",map);
+
+        return obj.toString();
+
+    }
+
 
 
     public void parser(String message){
-    //JSON Parser
+        //JSON Parser
+        JSONParser jp = new JSONParser();
+        try {
+            Object obj = jp.parse(message);
+            JSONObject jsonObject = (JSONObject) obj;
+
+            String cmd = jsonObject.get("cmd").toString();
+            System.out.println("cmd: "+cmd);
+            String map = jsonObject.get("map").toString();
+            System.out.println("map: "+map);
+
+            Object status = jsonObject.get("status");
+
+            JSONObject stati = (JSONObject) status;
+
+            JSONArray p = (JSONArray) stati.get("p");
+            Iterator<String> pIT = p.iterator();
+            System.out.print("p: ");
+            while (pIT.hasNext()){
+                System.out.print(pIT.next()+",");
+            }
+
+
+            String d = stati.get("d").toString();
+            System.out.println("\nd: "+d);
+
+            String m = stati.get("m").toString();
+            System.out.println("m: "+m);
+
+
+            String r = stati.get("r").toString();
+            System.out.println("r: "+r);
+
+
+            String x = stati.get("x").toString();
+            System.out.println("x: "+x);
+
+
+        } catch (ParseException e){
+            System.err.println(e);
+        }
+
 
     }
 
