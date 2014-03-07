@@ -60,7 +60,7 @@ public class Simulator {
 	public static void explore_AStar(){
 		//TODO
 		simulatorMapPanel.updateRobot(ArenaMap.START_POINT,robot.getDirection());
-		//robot.explore(Explorer.ASTAR);
+		robot.explore(Explorer.ASTAR);
 		//robot.getSensors().setEnvironment(robot.getMapKnowledgeBase().getArrayMap());
 		//robot.updatePerceptronToKnowledgebase();
 		//simulatorMapPanel.updateMap(robot.getMapKnowledgeBase().getArrayMap());
@@ -73,6 +73,10 @@ public class Simulator {
 	
 	public static void updateShortestPath(){
 		simulatorMapPanel.updatePath(robot.generateShortestPath());
+	}
+	
+	public static void updateFastestPath(){
+		simulatorMapPanel.updatePath(robot.generateFastestPath());
 	}
 	
 	public static void secondRun(){

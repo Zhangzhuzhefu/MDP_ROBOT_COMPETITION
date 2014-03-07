@@ -16,6 +16,7 @@ public class PathCalculator {
 	int ArenaMapPointMAXM = ArenaMap.MAXM+1;
 	Stack <Point> aRandomPath; //initialised as an empty stack Mark maze[here] as visited;
 	Stack <Point> shortestPath;
+	Stack <Point> fastestPath;
 	// the set of vertices whose shortest paths from the source node have
 	// already been determined
 	boolean[][] determinedPointSet;
@@ -27,12 +28,128 @@ public class PathCalculator {
 	public PathCalculator() {
 		aRandomPath = new Stack<Point>();
 		shortestPath = new Stack<Point>();
+		fastestPath = new Stack<Point>();
 		determinedPointSet = new boolean[ArenaMapPointMAXN][ArenaMapPointMAXM];
 		predecessors = new Point[ArenaMapPointMAXN][ArenaMapPointMAXM];
 		distance = new int[ArenaMapPointMAXN][ArenaMapPointMAXM];
 	}
 	
-	public boolean findShortestPath(){
+	public boolean findFastestPath(){
+		
+		//if (validatePath(shortestPath)) return true;
+		
+		//initialize
+		fastestPath.clear();
+		Comparator<Point> comparator = new PointDistanceComparator();
+		PriorityQueue<Point> queue = new PriorityQueue<Point>(ArenaMapPointMAXM*ArenaMapPointMAXN,comparator);
+		
+		for (int i=0;i<ArenaMapPointMAXN;i++) {
+			for (int j=0;j<ArenaMapPointMAXM;j++) {
+				determinedPointSet[i][j] = false;
+				distance [i][j] = infinity;
+				predecessors[i][j] = null;
+			}
+		}
+		
+		distance[start.gridX][start.gridY] = 0;
+		
+		//add all points into queue
+		for (int i=0;i<ArenaMapPointMAXN;i++) {
+			for (int j=0;j<ArenaMapPointMAXM;j++) {
+				queue.add(PointManager.getPoint(i, j));
+			}
+		}
+		
+		while (!queue.isEmpty()){
+			Point u = queue.remove();
+			Point v ;
+			int preDir = -9;
+			int nextDir = -9;
+			int turningPenalty = 0;
+			determinedPointSet[u.gridX][u.gridY] = true;
+			for (int i = 0; i < 4; i++) {
+				v = u.getNeighbors(i);
+				if (v != null) {
+					int xDiff, yDiff;
+					xDiff = v.gridX - u.gridX;
+					yDiff = v.gridY - u.gridY;
+					if (xDiff>0) {
+						nextDir = Direction.RIGHT;
+					} else if (xDiff<0) {
+						nextDir = Direction.LEFT;
+					} else if (yDiff>0) {
+						nextDir = Direction.UP;
+					} else if (yDiff<0) {
+						nextDir = Direction.DOWN;
+					}
+					Point t = predecessors[u.gridX][u.gridY];
+					if (t != null) {
+						xDiff = u.gridX - t.gridX;
+						yDiff = u.gridY - t.gridY;
+						if (xDiff>0) {
+							preDir = Direction.RIGHT;
+						} else if (xDiff<0) {
+							preDir = Direction.LEFT;
+						} else if (yDiff>0) {
+							preDir = Direction.UP;
+						} else if (yDiff<0) {
+							preDir = Direction.DOWN;
+						} else {
+						}
+						if (nextDir != -9 && preDir != -9) {
+							if (nextDir != preDir) {
+								turningPenalty = 1;
+							} else {
+								turningPenalty = 0;
+							}
+							System.out.println(u.gridX+" "+u.gridY+" "+preDir+" " +nextDir +" "+turningPenalty);
+						}
+					}
+					
+					// System.out.println("distance["+u.gridX+"]["+u.gridY+"]+u.gridDistanceTo("+v.gridX+" "+v.gridY+")"+distance[u.gridX][u.gridY]);
+					if (distance[v.gridX][v.gridY] 
+							> (distance[u.gridX][u.gridY] 
+							+ u.gridDistanceTo(v) 
+							+ turningPenalty)) {
+						if (map[v.gridX - 1][v.gridY - 1] == ArenaMap.EMP
+								&& map[v.gridX - 2][v.gridY - 1] == ArenaMap.EMP
+								&& map[v.gridX - 1][v.gridY - 2] == ArenaMap.EMP
+								&& map[v.gridX - 2][v.gridY - 2] == ArenaMap.EMP) {
+							queue.remove(v);
+							distance[v.gridX][v.gridY] = distance[u.gridX][u.gridY]
+									+ u.gridDistanceTo(v)+turningPenalty;
+							predecessors[v.gridX][v.gridY] = u;
+							queue.add(v);
+						}
+					} else if (distance[v.gridX][v.gridY] == 
+							(distance[u.gridX][u.gridY] + u.gridDistanceTo(v))){
+						
+					}
+				}
+			}
+		}
+		
+		Point a = destination;
+		while (a!=null && a != start) {
+			if (Config.debugOn)
+				System.out.println("predecessors to stack "
+						+ predecessors.length);
+			fastestPath.push(a);
+			a = predecessors[a.gridX][a.gridY];
+		}
+		fastestPath.push(a);
+
+		if (Config.debugOn) 
+			System.out.println("Found shortest path of length: "+fastestPath.size());
+		if (validatePath(fastestPath))
+			return true;
+		else {
+			fastestPath.clear();
+			return false;
+		}
+	}
+	
+public boolean findShortestPath(){
 		
 		//if (validatePath(shortestPath)) return true;
 		
@@ -173,6 +290,7 @@ public class PathCalculator {
 		map = null;
 		aRandomPath.clear();
 		shortestPath.clear();
+		fastestPath.clear();
 	}
 
 	public int[][] getMap() {
@@ -189,6 +307,14 @@ public class PathCalculator {
 
 	public Stack<Point> getShortestPath() {
 		return shortestPath;
+	}
+
+	public Stack<Point> getFastestPath() {
+		return fastestPath;
+	}
+
+	public void setFastestPath(Stack<Point> fastestPath) {
+		this.fastestPath = fastestPath;
 	}
 
 	public class PointDistanceComparator implements Comparator<Point> {

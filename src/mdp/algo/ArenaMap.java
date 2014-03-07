@@ -33,7 +33,7 @@ public class ArenaMap {
 		ArenaMap.actualMap = Utils.loadMazeEnvironment(Config.mapFileName);
 	}
 	
-	public boolean enoughExploration(){
+	public boolean lessThanEnoughExploration(){
 		int count = 0;
 		for (int i=0; i<MAXN; i++){
 			for (int j=0;j<MAXM; j++){

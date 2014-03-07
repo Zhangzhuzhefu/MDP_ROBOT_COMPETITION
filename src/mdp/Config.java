@@ -7,7 +7,7 @@ public class Config {
 	public static String background = "black_dark.jpg";
 	public static String robotFileName = "Wall.E.png";
 	public static boolean trackingOn = false;
-	public static boolean printBitMapStreamOn = true;
+	public static boolean printBitMapStreamOn = false;
 	public static boolean debugOn = false;
 	public static boolean Simulator = true;
 	
@@ -26,7 +26,7 @@ public class Config {
 	public static final long EXP_TIMER_SEC =5;
 
 	//Robot
-	public static final int robotStepsPersecond = 100;
+	public static final int robotStepsPersecond = 50;
 	public static final int robotWaitingTime = 1000/robotStepsPersecond;
 	public static final double startPointX = 30.0;
 	public static final double startPointY = 30.0;

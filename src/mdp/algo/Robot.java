@@ -55,6 +55,16 @@ public class Robot {
 		isOnTheWayReturning = false;
 	}
 	
+	public Stack<Point> generateFastestPath(){
+		pathCalculator.setMap(getMapKnowledgeBase().getArrayMap());
+		if(pathCalculator.findFastestPath()){
+			route = (Stack<Point>) pathCalculator.getFastestPath();
+			return pathCalculator.getFastestPath();
+		}
+		else 
+			return null;
+	}
+	
 	public Stack<Point> generateShortestPath(){
 		pathCalculator.setMap(getMapKnowledgeBase().getArrayMap());
 		if(pathCalculator.findShortestPath()){

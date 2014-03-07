@@ -70,7 +70,7 @@ public class Explorer {
 		@Override
 		public void run() {
 			if (Config.debugOn)
-				System.out.println("Explorer: A*");
+				System.out.println("Explorer: flood fill");
 			int ArenaMapPointMAXN = ArenaMap.MAXN + 1;
 			int ArenaMapPointMAXM = ArenaMap.MAXM + 1;
 			boolean[][] visited = new boolean[ArenaMapPointMAXN][ArenaMapPointMAXM];
@@ -80,9 +80,9 @@ public class Explorer {
 
 			Point here = start;
 			
-			while (robot.getMapKnowledgeBase().enoughExploration() 
+			while (robot.getMapKnowledgeBase().lessThanEnoughExploration() 
 					&& System.currentTimeMillis() < timeEnd) {
-				if (Config.trackingOn) System.out.println("explore: random path here at ("
+				if (Config.trackingOn) System.out.println("explore: fld fll path here at ("
 						+ here.gridX + "," + here.gridY + ")");
 				robot.getSensors().perceptEnvironment();
 				Simulator.simulatorMapPanel.updateMap(robot
@@ -99,26 +99,17 @@ public class Explorer {
 							if (hereNext.robotMovable(robot
 									.getMapKnowledgeBase().getArrayMap())) {
 								switch (i) {
-								case 0:
-									robot.turnWest(true);
-									break;
-								case 1:
-									robot.turnEast(true);
-									break;
-								case 2:
-									robot.turnSouth(true);
-									break;
-								case 3:
-									robot.turnNorth(true);
-									break;
+								case 0: robot.turnWest(true); break;
+								case 1: robot.turnEast(true); break;
+								case 2: robot.turnSouth(true); break;
+								case 3: robot.turnNorth(true); break;
 								}
 								robot.updateRobotLoc();
 								robot.moveForwardByOneStep(true);
 								robot.updateRobotLoc();
 								floodFillPath.push(here);
 								floodFillPath.push(hereNext);
-								Simulator.simulatorMapPanel
-										.updatePath(floodFillPath);
+								Simulator.simulatorMapPanel.updatePath(floodFillPath);
 								next = i;
 								break;
 							}
@@ -195,7 +186,33 @@ public class Explorer {
 
 		@Override
 		public void run() {
+			if (Config.debugOn)
+				System.out.println("Explorer: A*");
+			
+			int ArenaMapPointMAXN = ArenaMap.MAXN + 1;
+			int ArenaMapPointMAXM = ArenaMap.MAXM + 1;
+			int[][] map = robot.getMapKnowledgeBase().getArrayMap();
+			boolean[][] visited = new boolean[ArenaMapPointMAXN][ArenaMapPointMAXM];
+			int[][] costIncc = new int[ArenaMapPointMAXN][ArenaMapPointMAXM];
+			int[][] costEstm = new int[ArenaMapPointMAXN][ArenaMapPointMAXM];
+			for (int i = 0; i < ArenaMapPointMAXN; i++)
+				for (int j = 0; j < ArenaMapPointMAXM; j++){
+					visited[i][j] = false;
+					costIncc[i][j] = Integer.MAX_VALUE;
+					costEstm[i][j] = PointManager.getPoint(i, j).gridDistanceTo(destination);
+				}
 
+			Point here = start;
+			
+			while (robot.getMapKnowledgeBase().lessThanEnoughExploration() 
+					&& System.currentTimeMillis() < timeEnd) {
+				if (Config.trackingOn) System.out.println("explore: A* path here at ("
+						+ here.gridX + "," + here.gridY + ")");
+				robot.getSensors().perceptEnvironment();
+				Simulator.simulatorMapPanel.updateMap(robot.getMapKnowledgeBase().getArrayMap());
+				visited[here.gridX][here.gridY] = true;
+				pathBehind.push(here);
+			}
 		}
 	}
 

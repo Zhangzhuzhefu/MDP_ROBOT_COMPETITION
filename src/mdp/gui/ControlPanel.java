@@ -24,6 +24,7 @@ public class ControlPanel extends Panel{
 	
 	private JButton jbRandomPath;
 	private JButton jbshortestPath;
+	private JButton jbfastestPath;
 	
 	private JButton algo1;
 	private JButton algo2;
@@ -72,10 +73,20 @@ public class ControlPanel extends Panel{
 				Simulator.updateShortestPath();
 			}
 		});
+		
+		jbfastestPath = new JButton("Fastest Path");
+		jbfastestPath.setFont(new Font("Chalkduster", Font.PLAIN, 12));	
+		jbfastestPath.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Simulator.updateFastestPath();
+			}
+		});
 
 		panel1.add(lbPanel1);
 		panel1.add(jbRandomPath);
 		panel1.add(jbshortestPath);
+		panel1.add(jbfastestPath);
 		panel1.setLayout(gridLayout);
 		panel1.setBorder(emptyBorder);
 		panel1.setBackground(new Color(245,255,250));
