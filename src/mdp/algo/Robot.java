@@ -5,6 +5,7 @@ import java.util.Stack;
 
 import mdp.Config;
 import mdp.competition.Communicator;
+import mdp.competition.Competition;
 import mdp.simulation.SimCommunicator;
 import mdp.simulation.SimPerceptron;
 import mdp.simulation.Simulator;
@@ -37,7 +38,6 @@ public class Robot {
 		route = new Stack<Point>();
 		direction = new Direction(Config.RobotStartingDirection);
 		sensors = new SimPerceptron(this);
-        //communicator = new Communicator(); // remove when testing with rPi
 	}
 	
 	public void reset(){
@@ -150,13 +150,18 @@ public class Robot {
 //			s = (SimCommunicator) sensors.communicator;
 			Simulator.simulatorMapPanel.updateRobot(currentLocation,direction);
 		} else if (sensors.getCommunicator() instanceof Communicator){
-			//TODO
+
+
+            Competition.simulatorMapPanel.updateRobot(currentLocation,direction);
 		}
 	}
 
 	public void moveForwardByOneStep(boolean delay){
         try {
-            Communicator.sendMessage("m");
+            Communicator.sendMessage("m");// for checklist
+            if (Config.Competition){
+                Communicator.moveFor();
+            }
             switch (direction.getDirection()){
                 case Direction.DOWN:
                     if (currentLocation.gridY==ArenaMap.START_POINT.gridY) return;
@@ -199,7 +204,10 @@ public class Robot {
 	}
 	public void turnLeft(boolean delay){
         try {
-			Communicator.sendMessage("l");
+			Communicator.sendMessage("l"); // for checklist
+            if (Config.Competition){
+                Communicator.turnLeft();
+            }
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -211,7 +219,11 @@ public class Robot {
 	
 	public void turnRight(boolean delay){
         try {
-			Communicator.sendMessage("r");
+			Communicator.sendMessage("r"); // for checklist
+            if(Config.Competition){
+                Communicator.turnRight();
+            }
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -223,7 +235,10 @@ public class Robot {
 	
 	public void turnBack(boolean delay){
         try {
-			Communicator.sendMessage("b");
+			Communicator.sendMessage("b"); // for checklist
+            if(Config.Competition){
+                Communicator.turnBack();
+            }
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

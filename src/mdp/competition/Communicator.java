@@ -5,6 +5,9 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 
 import mdp.Config;
@@ -28,9 +31,17 @@ public class Communicator extends VirtualCommunicator {
 
     boolean termination = false;
     public static String message;
-    public int[] uS;
+    public String cmd;
+    public int[] uS = new int[3];
     public int lS;
     public int rS;
+
+    public String m;
+    public String r;
+    public String d;
+    public String x;
+    public List<String> pv = new ArrayList<>();
+
 
     public Communicator() throws IOException{
 
@@ -69,65 +80,86 @@ public class Communicator extends VirtualCommunicator {
             @Override
             public void run() {
                 try {
+
                     ServerSocket serverSocket = new ServerSocket(4014);
-                    System.out.println("Server Up!");
+                    System.out.println("Server Up! at "+serverSocket.getInetAddress().getHostName());
                     while (true){
                         try{
+
                             Socket clientSocket = serverSocket.accept();
                             long startTime = System.currentTimeMillis();
-
-
+                            reintialize(); // to prevent command re-read
 
                             InputStream clientInputStream = clientSocket.getInputStream();
                             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(clientInputStream));
                             message = bufferedReader.readLine();
-                            //System.out.println("Message Received: "+message);
-                            //sendMessage("I received your message: "+ message);
-                            sendMessage("f"); // test for checklist
-                            sendMessage("f"); // test for checklist
 
-                            //String cmd = parser(message);
-
-                            switch (message){
-                                case "f":    // choose floodfill algorithm
-
-                                    Simulator.updateRandomPath();
-                                    Simulator.secondRun();
-                                    break;
-
-                                case "s":    // choose shortestpath algorithm
-                                    Simulator.updateShortestPath();
-                                    Simulator.secondRun();
-                                    break;
-
-                                case "a":   // move forward by one step
-                                    Simulator.robot.moveForwardByOneStep(false);
-                                    break;
-
-                                case "b":   // turn left
-                                    Simulator.robot.turnLeft(false);
-                                    break;
-
-                                case "c":   // turn right
-                                    Simulator.robot.turnRight(false);
-                                    break;
-
-                                case "d":   // turn back
-                                    Simulator.robot.turnBack(false);
-                                    break;
-
-                                case "e":   // explore
-                                    Simulator.explore_floodFill();
-                                    break;
-
-                                case "t":   // auto run
-
-                                    break;
-
-                                default:
-                                    break;
+                            if (Config.debugOn){
+                                System.out.println("Message Received: "+message);
                             }
-                            Simulator.robot.updateRobotLoc();
+                            //sendMessage("I received your message: "+ message);
+                            //sendMessage("f"); // test for checklist
+
+                            parser(message); // parse message to pass values
+
+                            if (cmd != null)  {
+
+                                // follow command
+
+                                switch (cmd){
+                                    case "f":    // choose floodfill algorithm
+                                        Competition.updateRandomPath();
+                                        Competition.secondRun();
+                                        break;
+
+                                    case "s":    // choose shortestpath algorithm
+                                        Competition.updateShortestPath();
+                                        Competition.secondRun();
+                                        break;
+
+                                    case "a":   // move forward by one step
+                                        Competition.robot.moveForwardByOneStep(false);
+                                        break;
+
+                                    case "b":   // turn left
+                                        Competition.robot.turnLeft(false);
+                                        break;
+
+                                    case "c":   // turn right
+                                        Competition.robot.turnRight(false);
+                                        break;
+
+                                    case "d":   // turn back
+                                        Competition.robot.turnBack(false);
+                                        break;
+
+                                    case "e":   // explore
+                                        Competition.explore_floodFill();
+                                        break;
+
+                                    case "t":   // auto run
+
+                                        break;
+
+                                    case "u":   // manual request map
+                                        sendMapToAndroid();
+                                        break;
+
+                                    case "y":   // enable auto-update
+                                        setAuto();
+                                        break;
+
+                                    case "n":   // disable auto-update
+                                        setManual();
+                                        break;
+
+
+                                    default:
+                                        break;
+                                }
+                            }// end if (cmd != null)
+
+                            Competition.robot.updateRobotLoc();
 
 
                             long endTime = System.currentTimeMillis();
@@ -140,7 +172,7 @@ public class Communicator extends VirtualCommunicator {
                     } // end while loop
 
                 } catch (IOException e){
-                      System.err.println(e.toString());
+                      System.err.println("no its me "+ e.toString());
                 }
             }
         }).start();
@@ -151,7 +183,17 @@ public class Communicator extends VirtualCommunicator {
     }
 
 
+    public void reintialize(){
 
+        m = null;
+        r = null;
+        d = null;
+        x = null;
+        pv = null;
+
+        cmd = null;
+
+    }
 
 
     public void terminate(){
@@ -180,111 +222,154 @@ public class Communicator extends VirtualCommunicator {
                     long startTime = System.currentTimeMillis();
 
                     socketOutputStream.write(sentMessage.getBytes());
-                    System.out.println(" messaged sent");
-
-
                     socketOutputStream.close();
-
                     socket.close();
                     long endTime = System.currentTimeMillis();
-                    System.out.println(" bytes written in " + (endTime - startTime) + " ms.");
+                    if (Config.debugOn){
+                        System.out.println("bytes written in " + (endTime - startTime) + " ms.");
+                    }
+
                 } catch (Exception e) {
-                    System.err.println(e.toString());
+                    System.err.println("something wrong with me! : "+e.toString());
                 }
             }
         }).start();
 
     }
 
-
-    // compile message into json
-    @SuppressWarnings("unchecked")
-    public String writeJson(String cmd,String map, String p1,String p2,String m,String r,String d,String x){
+    // get and write map to JSON
+    public String writeMap(){
         JSONObject obj = new JSONObject();
-        JSONObject obj1 = new JSONObject();
-        JSONArray list = new JSONArray();
-        list.add(p1);
-        list.add(p2);
-        obj.put("cmd",cmd);
-        obj1.put("p",list);
-        obj1.put("m",m);
-        obj1.put("x",x);
-        obj1.put("r",r);
-        obj1.put("d",d);
-        obj.put("status",obj1);
-        obj.put("map",map);
-
+        obj.put("map",Simulator.robotManager.getRobot().getMapKnowledgeBase().getArrayMap().toString());
         return obj.toString();
+    }
 
+    // send map for android
+    public void sendMapToAndroid(){
+        try {
+            String map = writeMap();
+            sendMessage(map);
+        } catch (IOException e){
+            System.err.print(e);
+        }
     }
 
 
-    // compile message with int cmd
-    @SuppressWarnings("unchecked")
-    public String writeJson(int cmd,String map, String p1,String p2,String m,String r,String d,String x){
-        JSONObject obj = new JSONObject();
-        JSONObject obj1 = new JSONObject();
-        JSONArray list = new JSONArray();
-        list.add(p1);
-        list.add(p2);
-        obj.put("cmd",cmd);
-        obj1.put("p",list);
-        obj1.put("m",m);
-        obj1.put("x",x);
-        obj1.put("r",r);
-        obj1.put("d",d);
-        obj.put("status",obj1);
-        obj.put("map",map);
 
-        return obj.toString();
+    // send command to arduino
+    // command robot:
+    // eg. {“ard”:”a”}
+    // a: move forward by one step
+    // b: turn left
+    // c: turn right
+    // d: turn back
+    // int: move int cm
+    public static void moveFor() {
+        writeCommandToArduino("a");
+    }
+
+    public static void turnLeft() {
+        writeCommandToArduino("b");
+    }
+
+    public static void turnRight(){
+        writeCommandToArduino("c");
+    }
+
+    public static void turnBack(){
+        writeCommandToArduino("d");
+    }
+
+    public static void moveInt(int distance){
+        writeCommandToArduino(Integer.toString(distance));
+    }
+
+    public static void writeCommandToArduino(String cmd){
+        JSONObject obj = new JSONObject();
+        obj.put("ard", cmd);
+        try {
+            sendMessage(obj.toString());
+        } catch (IOException e ){
+            System.err.print(e);
+        }
+
 
     }
+
 
 
     // parse JSON
-    //@SuppressWarnings("unchecked")
-    public String parser(String message){
+    @SuppressWarnings("unchecked")
+    public void parser(String message){
         //JSON Parser
         JSONParser jp = new JSONParser();
         try {
             Object obj = jp.parse(message);
             JSONObject jsonObject = (JSONObject) obj;
 
-            // from Android
-            String cmd = jsonObject.get("cmd").toString();
+
+
 
             // from Arduino
-            String usl = jsonObject.get("usl").toString();
-            String usr = jsonObject.get("usr").toString();
-            String usc = jsonObject.get("usc").toString();
-            String irl = jsonObject.get("irl").toString();
-            String irr = jsonObject.get("irr").toString();
+            if (jsonObject.get("usl")!=null){
+                String usl = jsonObject.get("usl").toString();
+                String usr = jsonObject.get("usr").toString();
+                String usc = jsonObject.get("usc").toString();
+                String irl = jsonObject.get("irl").toString();
+                String irr = jsonObject.get("irr").toString();
 
-            // pass values
-            uS[0] = Integer.getInteger(usl);
-            uS[1] = Integer.getInteger(usc);
-            uS[2] = Integer.getInteger(usr);
-            lS = Integer.getInteger(irl);
-            rS = Integer.getInteger(irr);
+                // pass sensors values
+                uS[0] = Integer.parseInt(usl);
+                uS[1] = Integer.parseInt(usc);
+                uS[2] = Integer.parseInt(usr);
+                lS = Integer.parseInt(irl);
+                rS = Integer.parseInt(irr);
 
-            if (Config.debugOn){
-                System.out.println("usl: "+usl);
-                System.out.println("usc: "+usc);
-                System.out.println("usr: "+usr);
-                System.out.println("irl: "+irl);
-                System.out.println("irr: "+irr);
+
+                if (Config.debugOn){
+                    System.out.println("usl: "+usl);
+                    System.out.println("usc: "+usc);
+                    System.out.println("usr: "+usr);
+                    System.out.println("irl: "+irl);
+                    System.out.println("irr: "+irr);
+                }
             }
 
-            return cmd;
+            // values from Android
+            if (jsonObject.get("cmd")!=null){
+                cmd = jsonObject.get("cmd").toString();
+            }
+
+            if (jsonObject.get("status")!=null){
+                Object stati = jsonObject.get("status");
+                JSONObject status = (JSONObject) stati;
+
+                d = status.get("d").toString();
+                m = status.get("m").toString();
+                r = status.get("r").toString();
+                x = status.get("x").toString();
+
+                JSONArray pl = (JSONArray) status.get("p");
+                Iterator<String> pIT = pl.iterator();
+                while(pIT.hasNext()){
+                    pv.add(pIT.next());
+                }
+            }
 
         } catch (ParseException e){
             System.err.println(e);
-            return null;
+
         }
 
 
+    }
 
+    public void setAuto(){
+        Config.autoUpdate = true;
+    }
 
+    public void setManual(){
+        Config.autoUpdate = false;
     }
 
     @Override
