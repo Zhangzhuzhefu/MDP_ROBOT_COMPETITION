@@ -229,6 +229,7 @@ public class Explorer {
 				}
 
 			Point here = start;
+			followWallPath.push(start);
 			Point hereNext,hereLeft,hereRight;
 			boolean clockwise;
 			if (robot.getDirection().getDirection()==Direction.UP) 
@@ -245,9 +246,101 @@ public class Explorer {
                 if (Config.Competition){
                     Competition.simulatorMapPanel.updateMap(robot.getMapKnowledgeBase().getArrayMap());
                 } else {
-				Simulator.simulatorMapPanel.updateMap(robot.getMapKnowledgeBase().getArrayMap()); }
+                	Simulator.simulatorMapPanel.updateMap(robot.getMapKnowledgeBase().getArrayMap());
+                }
+                switch (robot.getDirection().getDirection()) {
+				case Direction.UP:
+					hereNext = PointManager.getPoint(here.gridX, here.gridY+1);
+					hereLeft = PointManager.getPoint(here.gridX-1, here.gridY);
+					hereRight = PointManager.getPoint(here.gridX + 1, here.gridY);
+					
+					break;
+				case Direction.DOWN:
+					hereNext = PointManager.getPoint(here.gridX, here.gridY-1);
+					hereLeft = PointManager.getPoint(here.gridX+1, here.gridY);
+					hereRight = PointManager.getPoint(here.gridX-1, here.gridY);
+					
+					break;
+				case Direction.LEFT:
+					hereNext = PointManager.getPoint(here.gridX-1, here.gridY);
+					hereLeft = PointManager.getPoint(here.gridX, here.gridY-1);
+					hereRight = PointManager.getPoint(here.gridX, here.gridY+1);
+					
+					break;
+				case Direction.RIGHT:
+					hereNext = PointManager.getPoint(here.gridX+1, here.gridY);
+					hereLeft = PointManager.getPoint(here.gridX, here.gridY+1);
+					hereRight = PointManager.getPoint(here.gridX, here.gridY-1);
+					
+					break;
+					
+				default: 
+					hereNext = null;
+					hereLeft = null;
+					hereRight = null;
+				}
+
+				if (hereNext != null) {
+					if (hereLeft.robotMovable(map)) {
+						robot.turnLeft(true);
+						//followWallPath.push(here);
+						followWallPath.push(hereLeft);
+						if (Config.Competition) {
+							Competition.simulatorMapPanel.updatePath(followWallPath);
+						} else {
+							Simulator.simulatorMapPanel.updatePath(followWallPath);
+						}
+						here = hereLeft;
+						robot.moveForwardByOneStep(true);
+						robot.updateRobotLoc();
+					} else if (hereNext.robotMovable(map)) {
+						//followWallPath.push(here);
+						followWallPath.push(hereNext);
+						if (Config.Competition) {
+							Competition.simulatorMapPanel.updatePath(followWallPath);
+						} else {
+							Simulator.simulatorMapPanel.updatePath(followWallPath);
+						}
+						here = hereNext;
+						robot.moveForwardByOneStep(true);
+						robot.updateRobotLoc();
+					} else if (hereRight.robotMovable(map)){
+						robot.turnRight(true);
+						//followWallPath.push(here);
+						followWallPath.push(hereRight);
+						if (Config.Competition) {
+							Competition.simulatorMapPanel.updatePath(followWallPath);
+						} else {
+							Simulator.simulatorMapPanel.updatePath(followWallPath);
+						}
+						here = hereRight;
+						robot.moveForwardByOneStep(true);
+						robot.updateRobotLoc();
+					}else {
+						here = followWallPath.pop();
+                        if (!Config.Competition) {
+						    Simulator.simulatorMapPanel.updatePath(followWallPath);
+                        } else {
+                            Competition.simulatorMapPanel.updatePath(followWallPath);
+                        }
+						int xDiff, yDiff;
+						xDiff = here.gridX - robot.getCurrentLocation().gridX;
+						yDiff = here.gridY - robot.getCurrentLocation().gridY;
+						if (xDiff > 0) {
+							robot.turnEast(true);
+						} else if (xDiff < 0) {
+							robot.turnWest(true);
+						} else if (yDiff > 0) {
+							robot.turnNorth(true);
+						} else if (yDiff < 0) {
+							robot.turnSouth(true);
+						}
+						robot.jumpToPoint(here.gridX, here.gridY, true);
+					}
+
+				}
 				
-				switch (robot.getDirection().getDirection()) {
+				/*switch (robot.getDirection().getDirection()) {
 				case Direction.UP:
 					hereNext = PointManager.getPoint(here.gridX, here.gridY+1);
 					hereLeft = PointManager.getPoint(here.gridX-1, here.gridY);
@@ -299,7 +392,7 @@ public class Explorer {
 					break;
 				case Direction.RIGHT:
 					break;
-				}
+				}*/
 				
 			}
 		}

@@ -3,8 +3,8 @@ package mdp;
 
 public class Config {
 	//simulation test file
-	public static String mapFileName = "testMap.in";
-	//public static String mapFileName = "shtest&fartestMap.in";
+	//public static String mapFileName = "testMap.in";
+	public static String mapFileName = "shtest&fartestMap.in";
 	//public static String mapFileName = "emptyMap.in";
 	//public static String mapFileName = "zheMap.in";
 	public static String background = "black_dark.jpg";
