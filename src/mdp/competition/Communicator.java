@@ -6,6 +6,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -35,11 +36,14 @@ public class Communicator extends VirtualCommunicator {
     public int[] uS = new int[3];
     public int lS;
     public int rS;
+    public volatile int[] nLs = new int[1];
+    public final int[] nUs = new int[3];
+    public volatile int[] nRs = new int[1];
 
-    public String m;
-    public String r;
+
+
     public String d;
-    public String x;
+    public String s;
     public List<String> pv = new ArrayList<>();
 
 
@@ -107,6 +111,8 @@ public class Communicator extends VirtualCommunicator {
                                 // follow command
 
                                 switch (cmd){
+
+
                                     case "f":    // choose floodfill algorithm
                                         Competition.updateRandomPath();
                                         Competition.secondRun();
@@ -142,14 +148,16 @@ public class Communicator extends VirtualCommunicator {
                                         break;
 
                                     case "u":   // manual request map
-                                        sendMapToAndroid();
+                                        sendMapToAndroid(Competition.robotManager.getRobot().getRobotState());
                                         break;
 
-                                    case "y":   // enable auto-update
+                                    case "on":   // enable auto-update
+                                        System.out.println("he auto update");
                                         setAuto();
                                         break;
 
-                                    case "n":   // disable auto-update
+                                    case "off":   // disable auto-update
+                                        System.out.println("he disable auto update");
                                         setManual();
                                         break;
 
@@ -184,15 +192,10 @@ public class Communicator extends VirtualCommunicator {
 
 
     public void reintialize(){
-
-        m = null;
-        r = null;
         d = null;
-        x = null;
+        s = null;
         pv = null;
-
         cmd = null;
-
     }
 
 
@@ -201,7 +204,7 @@ public class Communicator extends VirtualCommunicator {
     }
 
 
-    // Send Message to Raspberry Pi
+    // Open connection to send Message to Raspberry Pi
     public static void sendMessage(String message) throws IOException{
 
         final String sentMessage;
@@ -224,9 +227,10 @@ public class Communicator extends VirtualCommunicator {
                     socketOutputStream.write(sentMessage.getBytes());
                     socketOutputStream.close();
                     socket.close();
+
                     long endTime = System.currentTimeMillis();
                     if (Config.debugOn){
-                        System.out.println("bytes written in " + (endTime - startTime) + " ms.");
+                        System.out.println("message: "+ sentMessage +"\tduration: "  + (endTime - startTime) + " ms.");
                     }
 
                 } catch (Exception e) {
@@ -237,17 +241,29 @@ public class Communicator extends VirtualCommunicator {
 
     }
 
+
+
     // get and write map to JSON
-    public String writeMap(){
+    @SuppressWarnings("unchecked")
+    public static String writeMap(String state){
         JSONObject obj = new JSONObject();
-        obj.put("map",Simulator.robotManager.getRobot().getMapKnowledgeBase().getArrayMap().toString());
+        obj.put("cmd","u");
+        obj.put("map", Competition.robotManager.getRobot().getMapKnowledgeBase().getStringMap());
+        JSONObject obj1 = new JSONObject();
+        JSONArray list = new JSONArray();
+        list.add(Competition.robotManager.getRobot().getCurrentLocation().gridX-3);
+        list.add(Competition.robotManager.getRobot().getCurrentLocation().gridY-3);
+        obj1.put("p", list);
+        obj1.put("s",state);
+        obj1.put("d",Competition.robotManager.getRobot().getDirection().getDirection());
+        obj.put("status",obj1);
         return obj.toString();
     }
 
     // send map for android
-    public void sendMapToAndroid(){
+    public static void sendMapToAndroid(String state){
         try {
-            String map = writeMap();
+            String map = writeMap(state);
             sendMessage(map);
         } catch (IOException e){
             System.err.print(e);
@@ -263,6 +279,7 @@ public class Communicator extends VirtualCommunicator {
     // b: turn left
     // c: turn right
     // d: turn back
+    // e: start explore
     // int: move int cm
     public static void moveFor() {
         writeCommandToArduino("a");
@@ -280,12 +297,24 @@ public class Communicator extends VirtualCommunicator {
         writeCommandToArduino("d");
     }
 
+    // tell arduino to start exploring
+    public static void startExplore(){
+        writeCommandToArduino("e");
+    }
+
+    // tell arduino to change from exploration to race
+    public static void startRace(){
+        writeCommandToArduino("r");
+    }
+
+    // move a certain distance
     public static void moveInt(int distance){
         writeCommandToArduino(Integer.toString(distance));
     }
 
     public static void writeCommandToArduino(String cmd){
         JSONObject obj = new JSONObject();
+        obj.put("cmd","ard");
         obj.put("ard", cmd);
         try {
             sendMessage(obj.toString());
@@ -307,60 +336,53 @@ public class Communicator extends VirtualCommunicator {
             Object obj = jp.parse(message);
             JSONObject jsonObject = (JSONObject) obj;
 
-
-
+            cmd = jsonObject.get("cmd").toString();
 
             // from Arduino
-            if (jsonObject.get("usl")!=null){
-                String usl = jsonObject.get("usl").toString();
-                String usr = jsonObject.get("usr").toString();
-                String usc = jsonObject.get("usc").toString();
-                String irl = jsonObject.get("irl").toString();
-                String irr = jsonObject.get("irr").toString();
+            if (cmd.equals("ard")){
 
-                // pass sensors values
-                uS[0] = Integer.parseInt(usl);
-                uS[1] = Integer.parseInt(usc);
-                uS[2] = Integer.parseInt(usr);
-                lS = Integer.parseInt(irl);
-                rS = Integer.parseInt(irr);
+                if (!jsonObject.get("usl").toString().equals("")){
+
+                    String usl = jsonObject.get("usl").toString();
+                    String usr = jsonObject.get("usr").toString();
+                    String usc = jsonObject.get("usc").toString();
+                    String irl = jsonObject.get("irl").toString();
+                    String irr = jsonObject.get("irr").toString();
+
+                    nUs[0] = Integer.parseInt(usl);
+                    nUs[1] = Integer.parseInt(usc);
+                    nUs[2] = Integer.parseInt(usr);
+
+                    nLs[0] = Integer.parseInt(irl);
+                    nRs[0] = Integer.parseInt(irr);
+                    synchronized (nUs){
+                        nUs.notify();
+                    }
+
+                    // pass sensors values
+                    uS[0] = Integer.parseInt(usl);
+                    uS[1] = Integer.parseInt(usc);
+                    uS[2] = Integer.parseInt(usr);
+                    lS = Integer.parseInt(irl);
+                    rS = Integer.parseInt(irr);
 
 
-                if (Config.debugOn){
-                    System.out.println("usl: "+usl);
-                    System.out.println("usc: "+usc);
-                    System.out.println("usr: "+usr);
-                    System.out.println("irl: "+irl);
-                    System.out.println("irr: "+irr);
+                    if (Config.debugOn){
+                        System.out.println("usl: "+usl);
+                        System.out.println("usc: "+usc);
+                        System.out.println("usr: "+usr);
+                        System.out.println("irl: "+irl);
+                        System.out.println("irr: "+irr);
+
+                    }
                 }
             }
 
-            // values from Android
-            if (jsonObject.get("cmd")!=null){
-                cmd = jsonObject.get("cmd").toString();
-            }
-
-            if (jsonObject.get("status")!=null){
-                Object stati = jsonObject.get("status");
-                JSONObject status = (JSONObject) stati;
-
-                d = status.get("d").toString();
-                m = status.get("m").toString();
-                r = status.get("r").toString();
-                x = status.get("x").toString();
-
-                JSONArray pl = (JSONArray) status.get("p");
-                Iterator<String> pIT = pl.iterator();
-                while(pIT.hasNext()){
-                    pv.add(pIT.next());
-                }
-            }
 
         } catch (ParseException e){
             System.err.println(e);
 
         }
-
 
     }
 
@@ -376,8 +398,18 @@ public class Communicator extends VirtualCommunicator {
     public int[] ultraSonic() {
         int [] detectInt;
         detectInt = uS;
+        synchronized (nUs){
+            try{
+                System.out.println("I am waiting");
+                nUs.wait();
+                System.out.println("finish waiting");
+            } catch (InterruptedException e) {
 
-        return detectInt;
+            }
+        }
+
+
+        return nUs;//detectInt;
     }
 
     @Override
@@ -385,7 +417,15 @@ public class Communicator extends VirtualCommunicator {
         // TODO Auto-generated method stub
         int  detectInt;
         detectInt = lS;
-        return detectInt;
+        /*
+        synchronized (nLs){
+            try {
+                nLs.wait();
+            } catch (InterruptedException e){
+
+            }
+        }*/
+        return nLs[0];//detectInt;
     }
 
     @Override
@@ -393,7 +433,14 @@ public class Communicator extends VirtualCommunicator {
         // TODO Auto-generated method stub
         int  detectInt;
         detectInt = rS;
-        return detectInt;
+        /*synchronized (nRs){
+            try {
+                nRs.wait();
+            } catch (InterruptedException e){
+
+            }
+        }*/
+        return nRs[0];//detectInt
     }
 
 

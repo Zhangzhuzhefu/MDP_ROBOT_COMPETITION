@@ -11,10 +11,11 @@ public class Config {
 	public static String robotFileName = "Wall.E.png";
 	public static boolean trackingOn = false;
 	public static boolean printBitMapStreamOn = false;
-	public static boolean debugOn = false;
+	public static boolean debugOn = true;
 	public static boolean Simulator = true;
     public static boolean Competition = false;
 	public static boolean autoUpdate = false;
+    public static boolean race = false;
 	//environment variables
 	public static final int MAZE_LENGTH = 200, MAZE_WIDTH = 150, GRID_LEN = 10;
 	public static final int START_GRID_SIZE = 30;
@@ -42,6 +43,6 @@ public class Config {
 	public static final double RobotStartingDirection = 90;
 
     //Rapsberry Pi
-    public static final String host = "127.0.0.1";
+    public static final String host = "192.168.4.4";
     public static final int port = 4014;
 }

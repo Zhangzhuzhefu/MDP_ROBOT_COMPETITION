@@ -86,7 +86,7 @@ public class Explorer {
 				if (Config.trackingOn) System.out.println("explore: fld fll path here at ("
 						+ here.gridX + "," + here.gridY + ")");
 				robot.getSensors().perceptEnvironment();
-                System.out.println("knowledge base: " + robot.getMapKnowledgeBase().getArrayMap().toString());
+                //System.out.println("knowledge base: " + robot.getMapKnowledgeBase().getArrayMap().toString());
                 if(Config.Competition){
                     Competition.simulatorMapPanel.updateMap(robot.getMapKnowledgeBase().getArrayMap());
                 }else{
@@ -116,21 +116,24 @@ public class Explorer {
 								case 3:
 									robot.turnNorth(true);
 									break;
+
+
 								}
 								robot.updateRobotLoc();
+                                robot.getSensors().perceptEnvironment();
 								robot.moveForwardByOneStep(true);
 								robot.updateRobotLoc();
 								floodFillPath.push(here);
 								floodFillPath.push(hereNext);
                                 if (Config.Competition){
-                                Competition.simulatorMapPanel.updatePath(floodFillPath);}
+                                    Competition.simulatorMapPanel.updatePath(floodFillPath);}
                                 else{
-								Simulator.simulatorMapPanel.updatePath(floodFillPath);}
+								    Simulator.simulatorMapPanel.updatePath(floodFillPath);}
 								next = i;
 								break;
 							}
 
-							robot.getSensors().perceptEnvironment();
+							//robot.getSensors().perceptEnvironment();
                             if (!Config.Competition){
 							Simulator.simulatorMapPanel.updateMap(robot
 									.getMapKnowledgeBase().getArrayMap());}
