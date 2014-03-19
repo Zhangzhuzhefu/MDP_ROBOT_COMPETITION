@@ -156,7 +156,7 @@ public class Explorer {
                         if (!Config.Simulator){
                             Competition.simulatorMapPanel.updatePath(floodFillPath);
                         } else {
-						Simulator.simulatorMapPanel.updatePath(floodFillPath);}
+                        	Simulator.simulatorMapPanel.updatePath(floodFillPath);}
 						int xDiff, yDiff;
 						xDiff = here.gridX - robot.getCurrentLocation().gridX;
 						yDiff = here.gridY - robot.getCurrentLocation().gridY;
@@ -179,7 +179,7 @@ public class Explorer {
             if (!Config.Simulator){
                 Competition.simulatorMapPanel.updatePath(floodFillPath);
             } else {
-			Simulator.simulatorMapPanel.updatePath(floodFillPath);}
+            	Simulator.simulatorMapPanel.updatePath(floodFillPath);}
 
 			// To reverse the randomPath stack
 			Stack<Point> temp = new Stack<Point>();

@@ -94,25 +94,19 @@ public class Robot {
 	}
 
     public Stack <Point> explore(String s){
+    	if (!Config.Simulator){
+            Communicator.startExplore();
+			Communicator.sendMapToAndroid("0");
+        }
 		switch (s) {
 		case Explorer.FLOODFILL:
-            if (!Config.Simulator){
-                try{
-                    Communicator.startExplore();
-                    Communicator.sendMapToAndroid("0");
-                    Thread.sleep(1000);
-                }
-                catch (InterruptedException e){
-                    System.err.print(e);
-                }
-            }
 			if (Config.debugOn)
-				System.out.println("Exploring Floodfill");
+				System.out.println("Robot: Exploring Floodfill");
 			route = explorer.exploreFloodFill(this);
 			if (route!=null) {
 				return route;
 			} else {
-				System.out.println("Floodfill null route");
+				System.out.println("Robot: Floodfill null route");
 				return null;
 			}
 		case Explorer.FLLWALL: 

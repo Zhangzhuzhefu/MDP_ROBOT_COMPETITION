@@ -106,7 +106,7 @@ public class ControlPanel extends Panel{
                 if(!Config.Simulator){
                     Competition.explore_floodFill();
                 } else {
-				Simulator.explore_floodFill();
+                	Simulator.explore_floodFill();
                 }
 			}
 		});
@@ -115,7 +115,11 @@ public class ControlPanel extends Panel{
 		algo2.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Simulator.explore_FollowWall();
+				if(Config.Simulator){
+					Simulator.explore_FollowWall();
+				} else {
+					Competition.explore_FollowWall();
+				}
 			}
 		});
 		

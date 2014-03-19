@@ -49,19 +49,20 @@ public class Communicator extends VirtualCommunicator {
 
     public Communicator() throws IOException{
 
-
+    	if (Config.debugOn)
+    		System.out.println("Communicator: Constructor start.");
         // handshake
         try{
-            //System.out.println("handshaking...");
+        	if (Config.debugOn)
+        		System.out.println("Communicator: handshaking...");
             Socket socket = new Socket(host,port);
             DataOutputStream outp = new DataOutputStream(socket.getOutputStream());
-
             outp.writeBytes(testmessage);
             outp.flush();
             socket.close();
 
             if (Config.debugOn){
-                System.out.println("handshaked");
+                System.out.println("Communicator: handshaked");
             }
 
 
@@ -69,15 +70,11 @@ public class Communicator extends VirtualCommunicator {
             System.err.println(e);
             System.exit(1);
         } catch (IOException e){
-            System.err.println("Couldn't get I/O connection and handshake with " + host);
+            System.err.println("Communicator: Couldn't get I/O connection and handshake with " + host);
             System.exit(1);
         }
 
         //end handshake
-
-
-
-
 
         // start server to receive message from Raspberry Pi
         new Thread(new Runnable() {
@@ -86,7 +83,7 @@ public class Communicator extends VirtualCommunicator {
                 try {
 
                     ServerSocket serverSocket = new ServerSocket(4014);
-                    System.out.println("Server Up! at "+serverSocket.getInetAddress().getHostName());
+                    System.out.println("Communicator: Server Up! at "+serverSocket.getInetAddress().getHostName());
                     while (true){
                         try{
 
@@ -99,7 +96,7 @@ public class Communicator extends VirtualCommunicator {
                             message = bufferedReader.readLine();
 
                             if (Config.debugOn){
-                                System.out.println("Message Received: "+message);
+                                System.out.println("Communicator: Message Received: "+message);
                             }
                             //sendMessage("I received your message: "+ message);
                             //sendMessage("f"); // test for checklist
@@ -152,12 +149,12 @@ public class Communicator extends VirtualCommunicator {
                                         break;
 
                                     case "on":   // enable auto-update
-                                        System.out.println("he auto update");
+                                        System.out.println("Communicator: he auto update");
                                         setAuto();
                                         break;
 
                                     case "off":   // disable auto-update
-                                        System.out.println("he disable auto update");
+                                        System.out.println("Communicator: he disable auto update");
                                         setManual();
                                         break;
 
@@ -171,7 +168,7 @@ public class Communicator extends VirtualCommunicator {
 
 
                             long endTime = System.currentTimeMillis();
-                            System.out.println("Message read in " + (endTime - startTime) + " ms.");
+                            System.out.println("Communicator: Message read in " + (endTime - startTime) + " ms.");
 
                         } catch (IOException e){
                             System.err.println(e.toString());
@@ -218,7 +215,7 @@ public class Communicator extends VirtualCommunicator {
                 try {
                     // create socket
                     Socket socket = new Socket(host, port);
-                    System.out.println("Connected to "+host);
+                    System.out.println("Communicator: Connected to "+host);
 
 
                     OutputStream socketOutputStream = socket.getOutputStream();
@@ -230,11 +227,11 @@ public class Communicator extends VirtualCommunicator {
 
                     long endTime = System.currentTimeMillis();
                     if (Config.debugOn){
-                        System.out.println("message: "+ sentMessage +"\tduration: "  + (endTime - startTime) + " ms.");
+                        System.out.println("Communicator: message: "+ sentMessage +"\tduration: "  + (endTime - startTime) + " ms.");
                     }
 
                 } catch (Exception e) {
-                    System.err.println("something wrong with me! : "+e.toString());
+                    System.err.println("Communicator: something wrong with me! : "+e.toString());
                 }
             }
         }).start();
@@ -264,7 +261,7 @@ public class Communicator extends VirtualCommunicator {
     public static void sendMapToAndroid(String state){
         try {
             String map = writeMap(state);
-            sendMessage(map);
+            sendMessage(map); 
         } catch (IOException e){
             System.err.print(e);
         }
@@ -274,7 +271,7 @@ public class Communicator extends VirtualCommunicator {
 
     // send command to arduino
     // command robot:
-    // eg. {“ard”:”a”}
+    // eg.
     // a: move forward by one step
     // b: turn left
     // c: turn right
@@ -305,6 +302,11 @@ public class Communicator extends VirtualCommunicator {
     // tell arduino to change from exploration to race
     public static void startRace(){
         writeCommandToArduino("r");
+    }
+    
+    // request for sensor value
+    public static void sensorValue(){
+        writeCommandToArduino("s");
     }
 
     // move a certain distance
@@ -352,10 +354,38 @@ public class Communicator extends VirtualCommunicator {
                     nUs[0] = Integer.parseInt(usl);
                     nUs[1] = Integer.parseInt(usc);
                     nUs[2] = Integer.parseInt(usr);
+                    int offSet;
+                    for (int i=0; i<3; i++){
+                    	offSet = nUs[i]%10;
+                    	if (offSet<5) {
+                    		nUs[i] -= offSet; 
+                    	} else {
+                    		nUs[i] += 10-offSet;
+                    	}
+                    }
 
                     nLs[0] = Integer.parseInt(irl);
+                    offSet = nLs[0]%10;
+                	if (offSet<5) {
+                		nLs[0] -= offSet; 
+                	} else {
+                		nLs[0] += 10-offSet;
+                	}
+                	
                     nRs[0] = Integer.parseInt(irr);
+                    offSet = nRs[0]%10;
+                	if (offSet<5) {
+                		nRs[0] -= offSet; 
+                	} else {
+                		nRs[0] += 10-offSet;
+                	}
+                    
 
+                    if ( nUs[0]<0 || nUs[1]<0 || nUs[2]<0 || nLs[0]<0 || nRs[0]<0) {
+                    	Communicator.sensorValue();
+                    	return;
+                    }
+                    
                     synchronized (turn){
                         turn.notify();
                     }
@@ -370,13 +400,16 @@ public class Communicator extends VirtualCommunicator {
 
 
                     if (Config.debugOn){
-                        System.out.println("usl: "+usl);
-                        System.out.println("usc: "+usc);
-                        System.out.println("usr: "+usr);
-                        System.out.println("irl: "+irl);
-                        System.out.println("irr: "+irr);
+                        System.out.print("usl: "+usl);
+                        System.out.print(" usc: "+usc);
+                        System.out.print(" usr: "+usr);
+                        System.out.print(" irl: "+irl);
+                        System.out.print(" irr: "+irr);
 
                     }
+                } else {
+                	if (Config.debugOn)
+                		System.out.println("Communicator: warning sensor velue is empty");
                 }
             }
 
@@ -403,9 +436,9 @@ public class Communicator extends VirtualCommunicator {
 
         synchronized (turn){
         try{
-            System.out.println("I am waiting");
+            System.out.println("Communicator: I am waiting");
             turn.wait();
-            System.out.println("finish waiting");
+            System.out.println("Communicator: finish waiting");
             } catch (InterruptedException e) {
                 System.err.print(e);
             }
