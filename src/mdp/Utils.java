@@ -77,6 +77,7 @@ public class Utils {
 			System.out.println();
 		}
 		System.out.println("11");
+		System.out.println(expBitsToHex(map));
 		
 		System.out.println("Ultils: print empty/obstacle bit stream:");
 		for (int j = map[0].length - 2; j >= 1; j--) {
@@ -86,6 +87,55 @@ public class Utils {
 			}
 			System.out.println();
 		}
+		System.out.println(mapBitsToHex(map));
+	}
+	
+	public static String expBitsToHex (int [][] map) {
+		String result = "";
+		String strMap = "11";
+		for (int j = map[0].length - 2; j >= 1; j--) {
+			for (int i = 1; i < map.length-1; i++) {
+				strMap += map[i][j]==2?0:1;
+			}
+		}
+		strMap += "11";
+		
+		String subStr;
+		for (int i=0; i<(strMap.length()/4)+1; i++) {
+			subStr = strMap.substring(i*4, Math.min((i+1)*4,strMap.length()));
+			try{
+				result += Long.toHexString(Integer.parseInt(subStr, 2));
+			} catch (Exception e){
+			}
+		}
+		return result; 
+	}
+	
+	public static String mapBitsToHex (int [][] map) {
+		String result="";
+		String strMap = "";
+		for (int j = map[0].length - 2; j >= 1; j--) {
+			for (int i = 1; i < map.length-1; i++) {
+				if (map[i][j]!=2)
+				strMap += map[i][j]==0?0:1;
+			}
+		}
+		System.out.print("Padding:");
+		while (strMap.length()%4!=0){
+			strMap += "1";
+			System.out.print("1");
+		}
+		System.out.println();
+		System.out.println(strMap);
+		String subStr;
+		for (int i=0; i<(strMap.length()/4)+1; i++) {
+			subStr = strMap.substring(i*4, Math.min((i+1)*4,strMap.length()));
+			try{
+				result += Long.toHexString(Integer.parseInt(subStr, 2));
+			} catch (Exception e){
+			}
+		}
+		return result; 
 	}
 
 }
