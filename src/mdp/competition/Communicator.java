@@ -37,9 +37,9 @@ public class Communicator extends VirtualCommunicator {
     public int lS;
     public int rS;
     public volatile int[] nLs = new int[1];
-    public final int[] nUs = new int[3];
+    public volatile int[] nUs = new int[3];
     public volatile int[] nRs = new int[1];
-
+    final Integer turn = new Integer(0);
 
 
     public String d;
@@ -339,7 +339,7 @@ public class Communicator extends VirtualCommunicator {
             cmd = jsonObject.get("cmd").toString();
 
             // from Arduino
-            if (cmd.equals("ard")){
+            if (cmd.equals("ssr")){
 
                 if (!jsonObject.get("usl").toString().equals("")){
 
@@ -355,9 +355,11 @@ public class Communicator extends VirtualCommunicator {
 
                     nLs[0] = Integer.parseInt(irl);
                     nRs[0] = Integer.parseInt(irr);
-                    synchronized (nUs){
-                        nUs.notify();
+
+                    synchronized (turn){
+                        turn.notify();
                     }
+
 
                     // pass sensors values
                     uS[0] = Integer.parseInt(usl);
@@ -398,19 +400,23 @@ public class Communicator extends VirtualCommunicator {
     public int[] ultraSonic() {
         int [] detectInt;
         detectInt = uS;
-        synchronized (nUs){
-            try{
-                System.out.println("I am waiting");
-                nUs.wait();
-                System.out.println("finish waiting");
-            } catch (InterruptedException e) {
 
+        synchronized (turn){
+        try{
+            System.out.println("I am waiting");
+            turn.wait();
+            System.out.println("finish waiting");
+            } catch (InterruptedException e) {
+                System.err.print(e);
             }
         }
 
-
         return nUs;//detectInt;
-    }
+        }
+
+
+
+
 
     @Override
     public int leftSensor() {

@@ -96,13 +96,15 @@ public class Robot {
     public Stack <Point> explore(String s){
 		switch (s) {
 		case Explorer.FLOODFILL:
-            try{
-                Communicator.startExplore();
-                Communicator.sendMapToAndroid("0");
-                Thread.sleep(1000);
-            }
-            catch (InterruptedException e){
-                System.err.print(e);
+            if (Config.Competition){
+                try{
+                    Communicator.startExplore();
+                    Communicator.sendMapToAndroid("0");
+                    Thread.sleep(1000);
+                }
+                catch (InterruptedException e){
+                    System.err.print(e);
+                }
             }
 			if (Config.debugOn)
 				System.out.println("Exploring Floodfill");
@@ -385,10 +387,14 @@ public class Robot {
 
 
     // get robot state, to pass to android
+    // 2: is turning
+    // 0: idle
+    // 1: exploring
+    // -1: ?
     public String getRobotState(){
         if (isTurning){
             return "2";
-        } else if(currentLocation == ArenaMap.END_POINT){
+        } else if(currentLocation == ArenaMap.END_POINT || currentLocation == ArenaMap.START_POINT){
             return "0";
         } else if (isExploring){
             return "1";
