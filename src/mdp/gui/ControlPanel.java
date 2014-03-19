@@ -103,7 +103,7 @@ public class ControlPanel extends Panel{
 		algo1.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-                if(Config.Competition){
+                if(!Config.Simulator){
                     Competition.explore_floodFill();
                 } else {
 				Simulator.explore_floodFill();

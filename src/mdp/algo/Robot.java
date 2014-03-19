@@ -96,7 +96,7 @@ public class Robot {
     public Stack <Point> explore(String s){
 		switch (s) {
 		case Explorer.FLOODFILL:
-            if (Config.Competition){
+            if (!Config.Simulator){
                 try{
                     Communicator.startExplore();
                     Communicator.sendMapToAndroid("0");
@@ -174,7 +174,7 @@ public class Robot {
 	public void moveForwardByOneStep(boolean delay){
        // try {
             //Communicator.sendMessage("m");// for checklist
-            if (Config.Competition){
+            if (!Config.Simulator){
                 Communicator.moveFor();
             }
             switch (direction.getDirection()){
@@ -219,7 +219,7 @@ public class Robot {
 	}
 	public void turnLeft(boolean delay){
 
-            if (Config.Competition){
+            if (!Config.Simulator){
                 Communicator.turnLeft();
                 if(Config.autoUpdate){
                     Communicator.sendMapToAndroid(getRobotState());
@@ -235,7 +235,7 @@ public class Robot {
 	public void turnRight(boolean delay){
         //try {
 
-            if(Config.Competition){
+            if(!Config.Simulator){
                 Communicator.turnRight();
                 if(Config.autoUpdate){
                     Communicator.sendMapToAndroid(getRobotState());
@@ -255,7 +255,7 @@ public class Robot {
 	public void turnBack(boolean delay){
         //try {
 			//Communicator.sendMessage("b"); // for checklist
-            if(Config.Competition){
+            if(!Config.Simulator){
                 Communicator.turnBack();
                 if(Config.autoUpdate){
                     Communicator.sendMapToAndroid(getRobotState());

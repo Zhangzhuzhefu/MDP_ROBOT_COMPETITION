@@ -13,7 +13,6 @@ public class Config {
 	public static boolean printBitMapStreamOn = false;
 	public static boolean debugOn = true;
 	public static boolean Simulator = true;
-    public static boolean Competition = true;
 	public static boolean autoUpdate = true;
     public static boolean race = false;
 	//environment variables

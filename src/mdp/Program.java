@@ -16,7 +16,7 @@ public class Program {
 	public static void main(String[] args) throws IOException{
 		// GUI
 		mainFrame = new MainFrame();
-		if (Config.Competition){
+		if (!Config.Simulator){
             competition = new Competition(mainFrame);
             competition.startRunning();
         } else {

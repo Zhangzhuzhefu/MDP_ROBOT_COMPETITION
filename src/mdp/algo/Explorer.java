@@ -3,8 +3,8 @@ package mdp.algo;
 import java.util.Stack;
 
 import mdp.Config;
-import mdp.simulation.Simulator;
 import mdp.competition.Competition;
+import mdp.simulation.Simulator;
 
 public class Explorer {
 	public static final String FLOODFILL = "FloodFill";
@@ -87,7 +87,7 @@ public class Explorer {
 						+ here.gridX + "," + here.gridY + ")");
 				robot.getSensors().perceptEnvironment();
                 //System.out.println("knowledge base: " + robot.getMapKnowledgeBase().getArrayMap().toString());
-                if(Config.Competition){
+                if(!Config.Simulator){
                     Competition.simulatorMapPanel.updateMap(robot.getMapKnowledgeBase().getArrayMap());
                 }else{
 				    Simulator.simulatorMapPanel.updateMap(robot
@@ -125,7 +125,7 @@ public class Explorer {
 								robot.updateRobotLoc();
 								floodFillPath.push(here);
 								floodFillPath.push(hereNext);
-                                if (Config.Competition){
+                                if (!Config.Simulator){
                                     Competition.simulatorMapPanel.updatePath(floodFillPath);}
                                 else{
 								    Simulator.simulatorMapPanel.updatePath(floodFillPath);}
@@ -134,7 +134,7 @@ public class Explorer {
 							}
 
 							//robot.getSensors().perceptEnvironment();
-                            if (!Config.Competition){
+                            if (Config.Simulator){
 							Simulator.simulatorMapPanel.updateMap(robot
 									.getMapKnowledgeBase().getArrayMap());}
                             else {
@@ -153,7 +153,7 @@ public class Explorer {
 						return;
 					} else {
 						here = floodFillPath.pop();
-                        if (Config.Competition){
+                        if (!Config.Simulator){
                             Competition.simulatorMapPanel.updatePath(floodFillPath);
                         } else {
 						Simulator.simulatorMapPanel.updatePath(floodFillPath);}
@@ -176,7 +176,7 @@ public class Explorer {
 
 			}
 			floodFillPath.push(here);
-            if (Config.Competition){
+            if (!Config.Simulator){
                 Competition.simulatorMapPanel.updatePath(floodFillPath);
             } else {
 			Simulator.simulatorMapPanel.updatePath(floodFillPath);}
@@ -234,6 +234,7 @@ public class Explorer {
 			Point here = start;
 			followWallPath.push(start);
 			Point hereNext,hereLeft,hereRight;
+			//TODO
 			boolean clockwise;
 			if (robot.getDirection().getDirection()==Direction.UP) 
 				clockwise = true;
@@ -246,7 +247,7 @@ public class Explorer {
 				
 				visited[here.gridX][here.gridY] = true;
 				robot.getSensors().perceptEnvironment();
-                if (Config.Competition){
+                if (!Config.Simulator){
                     Competition.simulatorMapPanel.updateMap(robot.getMapKnowledgeBase().getArrayMap());
                 } else {
                 	Simulator.simulatorMapPanel.updateMap(robot.getMapKnowledgeBase().getArrayMap());
@@ -288,7 +289,7 @@ public class Explorer {
 						robot.turnLeft(true);
 						//followWallPath.push(here);
 						followWallPath.push(hereLeft);
-						if (Config.Competition) {
+						if (!Config.Simulator) {
 							Competition.simulatorMapPanel.updatePath(followWallPath);
 						} else {
 							Simulator.simulatorMapPanel.updatePath(followWallPath);
@@ -299,7 +300,7 @@ public class Explorer {
 					} else if (hereNext.robotMovable(map)) {
 						//followWallPath.push(here);
 						followWallPath.push(hereNext);
-						if (Config.Competition) {
+						if (!Config.Simulator) {
 							Competition.simulatorMapPanel.updatePath(followWallPath);
 						} else {
 							Simulator.simulatorMapPanel.updatePath(followWallPath);
@@ -311,7 +312,7 @@ public class Explorer {
 						robot.turnRight(true);
 						//followWallPath.push(here);
 						followWallPath.push(hereRight);
-						if (Config.Competition) {
+						if (!Config.Simulator) {
 							Competition.simulatorMapPanel.updatePath(followWallPath);
 						} else {
 							Simulator.simulatorMapPanel.updatePath(followWallPath);
@@ -321,7 +322,7 @@ public class Explorer {
 						robot.updateRobotLoc();
 					}else {
 						here = followWallPath.pop();
-                        if (!Config.Competition) {
+                        if (Config.Simulator) {
 						    Simulator.simulatorMapPanel.updatePath(followWallPath);
                         } else {
                             Competition.simulatorMapPanel.updatePath(followWallPath);
