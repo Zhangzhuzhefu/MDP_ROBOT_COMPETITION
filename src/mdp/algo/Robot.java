@@ -18,10 +18,10 @@ public class Robot {
 	SimPerceptron sensors;
 	Explorer explorer;
 	PathCalculator pathCalculator;
-    //Communicator communicator; // remove slash when testing with rPi
+
 	
 	
-	boolean isExploring, isMoving, isOnTheWayReturning; 
+	boolean isExploring, isMoving, isOnTheWayReturning, isTurning;
 	private Point currentLocation;
 	private Direction direction;
 	private Stack<Point> route;
@@ -30,6 +30,7 @@ public class Robot {
 	public Robot() throws IOException{
 		isExploring = true;
 		isMoving = false;
+        isTurning = false;
 		isOnTheWayReturning = false;
 		currentLocation = ArenaMap.START_POINT;
 		mapKnowledgeBase = new ArenaMap();
@@ -43,6 +44,7 @@ public class Robot {
 	public void reset(){
 		isExploring = true;
 		isMoving = false;
+        isTurning = false;
 		isOnTheWayReturning = false;
 		currentLocation = ArenaMap.START_POINT;
 		mapKnowledgeBase.reset();
@@ -59,6 +61,7 @@ public class Robot {
 	}
 	
 	public Stack<Point> generateFastestPath(){
+        Communicator.startRace();
 		pathCalculator.setMap(getMapKnowledgeBase().getArrayMap());
 		if(pathCalculator.findFastestPath()){
 			route = (Stack<Point>) pathCalculator.getFastestPath();
@@ -69,6 +72,7 @@ public class Robot {
 	}
 	
 	public Stack<Point> generateShortestPath(){
+        Communicator.startRace();
 		pathCalculator.setMap(getMapKnowledgeBase().getArrayMap());
 		if(pathCalculator.findShortestPath()){
 			route = (Stack<Point>) pathCalculator.getShortestPath();
@@ -79,6 +83,7 @@ public class Robot {
 	}
 	
 	public Stack<Point> generateRandomPath(){
+        Communicator.startRace();
 		pathCalculator.setMap(this.getMapKnowledgeBase().getArrayMap());
 		if(pathCalculator.findRandomPath()){
 			route = (Stack<Point>) pathCalculator.getRandomPath();
@@ -91,6 +96,16 @@ public class Robot {
     public Stack <Point> explore(String s){
 		switch (s) {
 		case Explorer.FLOODFILL:
+            if (Config.Competition){
+                try{
+                    Communicator.startExplore();
+                    Communicator.sendMapToAndroid("0");
+                    Thread.sleep(1000);
+                }
+                catch (InterruptedException e){
+                    System.err.print(e);
+                }
+            }
 			if (Config.debugOn)
 				System.out.println("Exploring Floodfill");
 			route = explorer.exploreFloodFill(this);
@@ -157,8 +172,8 @@ public class Robot {
 	}
 
 	public void moveForwardByOneStep(boolean delay){
-        try {
-            Communicator.sendMessage("m");// for checklist
+       // try {
+            //Communicator.sendMessage("m");// for checklist
             if (Config.Competition){
                 Communicator.moveFor();
             }
@@ -182,9 +197,9 @@ public class Robot {
             }
             delay(delay);
 
-        }catch (IOException e){
+        //}catch (IOException e){
 
-        }
+        //}
 
 	}
 	
@@ -203,47 +218,55 @@ public class Robot {
 		}
 	}
 	public void turnLeft(boolean delay){
-        try {
-			Communicator.sendMessage("l"); // for checklist
+
             if (Config.Competition){
                 Communicator.turnLeft();
+                if(Config.autoUpdate){
+                    Communicator.sendMapToAndroid(getRobotState());
+                }
             }
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
 		direction.rotate(Direction.LEFT);
+        isTurning = true;
 		updateRobotLoc();
 		delay(delay);
 	}
 	
 	public void turnRight(boolean delay){
-        try {
-			Communicator.sendMessage("r"); // for checklist
+        //try {
+
             if(Config.Competition){
                 Communicator.turnRight();
+                if(Config.autoUpdate){
+                    Communicator.sendMapToAndroid(getRobotState());
+                }
             }
 
-		} catch (IOException e) {
+		//} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		//	e.printStackTrace();
+		//}
 		direction.rotate(Direction.RIGHT);
+        isTurning = true;
 		updateRobotLoc();
 		delay(delay);
 	}
 	
 	public void turnBack(boolean delay){
-        try {
-			Communicator.sendMessage("b"); // for checklist
+        //try {
+			//Communicator.sendMessage("b"); // for checklist
             if(Config.Competition){
                 Communicator.turnBack();
+                if(Config.autoUpdate){
+                    Communicator.sendMapToAndroid(getRobotState());
+                }
             }
-		} catch (IOException e) {
+		//} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		//	e.printStackTrace();
+		//}
 		direction.rotate(Direction.BACK);
+        isTurning = true;
 		updateRobotLoc();
 		delay(delay);
 	}
@@ -361,5 +384,22 @@ public class Robot {
 	public void setRoute(Stack<Point> route) {
 		this.route = route;
 	}
+
+
+    // get robot state, to pass to android
+    // 2: is turning
+    // 0: idle
+    // 1: exploring
+    // -1: ?
+    public String getRobotState(){
+        if (isTurning){
+            return "2";
+        } else if(currentLocation == ArenaMap.END_POINT || currentLocation == ArenaMap.START_POINT){
+            return "0";
+        } else if (isExploring){
+            return "1";
+        }
+        return "-1";
+    }
 
 }

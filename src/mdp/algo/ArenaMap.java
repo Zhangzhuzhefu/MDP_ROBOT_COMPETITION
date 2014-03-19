@@ -82,6 +82,21 @@ public class ArenaMap {
 	public int[][] getArrayMap(){
 		return map;
 	}
+
+    // to convert map into string for android
+    public String getStringMap() {
+
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 1; i <MAXN-1; i++) {
+            for (int j = 1; j<MAXM-1; j++){
+                sb.append(map[i][j]);
+            }
+        }
+        System.out.println("map: "+ sb.toString());
+        return sb.toString();
+    }
+
 	public void setArrayMap(int[][] map){
 		ArenaMap.map=map;
 	}
