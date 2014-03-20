@@ -3,8 +3,8 @@ package mdp;
 
 public class Config {
 	//simulation test file
-	//public static String mapFileName = "testMap.in";
-	public static String mapFileName = "shtest&fartestMap.in";
+	public static String mapFileName = "testMap.in";
+	//public static String mapFileName = "shtest&fartestMap.in";
 	//public static String mapFileName = "emptyMap.in";
 	//public static String mapFileName = "zheMap.in";
 	public static String background = "black_dark.jpg";
@@ -30,14 +30,14 @@ public class Config {
 	public static final long EXP_TIMER_SEC =30;
 
 	//Robot
-	public static final int robotStepsPersecond = 20;
+	public static final int robotStepsPersecond = 16;
 	public static final int robotWaitingTime = 1000/robotStepsPersecond;
 	public static final double startPointX = 30.0;
 	public static final double startPointY = 30.0;
 	public static final double endPointX = 160.0;
 	public static final double endPointY = 210.0;
-	public static final int FrontSensorDetectDist = 7;
-	public static final int SideSensorDetectDist = 7;
+	public static final int FrontSensorDetectDist = 3;
+	public static final int SideSensorDetectDist = 3;
 	//public static final double RobotStartingDirection = 0;//right
 	public static final double RobotStartingDirection = 90;
 

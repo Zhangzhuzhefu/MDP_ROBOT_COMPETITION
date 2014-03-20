@@ -354,36 +354,22 @@ public class Communicator extends VirtualCommunicator {
                     nUs[0] = Integer.parseInt(usl);
                     nUs[1] = Integer.parseInt(usc);
                     nUs[2] = Integer.parseInt(usr);
-                    int offSet;
+                    
                     for (int i=0; i<3; i++){
-                    	offSet = nUs[i]%10;
-                    	if (offSet<5) {
-                    		nUs[i] -= offSet; 
-                    	} else {
-                    		nUs[i] += 10-offSet;
-                    	}
+                    	nUs[i] = roundingToTen(nUs[i]); 
                     }
 
                     nLs[0] = Integer.parseInt(irl);
-                    offSet = nLs[0]%10;
-                	if (offSet<5) {
-                		nLs[0] -= offSet; 
-                	} else {
-                		nLs[0] += 10-offSet;
-                	}
+                    nLs[0] = roundingToTen(nLs[0]-10);
                 	
                     nRs[0] = Integer.parseInt(irr);
-                    offSet = nRs[0]%10;
-                	if (offSet<5) {
-                		nRs[0] -= offSet; 
-                	} else {
-                		nRs[0] += 10-offSet;
-                	}
+                    nRs[0] = roundingToTen(nRs[0]);
                     
 
-                    if ( nUs[0]<0 || nUs[1]<0 || nUs[2]<0 || nLs[0]<0 || nRs[0]<0) {
-                    	Communicator.sensorValue();
-                    	return;
+                    if ( nUs[0]<0 || nUs[1]<0 || nUs[2]<0 || nLs[0]<0 || nRs[0]<0
+                    		
+                    		) {
+                    	//Communicator.sensorValue();
                     }
                     
                     synchronized (turn){
@@ -421,6 +407,17 @@ public class Communicator extends VirtualCommunicator {
 
     }
 
+    public int roundingToTen(int a){
+    	if (a>30 || a<0) return 30;
+    	int offSet = a%10;
+    	if (offSet<=5) {
+    		a -= offSet; 
+    	} else {
+    		a += 10-offSet;
+    	}
+        return a;
+    	
+    }
     public void setAuto(){
         Config.autoUpdate = true;
     }

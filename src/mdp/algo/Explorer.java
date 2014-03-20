@@ -233,7 +233,7 @@ public class Explorer {
 
 			Point here = start;
 			followWallPath.push(start);
-			Point hereNext,hereLeft,hereRight;
+			Point hereNext,hereNextNext,hereLeft,hereLeftLeft,hereRight,hereRightRight;
 			//TODO
 			boolean clockwise;
 			if (robot.getDirection().getDirection()==Direction.UP) 
@@ -255,37 +255,52 @@ public class Explorer {
                 switch (robot.getDirection().getDirection()) {
 				case Direction.UP:
 					hereNext = PointManager.getPoint(here.gridX, here.gridY+1);
+					//hereNextNext = PointManager.getPoint(here.gridX, here.gridY+1+1);
 					hereLeft = PointManager.getPoint(here.gridX-1, here.gridY);
+					//hereLeftLeft = PointManager.getPoint(here.gridX-2, here.gridY);
 					hereRight = PointManager.getPoint(here.gridX + 1, here.gridY);
+					//hereRightRight = PointManager.getPoint(here.gridX + 2, here.gridY);
 					
 					break;
 				case Direction.DOWN:
 					hereNext = PointManager.getPoint(here.gridX, here.gridY-1);
+					//hereNextNext = PointManager.getPoint(here.gridX, here.gridY-2);
 					hereLeft = PointManager.getPoint(here.gridX+1, here.gridY);
+					//hereLeftLeft = PointManager.getPoint(here.gridX+2, here.gridY);
 					hereRight = PointManager.getPoint(here.gridX-1, here.gridY);
+					//hereRightRight = PointManager.getPoint(here.gridX-2, here.gridY);
 					
 					break;
 				case Direction.LEFT:
 					hereNext = PointManager.getPoint(here.gridX-1, here.gridY);
+					//hereNextNext = PointManager.getPoint(here.gridX-2, here.gridY);
 					hereLeft = PointManager.getPoint(here.gridX, here.gridY-1);
+					//hereLeftLeft = PointManager.getPoint(here.gridX, here.gridY-2);
 					hereRight = PointManager.getPoint(here.gridX, here.gridY+1);
+					//hereRightRight = PointManager.getPoint(here.gridX, here.gridY+2);
 					
 					break;
 				case Direction.RIGHT:
 					hereNext = PointManager.getPoint(here.gridX+1, here.gridY);
+					//hereNextNext = PointManager.getPoint(here.gridX+2, here.gridY);
 					hereLeft = PointManager.getPoint(here.gridX, here.gridY+1);
+					//hereLeftLeft = PointManager.getPoint(here.gridX, here.gridY+2);
 					hereRight = PointManager.getPoint(here.gridX, here.gridY-1);
+					//hereRightRight = PointManager.getPoint(here.gridX, here.gridY-2);
 					
 					break;
 					
 				default: 
 					hereNext = null;
+					hereNextNext = null;
 					hereLeft = null;
+					hereLeftLeft = null;
 					hereRight = null;
+					hereRightRight = null;
 				}
 
 				if (hereNext != null) {
-					if (hereLeft.robotMovable(map)) {
+					if (hereLeft.robotMovable(map)){// && hereLeftLeft.robotMovable(map)) {
 						robot.turnLeft(true);
 						//followWallPath.push(here);
 						followWallPath.push(hereLeft);
@@ -297,7 +312,8 @@ public class Explorer {
 						here = hereLeft;
 						robot.moveForwardByOneStep(true);
 						robot.updateRobotLoc();
-					} else if (hereNext.robotMovable(map)) {
+						
+					} else if (hereNext.robotMovable(map)){// && hereNextNext.robotMovable(map)) {
 						//followWallPath.push(here);
 						followWallPath.push(hereNext);
 						if (!Config.Simulator) {
@@ -308,7 +324,8 @@ public class Explorer {
 						here = hereNext;
 						robot.moveForwardByOneStep(true);
 						robot.updateRobotLoc();
-					} else if (hereRight.robotMovable(map)){
+						
+					} else if (hereRight.robotMovable(map)){// && hereRightRight.robotMovable(map)){
 						robot.turnRight(true);
 						//followWallPath.push(here);
 						followWallPath.push(hereRight);
