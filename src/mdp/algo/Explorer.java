@@ -24,6 +24,9 @@ public class Explorer {
 	private Stack<Point> pathEstimate;
 
 	public Explorer() {
+		if (!Config.twoBytwo) {
+			destination = ArenaMap.END_POINT3by3;
+		}
 		followWallPath = new Stack<Point>();
 		floodFillPath = new Stack<Point>();
 		pathEstimate = new Stack<Point>();
@@ -101,8 +104,7 @@ public class Explorer {
 						if (!visited[here.getNeighbors(i).gridX][here
 								.getNeighbors(i).gridY]) {
 							Point hereNext = here.getNeighbors(i);
-							if (hereNext.robotMovable(robot
-									.getMapKnowledgeBase().getArrayMap())) {
+							if (hereNext.robotMovable(robot.getMapKnowledgeBase().getArrayMap())) {
 								switch (i) {
 								case 0:
 									robot.turnWest(true);
@@ -121,6 +123,11 @@ public class Explorer {
 								}
 								robot.updateRobotLoc();
                                 robot.getSensors().perceptEnvironment();
+                                if (Config.Simulator){
+                                	Simulator.simulatorMapPanel.updateMap(robot.getMapKnowledgeBase().getArrayMap());}
+                                else {
+                                    Competition.simulatorMapPanel.updateMap(robot.getMapKnowledgeBase().getArrayMap());
+                                }
 								robot.moveForwardByOneStep(true);
 								robot.updateRobotLoc();
 								floodFillPath.push(here);
@@ -135,8 +142,7 @@ public class Explorer {
 
 							//robot.getSensors().perceptEnvironment();
                             if (Config.Simulator){
-							Simulator.simulatorMapPanel.updateMap(robot
-									.getMapKnowledgeBase().getArrayMap());}
+                            	Simulator.simulatorMapPanel.updateMap(robot.getMapKnowledgeBase().getArrayMap());}
                             else {
                                 Competition.simulatorMapPanel.updateMap(robot.getMapKnowledgeBase().getArrayMap());
                             }
@@ -169,8 +175,16 @@ public class Explorer {
 						} else if (yDiff < 0) {
 							robot.turnSouth(true);
 						}
+						robot.getSensors().perceptEnvironment();
+						if (Config.Simulator) {
+							Simulator.simulatorMapPanel.updateMap(robot.getMapKnowledgeBase().getArrayMap());
+						} else {
+							Competition.simulatorMapPanel.updateMap(robot.getMapKnowledgeBase().getArrayMap());
+						}
 						robot.jumpToPoint(here.gridX, here.gridY, true);
 						robot.updateRobotLoc();
+						
+
 					}
 				}
 
@@ -302,7 +316,7 @@ public class Explorer {
 				if (hereNext != null) {
 					if (hereLeft.robotMovable(map)){// && hereLeftLeft.robotMovable(map)) {
 						robot.turnLeft(true);
-						//followWallPath.push(here);
+						followWallPath.push(here);
 						followWallPath.push(hereLeft);
 						if (!Config.Simulator) {
 							Competition.simulatorMapPanel.updatePath(followWallPath);
@@ -314,7 +328,7 @@ public class Explorer {
 						robot.updateRobotLoc();
 						
 					} else if (hereNext.robotMovable(map)){// && hereNextNext.robotMovable(map)) {
-						//followWallPath.push(here);
+						followWallPath.push(here);
 						followWallPath.push(hereNext);
 						if (!Config.Simulator) {
 							Competition.simulatorMapPanel.updatePath(followWallPath);
@@ -327,7 +341,7 @@ public class Explorer {
 						
 					} else if (hereRight.robotMovable(map)){// && hereRightRight.robotMovable(map)){
 						robot.turnRight(true);
-						//followWallPath.push(here);
+						followWallPath.push(here);
 						followWallPath.push(hereRight);
 						if (!Config.Simulator) {
 							Competition.simulatorMapPanel.updatePath(followWallPath);
@@ -338,82 +352,51 @@ public class Explorer {
 						robot.moveForwardByOneStep(true);
 						robot.updateRobotLoc();
 					}else {
-						here = followWallPath.pop();
-                        if (Config.Simulator) {
-						    Simulator.simulatorMapPanel.updatePath(followWallPath);
-                        } else {
-                            Competition.simulatorMapPanel.updatePath(followWallPath);
-                        }
-						int xDiff, yDiff;
-						xDiff = here.gridX - robot.getCurrentLocation().gridX;
-						yDiff = here.gridY - robot.getCurrentLocation().gridY;
-						if (xDiff > 0) {
-							robot.turnEast(true);
-						} else if (xDiff < 0) {
-							robot.turnWest(true);
-						} else if (yDiff > 0) {
-							robot.turnNorth(true);
-						} else if (yDiff < 0) {
-							robot.turnSouth(true);
+						if (followWallPath.isEmpty()) {
+							System.out.println("Expolorer: " + this.getClass()
+									+ ": path not found");
+							return;
+						} else {
+							here = followWallPath.pop();
+							if (Config.Simulator) {
+								Simulator.simulatorMapPanel
+										.updatePath(followWallPath);
+							} else {
+								Competition.simulatorMapPanel
+										.updatePath(followWallPath);
+							}
+							int xDiff, yDiff;
+							xDiff = here.gridX
+									- robot.getCurrentLocation().gridX;
+							yDiff = here.gridY
+									- robot.getCurrentLocation().gridY;
+							if (xDiff > 0) {
+								robot.turnEast(true);
+							} else if (xDiff < 0) {
+								robot.turnWest(true);
+							} else if (yDiff > 0) {
+								robot.turnNorth(true);
+							} else if (yDiff < 0) {
+								robot.turnSouth(true);
+							}
+							robot.getSensors().perceptEnvironment();
+							if (Config.Simulator) {
+								Simulator.simulatorMapPanel.updateMap(robot
+										.getMapKnowledgeBase().getArrayMap());
+							} else {
+								Competition.simulatorMapPanel.updateMap(robot
+										.getMapKnowledgeBase().getArrayMap());
+							}
+							robot.jumpToPoint(here.gridX, here.gridY, true);
 						}
-						robot.jumpToPoint(here.gridX, here.gridY, true);
 					}
+					if (Config.Simulator){
+                    	Simulator.simulatorMapPanel.updateMap(robot.getMapKnowledgeBase().getArrayMap());}
+                    else {
+                        Competition.simulatorMapPanel.updateMap(robot.getMapKnowledgeBase().getArrayMap());
+                    }
 
 				}
-				
-				/*switch (robot.getDirection().getDirection()) {
-				case Direction.UP:
-					hereNext = PointManager.getPoint(here.gridX, here.gridY+1);
-					hereLeft = PointManager.getPoint(here.gridX-1, here.gridY);
-					hereRight = PointManager.getPoint(here.gridX + 1, here.gridY);
-					if (hereNext.robotMovable(map)) {
-						followWallPath.push(here);
-						followWallPath.push(hereNext);
-                        if (Config.Competition) {
-                            Competition.simulatorMapPanel.updatePath(followWallPath);
-                        } else {
-						Simulator.simulatorMapPanel.updatePath(followWallPath); }
-						here = hereNext;
-						robot.moveForwardByOneStep(true);
-					} else if (hereLeft.robotMovable(map)) {
-						robot.turnLeft(true);
-					} else if (hereRight.robotMovable(map)) {
-						robot.turnRight(true);
-					} else {
-						here = followWallPath.pop();
-                        if (!Config.Competition) {
-						    Simulator.simulatorMapPanel.updatePath(followWallPath);
-                        } else {
-                            Competition.simulatorMapPanel.updatePath(followWallPath);
-                        }
-						int xDiff, yDiff;
-						xDiff = here.gridX - robot.getCurrentLocation().gridX;
-						yDiff = here.gridY - robot.getCurrentLocation().gridY;
-						if (xDiff > 0) {
-							robot.turnEast(true);
-						} else if (xDiff < 0) {
-							robot.turnWest(true);
-						} else if (yDiff > 0) {
-							robot.turnNorth(true);
-						} else if (yDiff < 0) {
-							robot.turnSouth(true);
-						}
-						robot.jumpToPoint(here.gridX, here.gridY, true);
-					}
-					robot.updateRobotLoc();
-					robot.getSensors().perceptEnvironment();
-                    if (Config.Competition){
-                        Competition.simulatorMapPanel.updateMap(robot.getMapKnowledgeBase().getArrayMap());
-                    } else {
-					Simulator.simulatorMapPanel.updateMap(robot.getMapKnowledgeBase().getArrayMap()); }
-					break;
-				case Direction.DOWN:
-					break;
-				case Direction.LEFT:
-					break;
-				case Direction.RIGHT:
-					break;
-				}*/
 				
 			}
 		}

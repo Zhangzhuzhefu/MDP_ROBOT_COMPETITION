@@ -350,21 +350,36 @@ public class Communicator extends VirtualCommunicator {
                     String usc = jsonObject.get("usc").toString();
                     String irl = jsonObject.get("irl").toString();
                     String irr = jsonObject.get("irr").toString();
-
-                    nUs[0] = Integer.parseInt(usl);
-                    nUs[1] = Integer.parseInt(usc);
-                    nUs[2] = Integer.parseInt(usr);
                     
-                    for (int i=0; i<3; i++){
-                    	nUs[i] = roundingToTen(nUs[i]); 
+                    if (Config.twoBytwo) {
+                    	nUs[0] = Integer.parseInt(usl);
+                        nUs[1] = Integer.parseInt(usc);
+                        nUs[2] = Integer.parseInt(usr);
+                        
+						nUs[0] = roundingToTen(nUs[0], true) / 10;
+						nUs[1] = roundingToTen(nUs[1], false) / 10;
+						nUs[2] = roundingToTen(nUs[2], true) / 10;
+
+						nLs[0] = Integer.parseInt(irl) ;
+						nLs[0] = roundingToTen(nLs[0], true) / 10;
+
+						nRs[0] = Integer.parseInt(irr);
+						nRs[0] = roundingToTen(nRs[0], true) / 10;
+                    } else {
+                    	nUs[0] = Integer.parseInt(usl)-5;
+                        nUs[1] = Integer.parseInt(usc)-5;
+                        nUs[2] = Integer.parseInt(usr)-5;
+                        
+						nUs[0] = roundingToTen(nUs[0], true) / 10;
+						nUs[1] = roundingToTen(nUs[1], false) / 10;
+						nUs[2] = roundingToTen(nUs[2], true) / 10;
+
+						nLs[0] = Integer.parseInt(irl) - 5;
+						nLs[0] = roundingToTen(nLs[0], true) / 10;
+
+						nRs[0] = Integer.parseInt(irr) - 5;
+						nRs[0] = roundingToTen(nRs[0], true) / 10;
                     }
-
-                    nLs[0] = Integer.parseInt(irl);
-                    nLs[0] = roundingToTen(nLs[0]-10);
-                	
-                    nRs[0] = Integer.parseInt(irr);
-                    nRs[0] = roundingToTen(nRs[0]);
-                    
 
                     if ( nUs[0]<0 || nUs[1]<0 || nUs[2]<0 || nLs[0]<0 || nRs[0]<0
                     		
@@ -407,8 +422,15 @@ public class Communicator extends VirtualCommunicator {
 
     }
 
-    public int roundingToTen(int a){
-    	if (a>30 || a<0) return 30;
+    public int roundingToTen(int a, boolean isInfrared){
+    	
+    	if (isInfrared){
+    		if (a>30 || a<0) 
+    			return 30;
+    	}else {
+    		if (a>150 || a<0)
+    			return 150;
+    	}
     	int offSet = a%10;
     	if (offSet<=5) {
     		a -= offSet; 
@@ -426,11 +448,12 @@ public class Communicator extends VirtualCommunicator {
         Config.autoUpdate = false;
     }
 
+    public static void getSensorValue(){
+    	writeCommandToArduino("s");
+    }
+
     @Override
     public int[] ultraSonic() {
-        int [] detectInt;
-        detectInt = uS;
-
         synchronized (turn){
         try{
             System.out.println("Communicator: I am waiting");

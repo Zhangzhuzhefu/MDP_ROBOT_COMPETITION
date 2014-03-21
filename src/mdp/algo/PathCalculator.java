@@ -17,6 +17,7 @@ public class PathCalculator {
 	Stack <Point> aRandomPath; //initialised as an empty stack Mark maze[here] as visited;
 	Stack <Point> shortestPath;
 	Stack <Point> fastestPath;
+	Stack <Point> fastestPathBacktoStart;
 	// the set of vertices whose shortest paths from the source node have
 	// already been determined
 	boolean[][] determinedPointSet;
@@ -26,6 +27,9 @@ public class PathCalculator {
 	int[][] distance;
 	
 	public PathCalculator() {
+		if (!Config.twoBytwo) {
+			destination = ArenaMap.END_POINT3by3;
+		}
 		aRandomPath = new Stack<Point>();
 		shortestPath = new Stack<Point>();
 		fastestPath = new Stack<Point>();

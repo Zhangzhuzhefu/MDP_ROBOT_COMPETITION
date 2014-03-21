@@ -29,10 +29,21 @@ public class Point {
 	}
 	
 	public boolean robotMovable(int[][] map){
-		return (map[this.gridX-1][this.gridY-1]==ArenaMap.EMP
-				&& map[this.gridX-1][this.gridY-2]==ArenaMap.EMP
-				&& map[this.gridX-2][this.gridY-1]==ArenaMap.EMP
-				&& map[this.gridX-2][this.gridY-2]==ArenaMap.EMP);
+		if (Config.twoBytwo)
+			return (map[this.gridX - 1][this.gridY - 1] == ArenaMap.EMP
+					&& map[this.gridX - 1][this.gridY - 2] == ArenaMap.EMP
+					&& map[this.gridX - 2][this.gridY - 1] == ArenaMap.EMP 
+					&& map[this.gridX - 2][this.gridY - 2] == ArenaMap.EMP);
+		else
+			return (map[this.gridX - 1][this.gridY - 1] == ArenaMap.EMP
+					&& map[this.gridX - 1][this.gridY - 2] == ArenaMap.EMP
+					&& map[this.gridX - 2][this.gridY - 1] == ArenaMap.EMP
+					&& map[this.gridX - 2][this.gridY - 2] == ArenaMap.EMP
+					&& map[this.gridX][this.gridY] == ArenaMap.EMP
+					&& map[this.gridX - 1][this.gridY] == ArenaMap.EMP
+					&& map[this.gridX - 2][this.gridY] == ArenaMap.EMP
+					&& map[this.gridX][this.gridY - 1] == ArenaMap.EMP 
+					&& map[this.gridX][this.gridY - 2] == ArenaMap.EMP);
 	}
 	
 	private void initNeighbors(){

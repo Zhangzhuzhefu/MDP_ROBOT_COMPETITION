@@ -198,7 +198,11 @@ public class Robot {
 	}
 	
 	public void jumpToPoint(int x, int y, boolean delay){
-		currentLocation = PointManager.getPoint(x,y);
+		if (Config.Simulator){
+			currentLocation = PointManager.getPoint(x, y);
+		} else {
+			Communicator.moveFor();
+		}
 		delay(delay);
 	}
 	
@@ -268,6 +272,7 @@ public class Robot {
 	public void turnNorth(boolean delay){
 		switch (direction.getDirection()){
 		case Direction.UP:
+			Communicator.getSensorValue();
 			break;
 		case Direction.DOWN:
 			this.turnBack(delay);
@@ -287,6 +292,7 @@ public class Robot {
 			this.turnBack(delay);
 			break;
 		case Direction.DOWN:
+			Communicator.getSensorValue();
 			break;
 		case Direction.LEFT:
 			this.turnLeft(delay);
@@ -306,6 +312,7 @@ public class Robot {
 			this.turnRight(delay);
 			break;
 		case Direction.LEFT:
+			Communicator.getSensorValue();
 			break;
 		case Direction.RIGHT:
 			this.turnBack(delay);
@@ -325,6 +332,7 @@ public class Robot {
 			this.turnBack(delay);
 			break;
 		case Direction.RIGHT:
+			Communicator.getSensorValue();
 			break;
 		}
 	}

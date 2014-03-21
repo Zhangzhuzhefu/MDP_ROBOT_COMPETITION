@@ -35,7 +35,12 @@ public class Simulator {
 	public void startSimulation() {
 		simulatorMapPanel.updateRobot(ArenaMap.START_POINT,robot.getDirection());
 		simulatorMapPanel.updateMap(robot.getMapKnowledgeBase().getArrayMap());
-		
+//		robot.moveForwardByOneStep(false);robot.moveForwardByOneStep(false);robot.moveForwardByOneStep(false);robot.moveForwardByOneStep(false);
+//		robot.turnRight(false);
+//		robot.moveForwardByOneStep(false);robot.moveForwardByOneStep(false);robot.moveForwardByOneStep(false);robot.moveForwardByOneStep(false);
+//		robot.turnBack(false);
+//		robot.turnBack(false);
+//		robot.getSensors().perceptEnvironment();
 		//make sure perceptron is the same as knowledgebase
 		 //robot.getSensors().setEnvironment(robot.getMapKnowledgeBase().getArrayMap());
 	}

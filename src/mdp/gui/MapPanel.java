@@ -133,38 +133,82 @@ public class MapPanel extends JPanel {
 			if (Config.printBitMapStreamOn) Utils.printExplorationBitMap(map);
 		}
 
-		if (this.path != null) {
-			if (path.size()>2) {
-				for (int k = 0; k < path.size() - 1; k++) {
-					int firstpointx = map[0].length-path.get(k).gridY+1;
-					int firstpointy = path.get(k).gridX-1 ;
-					int secondpointx = map[0].length-path.get(k + 1).gridY+1;
-					int secondpointy = path.get(k + 1).gridX-1;
+		if (Config.twoBytwo) {
+			if (this.path != null) {
+				if (path.size() > 2) {
+					for (int k = 0; k < path.size() - 1; k++) {
+						int firstpointx = map[0].length - path.get(k).gridY + 1;
+						int firstpointy = path.get(k).gridX - 1;
+						int secondpointx = map[0].length - path.get(k + 1).gridY + 1;
+						int secondpointy = path.get(k + 1).gridX - 1;
 
-					ga.setPaint(new Color(139,131,134));
-					ga.setStroke(new BasicStroke(5));
-					ga.drawLine((int) ((firstpointy + 1) * GRID_SIZE),
-							(int) ((firstpointx + 1) * GRID_SIZE),
-							(int) ((secondpointy + 1) * GRID_SIZE),
-							(int) ((secondpointx + 1) * GRID_SIZE));
+						ga.setPaint(new Color(139, 131, 134));
+						ga.setStroke(new BasicStroke(5));
+						ga.drawLine((int) ((firstpointy + 1) * GRID_SIZE),
+								(int) ((firstpointx + 1) * GRID_SIZE),
+								(int) ((secondpointy + 1) * GRID_SIZE),
+								(int) ((secondpointx + 1) * GRID_SIZE));
 
+					}
 				}
 			}
-		}
 
-		if (this.robotPosition != null) {
-			int x = robotPosition.gridX;
-			int y = map[0].length-robotPosition.gridY+2;
-            double d = direction.getDegree();
+			if (this.robotPosition != null) {
+				double x = robotPosition.gridX ;
+				double y = map[0].length - robotPosition.gridY + 2;
+				double d = direction.getDegree();
 
-            AffineTransform at = new AffineTransform();
-            at.translate((int) ((x) * GRID_SIZE),(int) ((y) * GRID_SIZE));
-            at.rotate(-(d+90)/180*Math.PI); // rotation should changed accordingly to the direction
-            at.scale(2 * (double)GRID_SIZE/RobotImage.getHeight(),2 * (double)GRID_SIZE/RobotImage.getWidth());
-            at.translate(-RobotImage.getWidth()/2, -RobotImage.getHeight()/2);
+				AffineTransform at = new AffineTransform();
+				at.translate((int) ((x) * GRID_SIZE), (int) ((y) * GRID_SIZE));
+				at.rotate(-(d + 90) / 180 * Math.PI); // rotation should changed
+														// accordingly to the
+														// direction
+				at.scale(2 * (double) GRID_SIZE / RobotImage.getHeight(), 2
+						* (double) GRID_SIZE / RobotImage.getWidth());
+				at.translate(-RobotImage.getWidth() / 2,
+						-RobotImage.getHeight() / 2);
 
+				((Graphics2D) g).drawImage(RobotImage, at, null);
+			}
+		} else {
+			if (this.path != null) {
+				if (path.size() > 2) {
+					for (int k = 0; k < path.size() - 1; k++) {
+						double firstpointx = map[0].length - path.get(k).gridY
+								+ 1 - 0.5;
+						double firstpointy = path.get(k).gridX - 1 + 0.5;
+						double secondpointx = map[0].length
+								- path.get(k + 1).gridY + 1 - 0.5;
+						double secondpointy = path.get(k + 1).gridX - 1 + 0.5;
 
-            ((Graphics2D) g).drawImage(RobotImage, at, null);
+						ga.setPaint(new Color(139, 131, 134));
+						ga.setStroke(new BasicStroke(5));
+						ga.drawLine((int) ((firstpointy + 1) * GRID_SIZE),
+								(int) ((firstpointx + 1) * GRID_SIZE),
+								(int) ((secondpointy + 1) * GRID_SIZE),
+								(int) ((secondpointx + 1) * GRID_SIZE));
+
+					}
+				}
+			}
+
+			if (this.robotPosition != null) {
+				double x = robotPosition.gridX + 0.5;
+				double y = map[0].length - robotPosition.gridY + 1.5;
+				double d = direction.getDegree();
+
+				AffineTransform at = new AffineTransform();
+				at.translate((int) ((x) * GRID_SIZE), (int) ((y) * GRID_SIZE));
+				at.rotate(-(d + 90) / 180 * Math.PI); // rotation should changed
+														// accordingly to the
+														// direction
+				at.scale(2 * (double) GRID_SIZE / RobotImage.getHeight(), 2
+						* (double) GRID_SIZE / RobotImage.getWidth());
+				at.translate(-RobotImage.getWidth() / 2,
+						-RobotImage.getHeight() / 2);
+
+				((Graphics2D) g).drawImage(RobotImage, at, null);
+			}
 		}
 
 	}

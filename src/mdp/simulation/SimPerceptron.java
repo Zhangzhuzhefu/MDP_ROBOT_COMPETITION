@@ -29,73 +29,165 @@ public class SimPerceptron{
 		Point curLoc = robot.getCurrentLocation();
 		int [] uInt =communicator.ultraSonic(); 
 		int ulLeft =  uInt[0];
-		//int ulCenter = uInt[1]; 
+		int ulCenter = uInt[1]; 
 		int ulRight = uInt[2]; 
 		int farFront;
 		
 		switch (robot.getDirection().getDirection()) {
 		case Direction.UP:
-			farFront = Math.min(Config.FrontSensorDetectDist, ulLeft);
-			for (int i=0; i<farFront; i++){
-				environment[curLoc.gridX-1-1][curLoc.gridY+i]=ArenaMap.EMP;
-			}
-			if (farFront<Config.FrontSensorDetectDist){
-				environment[curLoc.gridX-1-1][curLoc.gridY+ulLeft]=ArenaMap.OBS;
-			}
-			farFront = Math.min(Config.FrontSensorDetectDist, ulRight);
-			for (int i=0; i<farFront; i++){
-				environment[curLoc.gridX-1][curLoc.gridY+i]=ArenaMap.EMP;
-			}
-			if (farFront<Config.FrontSensorDetectDist){
-				environment[curLoc.gridX-1][curLoc.gridY+ulRight]=ArenaMap.OBS;
+			farFront = Math.min(Config.InfraRedDetectDist, ulLeft);
+			if (Config.twoBytwo) {
+				for (int i = 0; i < farFront; i++) {
+					environment[curLoc.gridX - 1 - 1][curLoc.gridY + i] = ArenaMap.EMP;
+				}
+				if (farFront < Config.InfraRedDetectDist) {
+					environment[curLoc.gridX - 1 - 1][curLoc.gridY + ulLeft] = ArenaMap.OBS;
+				}
+				farFront = Math.min(Config.InfraRedDetectDist, ulRight);
+				for (int i = 0; i < farFront; i++) {
+					environment[curLoc.gridX - 1][curLoc.gridY + i] = ArenaMap.EMP;
+				}
+				if (farFront < Config.InfraRedDetectDist) {
+					environment[curLoc.gridX - 1][curLoc.gridY + ulRight] = ArenaMap.OBS;
+				}
+			} else {
+				for (int i = 0; i < farFront; i++) {
+					environment[curLoc.gridX - 1 - 1][curLoc.gridY + i+1] = ArenaMap.EMP;
+				}
+				if (farFront < Config.InfraRedDetectDist) {
+					environment[curLoc.gridX - 1 - 1][curLoc.gridY + ulLeft+1] = ArenaMap.OBS;
+				}
+				farFront = Math.min(Config.UltrasonicDetectDist, ulCenter);
+				for (int i = 0; i < farFront; i++) {
+					environment[curLoc.gridX - 1][curLoc.gridY + i+1] = ArenaMap.EMP;
+				}
+				if (farFront < Config.UltrasonicDetectDist) {
+					environment[curLoc.gridX - 1][curLoc.gridY + ulCenter+1] = ArenaMap.OBS;
+				}
+				farFront = Math.min(Config.InfraRedDetectDist, ulRight);
+				for (int i = 0; i < farFront; i++) {
+					environment[curLoc.gridX][curLoc.gridY + i+1] = ArenaMap.EMP;
+				}
+				if (farFront < Config.InfraRedDetectDist) {
+					environment[curLoc.gridX][curLoc.gridY + ulRight+1] = ArenaMap.OBS;
+				}
 			}
 			break;
 		case Direction.DOWN:
-			farFront = Math.min(Config.FrontSensorDetectDist, ulLeft);
-			for (int i=0; i<farFront; i++){
-				environment[curLoc.gridX-1][curLoc.gridY-i-3]=ArenaMap.EMP;
-			}
-			if (farFront<Config.FrontSensorDetectDist){
-				environment[curLoc.gridX-1][curLoc.gridY-ulLeft-3]=ArenaMap.OBS;
-			}
-			farFront = Math.min(Config.FrontSensorDetectDist, ulRight);
-			for (int i=0; i<farFront; i++){
-				environment[curLoc.gridX-2][curLoc.gridY-i-3]=ArenaMap.EMP;
-			}
-			if (farFront<Config.FrontSensorDetectDist){
-				environment[curLoc.gridX-2][curLoc.gridY-ulRight-3]=ArenaMap.OBS;
+			farFront = Math.min(Config.InfraRedDetectDist, ulLeft);
+			if (Config.twoBytwo) {
+				for (int i = 0; i < farFront; i++) {
+					environment[curLoc.gridX - 1][curLoc.gridY - i - 3] = ArenaMap.EMP;
+				}
+				if (farFront < Config.InfraRedDetectDist) {
+					environment[curLoc.gridX - 1][curLoc.gridY - ulLeft - 3] = ArenaMap.OBS;
+				}
+				farFront = Math.min(Config.InfraRedDetectDist, ulRight);
+				for (int i = 0; i < farFront; i++) {
+					environment[curLoc.gridX - 2][curLoc.gridY - i - 3] = ArenaMap.EMP;
+				}
+				if (farFront < Config.InfraRedDetectDist) {
+					environment[curLoc.gridX - 2][curLoc.gridY - ulRight - 3] = ArenaMap.OBS;
+				}
+			} else {
+				for (int i = 0; i < farFront; i++) {
+					environment[curLoc.gridX - 0][curLoc.gridY - i - 3] = ArenaMap.EMP;
+				}
+				if (farFront < Config.InfraRedDetectDist) {
+					environment[curLoc.gridX - 0][curLoc.gridY - ulLeft - 3] = ArenaMap.OBS;
+				}
+				farFront = Math.min(Config.UltrasonicDetectDist, ulCenter);
+				for (int i = 0; i < farFront; i++) {
+					environment[curLoc.gridX - 1][curLoc.gridY - i - 3] = ArenaMap.EMP;
+				}
+				if (farFront < Config.UltrasonicDetectDist) {
+					environment[curLoc.gridX - 1][curLoc.gridY - ulCenter - 3] = ArenaMap.OBS;
+				}
+				farFront = Math.min(Config.InfraRedDetectDist, ulRight);
+				for (int i = 0; i < farFront; i++) {
+					environment[curLoc.gridX - 2][curLoc.gridY - i - 3] = ArenaMap.EMP;
+				}
+				if (farFront < Config.InfraRedDetectDist) {
+					environment[curLoc.gridX - 2][curLoc.gridY - ulRight - 3] = ArenaMap.OBS;
+				}
 			}
 			break;
 		case Direction.LEFT:
-			farFront = Math.min(Config.FrontSensorDetectDist, ulLeft);
-			for (int i=0; i<farFront; i++){
-				environment[curLoc.gridX-2-i][curLoc.gridY-1-1]=ArenaMap.EMP;
-			}
-			if (farFront<Config.FrontSensorDetectDist){
-				environment[curLoc.gridX-2-ulLeft][curLoc.gridY-1-1]=ArenaMap.OBS;
-			}
-			farFront = Math.min(Config.FrontSensorDetectDist, ulRight);
-			for (int i=0; i<farFront; i++){
-				environment[curLoc.gridX-2-i][curLoc.gridY-1]=ArenaMap.EMP;
-			}
-			if (farFront<Config.FrontSensorDetectDist){
-				environment[curLoc.gridX-2-ulRight][curLoc.gridY-1]=ArenaMap.OBS;
+			farFront = Math.min(Config.InfraRedDetectDist, ulLeft);
+			if (Config.twoBytwo) {
+				for (int i = 0; i < farFront; i++) {
+					environment[curLoc.gridX - 2 - i][curLoc.gridY - 1 - 1] = ArenaMap.EMP;
+				}
+				if (farFront < Config.InfraRedDetectDist) {
+					environment[curLoc.gridX - 2 - ulLeft][curLoc.gridY - 1 - 1] = ArenaMap.OBS;
+				}
+				farFront = Math.min(Config.InfraRedDetectDist, ulRight);
+				for (int i = 0; i < farFront; i++) {
+					environment[curLoc.gridX - 2 - i][curLoc.gridY - 1] = ArenaMap.EMP;
+				}
+				if (farFront < Config.InfraRedDetectDist) {
+					environment[curLoc.gridX - 2 - ulRight][curLoc.gridY - 1] = ArenaMap.OBS;
+				}
+			} else {
+				for (int i = 0; i < farFront; i++) {
+					environment[curLoc.gridX - 2 - i][curLoc.gridY - 1 - 1] = ArenaMap.EMP;
+				}
+				if (farFront < Config.InfraRedDetectDist) {
+					environment[curLoc.gridX - 2 - ulLeft][curLoc.gridY - 1 - 1] = ArenaMap.OBS;
+				}
+				farFront = Math.min(Config.UltrasonicDetectDist, ulCenter);
+				for (int i = 0; i < farFront; i++) {
+					environment[curLoc.gridX - 2 - i][curLoc.gridY - 1] = ArenaMap.EMP;
+				}
+				if (farFront < Config.UltrasonicDetectDist) {
+					environment[curLoc.gridX - 2 - ulCenter][curLoc.gridY - 1] = ArenaMap.OBS;
+				}
+				farFront = Math.min(Config.InfraRedDetectDist, ulRight);
+				for (int i = 0; i < farFront; i++) {
+					environment[curLoc.gridX - 2 - i][curLoc.gridY] = ArenaMap.EMP;
+				}
+				if (farFront < Config.InfraRedDetectDist) {
+					environment[curLoc.gridX - 2 - ulRight][curLoc.gridY] = ArenaMap.OBS;
+				}
 			}
 			break;
 		case Direction.RIGHT:
-			farFront = Math.min(Config.FrontSensorDetectDist, ulLeft);
-			for (int i=0; i<farFront; i++){
-				environment[curLoc.gridX+i][curLoc.gridY-1]=ArenaMap.EMP;
-			}
-			if (farFront<Config.FrontSensorDetectDist){
-				environment[curLoc.gridX+ulLeft][curLoc.gridY-1]=ArenaMap.OBS;
-			}
-			farFront = Math.min(Config.FrontSensorDetectDist, ulRight);
-			for (int i=0; i<farFront; i++){
-				environment[curLoc.gridX+i][curLoc.gridY-1-1]=ArenaMap.EMP;
-			}
-			if (farFront<Config.FrontSensorDetectDist){
-				environment[curLoc.gridX+ulRight][curLoc.gridY-1-1]=ArenaMap.OBS;
+			farFront = Math.min(Config.InfraRedDetectDist, ulLeft);
+			if (Config.twoBytwo) {
+				for (int i = 0; i < farFront; i++) {
+					environment[curLoc.gridX + i][curLoc.gridY - 1] = ArenaMap.EMP;
+				}
+				if (farFront < Config.InfraRedDetectDist) {
+					environment[curLoc.gridX + ulLeft][curLoc.gridY - 1] = ArenaMap.OBS;
+				}
+				farFront = Math.min(Config.InfraRedDetectDist, ulRight);
+				for (int i = 0; i < farFront; i++) {
+					environment[curLoc.gridX + i][curLoc.gridY - 1 - 1] = ArenaMap.EMP;
+				}
+				if (farFront < Config.InfraRedDetectDist) {
+					environment[curLoc.gridX + ulRight][curLoc.gridY - 1 - 1] = ArenaMap.OBS;
+				}
+			} else {
+				for (int i = 0; i < farFront; i++) {
+					environment[curLoc.gridX + i + 1][curLoc.gridY] = ArenaMap.EMP;
+				}
+				if (farFront < Config.InfraRedDetectDist) {
+					environment[curLoc.gridX + ulLeft + 1][curLoc.gridY] = ArenaMap.OBS;
+				}
+				farFront = Math.min(Config.UltrasonicDetectDist, ulCenter);
+				for (int i = 0; i < farFront; i++) {
+					environment[curLoc.gridX + i + 1][curLoc.gridY - 1] = ArenaMap.EMP;
+				}
+				if (farFront < Config.UltrasonicDetectDist) {
+					environment[curLoc.gridX + ulCenter + 1][curLoc.gridY - 1] = ArenaMap.OBS;
+				}
+				farFront = Math.min(Config.InfraRedDetectDist, ulRight);
+				for (int i = 0; i < farFront; i++) {
+					environment[curLoc.gridX + i + 1][curLoc.gridY - 1 - 1 ] = ArenaMap.EMP;
+				}
+				if (farFront < Config.InfraRedDetectDist) {
+					environment[curLoc.gridX + ulRight + 1][curLoc.gridY - 1 - 1] = ArenaMap.OBS;
+				}
 			}
 			break;
 		}
@@ -109,39 +201,68 @@ public class SimPerceptron{
 		
 		switch (robot.getDirection().getDirection()) {
 		case Direction.UP:
-			farFront = Math.min(Config.SideSensorDetectDist, uInt);
-			for (int i=0; i<farFront; i++){
-				environment[curLoc.gridX-1-1-1-i][curLoc.gridY-1]=ArenaMap.EMP;
+			farFront = Math.min(Config.InfraRedDetectDist, uInt);
+			if (Config.twoBytwo) {
+				for (int i = 0; i < farFront; i++) {
+					environment[curLoc.gridX - 1 - 1 - 1 - i][curLoc.gridY - 1] = ArenaMap.EMP;
+				}
+				if (farFront < Config.InfraRedDetectDist) {
+					environment[curLoc.gridX - 1 - 1 - 1 - uInt][curLoc.gridY - 1] = ArenaMap.OBS;
+				}
 			}
-			if (farFront<Config.SideSensorDetectDist){
-				environment[curLoc.gridX-1-1-1-uInt][curLoc.gridY-1]=ArenaMap.OBS;
+			else {
+				for (int i = 0; i < farFront; i++) {
+					environment[curLoc.gridX - 1 - 1 - 1 - i][curLoc.gridY] = ArenaMap.EMP;
+				}
+				if (farFront < Config.InfraRedDetectDist) {
+					environment[curLoc.gridX - 1 - 1 - 1 - uInt][curLoc.gridY] = ArenaMap.OBS;
+				}
 			}
 			break;
 		case Direction.DOWN:
-			farFront = Math.min(Config.SideSensorDetectDist, uInt);
-			for (int i=0; i<farFront; i++){
-				environment[curLoc.gridX+i][curLoc.gridY-2]=ArenaMap.EMP;
-			}
-			if (farFront<Config.SideSensorDetectDist){
-				environment[curLoc.gridX+uInt][curLoc.gridY-2]=ArenaMap.OBS;
+			farFront = Math.min(Config.InfraRedDetectDist, uInt);
+			if (Config.twoBytwo) {
+				for (int i = 0; i < farFront; i++) {
+					environment[curLoc.gridX + i][curLoc.gridY - 2] = ArenaMap.EMP;
+				}
+				if (farFront < Config.InfraRedDetectDist) {
+					environment[curLoc.gridX + uInt][curLoc.gridY - 2] = ArenaMap.OBS;
+				}
+			} else {
+				for (int i = 0; i < farFront; i++) {
+					environment[curLoc.gridX + i + 1][curLoc.gridY - 2] = ArenaMap.EMP;
+				}
+				if (farFront < Config.InfraRedDetectDist) {
+					environment[curLoc.gridX + uInt + 1][curLoc.gridY - 2] = ArenaMap.OBS;
+				}
 			}
 			break;
 		case Direction.LEFT:
-			farFront = Math.min(Config.SideSensorDetectDist, uInt);
+			farFront = Math.min(Config.InfraRedDetectDist, uInt);
 			for (int i=0; i<farFront; i++){
 				environment[curLoc.gridX-2][curLoc.gridY-3-i]=ArenaMap.EMP;
 			}
-			if (farFront<Config.SideSensorDetectDist){
+			if (farFront<Config.InfraRedDetectDist){
 				environment[curLoc.gridX-2][curLoc.gridY-3-uInt]=ArenaMap.OBS;
 			}
 			break;
 		case Direction.RIGHT:
-			farFront = Math.min(Config.SideSensorDetectDist, uInt);
-			for (int i=0; i<farFront; i++){
-				environment[curLoc.gridX-1][curLoc.gridY+i]=ArenaMap.EMP;
-			}
-			if (farFront<Config.SideSensorDetectDist){
-				environment[curLoc.gridX-1][curLoc.gridY+uInt]=ArenaMap.OBS;
+			if (Config.twoBytwo) {
+				farFront = Math.min(Config.InfraRedDetectDist, uInt);
+				for (int i = 0; i < farFront; i++) {
+					environment[curLoc.gridX - 1][curLoc.gridY + i] = ArenaMap.EMP;
+				}
+				if (farFront < Config.InfraRedDetectDist) {
+					environment[curLoc.gridX - 1][curLoc.gridY + uInt] = ArenaMap.OBS;
+				}
+			} else {
+				farFront = Math.min(Config.InfraRedDetectDist, uInt);
+				for (int i = 0; i < farFront; i++) {
+					environment[curLoc.gridX ][curLoc.gridY + i + 1] = ArenaMap.EMP;
+				}
+				if (farFront < Config.InfraRedDetectDist) {
+					environment[curLoc.gridX ][curLoc.gridY + uInt + 1] = ArenaMap.OBS;
+				}
 			}
 			break;
 		}
@@ -155,39 +276,77 @@ public class SimPerceptron{
 		
 		switch (robot.getDirection().getDirection()) {
 		case Direction.UP:
-			farFront = Math.min(Config.SideSensorDetectDist, uInt);
-			for (int i=0; i<farFront; i++){
-				environment[curLoc.gridX+i][curLoc.gridY-1]=ArenaMap.EMP;
-			}
-			if (farFront<Config.SideSensorDetectDist){
-				environment[curLoc.gridX+uInt][curLoc.gridY-1]=ArenaMap.OBS;
+			farFront = Math.min(Config.InfraRedDetectDist, uInt);
+			if (Config.twoBytwo) {
+				for (int i = 0; i < farFront; i++) {
+					environment[curLoc.gridX + i][curLoc.gridY - 1] = ArenaMap.EMP;
+				}
+				if (farFront < Config.InfraRedDetectDist) {
+					environment[curLoc.gridX + uInt][curLoc.gridY - 1] = ArenaMap.OBS;
+				}
+			} else {
+				for (int i = 0; i < farFront; i++) {
+					environment[curLoc.gridX + i + 1][curLoc.gridY] = ArenaMap.EMP;
+				}
+				if (farFront < Config.InfraRedDetectDist) {
+					environment[curLoc.gridX + uInt + 1][curLoc.gridY] = ArenaMap.OBS;
+				}
 			}
 			break;
 		case Direction.DOWN:
-			farFront = Math.min(Config.SideSensorDetectDist, uInt);
-			for (int i=0; i<farFront; i++){
-				environment[curLoc.gridX-3-i][curLoc.gridY-2]=ArenaMap.EMP;
-			}
-			if (farFront<Config.SideSensorDetectDist){
-				environment[curLoc.gridX-3-uInt][curLoc.gridY-2]=ArenaMap.OBS;
+			farFront = Math.min(Config.InfraRedDetectDist, uInt);
+			if (Config.twoBytwo) {
+				for (int i = 0; i < farFront; i++) {
+					environment[curLoc.gridX - 3 - i][curLoc.gridY - 2] = ArenaMap.EMP;
+				}
+				if (farFront < Config.InfraRedDetectDist) {
+					environment[curLoc.gridX - 3 - uInt][curLoc.gridY - 2] = ArenaMap.OBS;
+				}
+			} else {
+				for (int i = 0; i < farFront; i++) {
+					environment[curLoc.gridX - 3 - i][curLoc.gridY - 2] = ArenaMap.EMP;
+				}
+				if (farFront < Config.InfraRedDetectDist) {
+					environment[curLoc.gridX - 3 - uInt][curLoc.gridY - 2] = ArenaMap.OBS;
+				}
 			}
 			break;
 		case Direction.LEFT:
-			farFront = Math.min(Config.SideSensorDetectDist, uInt);
-			for (int i=0; i<farFront; i++){
-				environment[curLoc.gridX-2][curLoc.gridY+i]=ArenaMap.EMP;
-			}
-			if (farFront<Config.SideSensorDetectDist){
-				environment[curLoc.gridX-2][curLoc.gridY+uInt]=ArenaMap.OBS;
+			if (Config.twoBytwo) {
+				farFront = Math.min(Config.InfraRedDetectDist, uInt);
+				for (int i = 0; i < farFront; i++) {
+					environment[curLoc.gridX - 2][curLoc.gridY + i] = ArenaMap.EMP;
+				}
+				if (farFront < Config.InfraRedDetectDist) {
+					environment[curLoc.gridX - 2][curLoc.gridY + uInt] = ArenaMap.OBS;
+				}
+			} else {
+				farFront = Math.min(Config.InfraRedDetectDist, uInt);
+				for (int i = 0; i < farFront; i++) {
+					environment[curLoc.gridX - 2][curLoc.gridY + i + 1] = ArenaMap.EMP;
+				}
+				if (farFront < Config.InfraRedDetectDist) {
+					environment[curLoc.gridX - 2][curLoc.gridY + uInt + 1] = ArenaMap.OBS;
+				}
 			}
 			break;
 		case Direction.RIGHT:
-			farFront = Math.min(Config.SideSensorDetectDist, uInt);
-			for (int i=0; i<farFront; i++){
-				environment[curLoc.gridX-1][curLoc.gridY-3-i]=ArenaMap.EMP;
-			}
-			if (farFront<Config.SideSensorDetectDist){
-				environment[curLoc.gridX-1][curLoc.gridY-3-uInt]=ArenaMap.OBS;
+			if (Config.twoBytwo) {
+				farFront = Math.min(Config.InfraRedDetectDist, uInt);
+				for (int i = 0; i < farFront; i++) {
+					environment[curLoc.gridX - 1][curLoc.gridY - 3 - i] = ArenaMap.EMP;
+				}
+				if (farFront < Config.InfraRedDetectDist) {
+					environment[curLoc.gridX - 1][curLoc.gridY - 3 - uInt] = ArenaMap.OBS;
+				}
+			} else {
+				farFront = Math.min(Config.InfraRedDetectDist, uInt);
+				for (int i = 0; i < farFront; i++) {
+					environment[curLoc.gridX][curLoc.gridY - 3 - i] = ArenaMap.EMP;
+				}
+				if (farFront < Config.InfraRedDetectDist) {
+					environment[curLoc.gridX][curLoc.gridY - 3 - uInt] = ArenaMap.OBS;
+				}
 			}
 			break;
 		}
