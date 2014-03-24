@@ -38,7 +38,7 @@ public class PathCalculator {
 		distance = new int[ArenaMapPointMAXN][ArenaMapPointMAXM];
 	}
 	
-	public boolean findFastestPath(){
+	public boolean findFastestPath(Point des){
 		
 		//if (validatePath(shortestPath)) return true;
 		
@@ -115,10 +115,7 @@ public class PathCalculator {
 							> (distance[u.gridX][u.gridY] 
 							+ u.gridDistanceTo(v) 
 							+ turningPenalty)) {
-						if (map[v.gridX - 1][v.gridY - 1] == ArenaMap.EMP
-								&& map[v.gridX - 2][v.gridY - 1] == ArenaMap.EMP
-								&& map[v.gridX - 1][v.gridY - 2] == ArenaMap.EMP
-								&& map[v.gridX - 2][v.gridY - 2] == ArenaMap.EMP) {
+						if (v.robotMovable(map)) {
 							queue.remove(v);
 							distance[v.gridX][v.gridY] = distance[u.gridX][u.gridY]
 									+ u.gridDistanceTo(v)+turningPenalty;
@@ -132,8 +129,12 @@ public class PathCalculator {
 				}
 			}
 		}
-		
-		Point a = destination;
+		Point a;
+		if (des==null) {
+			a = destination;
+		} else {
+			a = des;
+		}
 		while (a!=null && a != start) {
 			if (Config.debugOn)
 				System.out.println("predecessors to stack "
@@ -145,12 +146,18 @@ public class PathCalculator {
 
 		if (Config.debugOn) 
 			System.out.println("Found shortest path of length: "+fastestPath.size());
-		if (validatePath(fastestPath))
+		
+		if (des==null) {
+			if (validatePath(fastestPath))
+				return true;
+			else {
+				fastestPath.clear();
+				return false;
+			}
+		} else {
 			return true;
-		else {
-			fastestPath.clear();
-			return false;
 		}
+		
 	}
 	
 public boolean findShortestPath(){
@@ -188,10 +195,7 @@ public boolean findShortestPath(){
 				if (v != null) {
 					// System.out.println("distance["+u.gridX+"]["+u.gridY+"]+u.gridDistanceTo("+v.gridX+" "+v.gridY+")"+distance[u.gridX][u.gridY]);
 					if (distance[v.gridX][v.gridY] > (distance[u.gridX][u.gridY] + u.gridDistanceTo(v))) {
-						if (map[v.gridX - 1][v.gridY - 1] == ArenaMap.EMP
-								&& map[v.gridX - 2][v.gridY - 1] == ArenaMap.EMP
-								&& map[v.gridX - 1][v.gridY - 2] == ArenaMap.EMP
-								&& map[v.gridX - 2][v.gridY - 2] == ArenaMap.EMP) {
+						if (v.robotMovable(map)) {
 							queue.remove(v);
 							distance[v.gridX][v.gridY] = distance[u.gridX][u.gridY]
 									+ u.gridDistanceTo(v);
@@ -243,10 +247,7 @@ public boolean findShortestPath(){
 				if (here.getNeighbors(i) != null) {
 					if (!visited[here.getNeighbors(i).gridX][here.getNeighbors(i).gridY]) {
 						//System.out.println("not visited");
-						if (map[here.gridX-1][here.gridY-1]==ArenaMap.EMP && 
-							map[here.gridX-2][here.gridY-1]==ArenaMap.EMP &&
-							map[here.gridX-1][here.gridY-2]==ArenaMap.EMP &&
-							map[here.gridX-2][here.gridY-2]==ArenaMap.EMP) {
+						if (here.robotMovable(map)) {
 							next = i;
 							break;
 						}

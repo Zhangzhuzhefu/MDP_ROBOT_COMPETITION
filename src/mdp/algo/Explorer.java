@@ -399,7 +399,34 @@ public class Explorer {
 				}
 				
 			}
+			//return to start point
+			PathCalculator pathCalculator = new PathCalculator();
+			Stack <Point> returnPsth = null;
+			pathCalculator.setMap(robot.getMapKnowledgeBase().getArrayMap());
+			if(pathCalculator.findFastestPath(robot.getCurrentLocation())){
+				returnPsth = (Stack<Point>) pathCalculator.getFastestPath();
+				if (Config.Simulator) {
+					Simulator.simulatorMapPanel.updatePath(returnPsth);
+				} else {
+					Competition.simulatorMapPanel.updatePath(returnPsth);
+				}
+			}
+			else {
+				if (Config.debugOn)
+					System.out.println("Robot doesn't know how to get back");
+			}
+			//To reverse the returnPath stack
+			Stack <Point> temp = new Stack<Point>();
+			if (returnPsth!=null) {
+				while (!returnPsth.isEmpty()) {
+					temp.push(returnPsth.pop());
+				}
+				returnPsth = temp;
+				robot.setRoute(returnPsth);
+				Simulator.robotManager.robotRun();
+			}
 		}
+		
 	}
 	
 	

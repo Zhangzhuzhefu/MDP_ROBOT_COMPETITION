@@ -12,7 +12,7 @@ public class Config {
 	public static boolean trackingOn = false;
 	public static boolean printBitMapStreamOn = false;
 	public static boolean debugOn = true;
-	public static boolean Simulator = true;
+	public static boolean Simulator = false;
 	public static boolean autoUpdate = true;
     public static boolean race = false;
 	//environment variables
@@ -20,15 +20,15 @@ public class Config {
 	public static final int START_GRID_SIZE = 30;
 	public static final int END_GRID_SIZE = 30;
 	public static final int EPS = 2;//cm
-	public static boolean twoBytwo = true;
+	public static boolean twoBytwo = false;
 	
 	//simulation variables
 	public static final double PERCENTAGEOFEXPLORATION = 1;
 	public static final int PANEL_GRID_SIZE = 35;
 	public static final int[] FRAME_LOCATION ={250, 100, 850, 1050};
 	public static final int[] FRAME_SIZE ={900,1050};
-	public static final long EXP_TIMER_MIN =6;
-	public static final long EXP_TIMER_SEC =30;
+	public static final long EXP_TIMER_MIN =8;
+	public static final long EXP_TIMER_SEC =10;
 
 	//Robot
 	public static final int robotStepsPersecond = 1;

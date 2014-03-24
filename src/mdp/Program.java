@@ -23,4 +23,7 @@ public class Program {
 		    simulator = new Simulator(mainFrame);
 		    simulator.startSimulation();}
 	}
+
+	
+	
 }

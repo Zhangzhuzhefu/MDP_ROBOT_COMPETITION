@@ -63,9 +63,9 @@ public class Robot {
 	public Stack<Point> generateFastestPath(){
         Communicator.startRace();
 		pathCalculator.setMap(getMapKnowledgeBase().getArrayMap());
-		if(pathCalculator.findFastestPath()){
+		if(pathCalculator.findFastestPath(null)){
 			route = (Stack<Point>) pathCalculator.getFastestPath();
-			return pathCalculator.getFastestPath();
+			return route;
 		}
 		else 
 			return null;

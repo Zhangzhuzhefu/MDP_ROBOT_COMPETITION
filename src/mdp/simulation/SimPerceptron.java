@@ -32,7 +32,7 @@ public class SimPerceptron{
 		int ulCenter = uInt[1]; 
 		int ulRight = uInt[2]; 
 		int farFront;
-		
+		int frontWay;
 		switch (robot.getDirection().getDirection()) {
 		case Direction.UP:
 			farFront = Math.min(Config.InfraRedDetectDist, ulLeft);
@@ -51,13 +51,15 @@ public class SimPerceptron{
 					environment[curLoc.gridX - 1][curLoc.gridY + ulRight] = ArenaMap.OBS;
 				}
 			} else {
+				farFront = Math.min(Config.InfraRedDetectDist, ulLeft);
 				for (int i = 0; i < farFront; i++) {
 					environment[curLoc.gridX - 1 - 1][curLoc.gridY + i+1] = ArenaMap.EMP;
 				}
 				if (farFront < Config.InfraRedDetectDist) {
 					environment[curLoc.gridX - 1 - 1][curLoc.gridY + ulLeft+1] = ArenaMap.OBS;
 				}
-				farFront = Math.min(Config.UltrasonicDetectDist, ulCenter);
+				frontWay = ArenaMap.MAXM-2 - robot.getCurrentLocation().gridY;
+				farFront = Math.min(frontWay, Math.min(Config.UltrasonicDetectDist, ulCenter));
 				for (int i = 0; i < farFront; i++) {
 					environment[curLoc.gridX - 1][curLoc.gridY + i+1] = ArenaMap.EMP;
 				}
@@ -96,7 +98,8 @@ public class SimPerceptron{
 				if (farFront < Config.InfraRedDetectDist) {
 					environment[curLoc.gridX - 0][curLoc.gridY - ulLeft - 3] = ArenaMap.OBS;
 				}
-				farFront = Math.min(Config.UltrasonicDetectDist, ulCenter);
+				frontWay = robot.getCurrentLocation().gridY - 3;
+				farFront = Math.min(frontWay, Math.min(Config.UltrasonicDetectDist, ulCenter));
 				for (int i = 0; i < farFront; i++) {
 					environment[curLoc.gridX - 1][curLoc.gridY - i - 3] = ArenaMap.EMP;
 				}
@@ -135,7 +138,8 @@ public class SimPerceptron{
 				if (farFront < Config.InfraRedDetectDist) {
 					environment[curLoc.gridX - 2 - ulLeft][curLoc.gridY - 1 - 1] = ArenaMap.OBS;
 				}
-				farFront = Math.min(Config.UltrasonicDetectDist, ulCenter);
+				frontWay = robot.getCurrentLocation().gridX - 3;
+				farFront = Math.min(frontWay, Math.min(Config.UltrasonicDetectDist, ulCenter));
 				for (int i = 0; i < farFront; i++) {
 					environment[curLoc.gridX - 2 - i][curLoc.gridY - 1] = ArenaMap.EMP;
 				}
@@ -174,7 +178,8 @@ public class SimPerceptron{
 				if (farFront < Config.InfraRedDetectDist) {
 					environment[curLoc.gridX + ulLeft + 1][curLoc.gridY] = ArenaMap.OBS;
 				}
-				farFront = Math.min(Config.UltrasonicDetectDist, ulCenter);
+				frontWay = ArenaMap.MAXN-2 - robot.getCurrentLocation().gridX;
+				farFront = Math.min(frontWay, Math.min(Config.UltrasonicDetectDist, ulCenter));
 				for (int i = 0; i < farFront; i++) {
 					environment[curLoc.gridX + i + 1][curLoc.gridY - 1] = ArenaMap.EMP;
 				}
