@@ -40,6 +40,8 @@ public class Communicator extends VirtualCommunicator {
     public volatile int[] nUs = new int[3];
     public volatile int[] nRs = new int[1];
     final Integer turn = new Integer(0);
+    public static volatile int movedDistance;
+    final static Integer runWait = new Integer(0);
 
 
     public String d;
@@ -311,7 +313,7 @@ public class Communicator extends VirtualCommunicator {
 
     // move a certain distance
     public static void moveInt(int distance){
-        writeCommandToArduino(Integer.toString(distance));
+        writeCommandToArduino(Integer.toString(distance*2));
     }
 
     public static void writeCommandToArduino(String cmd){
@@ -399,7 +401,15 @@ public class Communicator extends VirtualCommunicator {
                     		) {
                     	//Communicator.sensorValue();
                     }
-                    
+
+                    if (!jsonObject.get("dist").toString().equals(" ") && Config.race){
+                        movedDistance = Integer.getInteger(jsonObject.get("dist").toString());
+                        synchronized (runWait){
+                            runWait.notify();
+                        }
+
+                    }
+
                     synchronized (turn){
                         turn.notify();
                     }
@@ -516,6 +526,19 @@ public class Communicator extends VirtualCommunicator {
             }
         }*/
         return nRs[0];//detectInt
+    }
+
+    public static int getMovedDistance(){
+        synchronized (runWait){
+            try{
+                System.out.println("Communicator: I am waiting");
+                runWait.wait();
+                System.out.println("Communicator: finish waiting");
+            } catch (InterruptedException e) {
+                System.err.print(e);
+            }
+        }
+        return movedDistance;
     }
 
 
