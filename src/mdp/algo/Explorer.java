@@ -202,6 +202,7 @@ public class Explorer {
 			}
 			floodFillPath = temp;
 			this.stop();
+			//robot.setTesting(true);
 		}
 	}
 

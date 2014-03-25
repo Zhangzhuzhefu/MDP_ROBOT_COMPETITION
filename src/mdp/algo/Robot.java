@@ -18,7 +18,7 @@ public class Robot {
 	SimPerceptron sensors;
 	Explorer explorer;
 	PathCalculator pathCalculator;
-    private boolean testing = true; // to be removed after changed to (!Config.Simulator)
+    boolean testing = false; // to be removed after changed to (!Config.Simulator)
     private Stack<Point> Newroute;
 	
 	
@@ -64,6 +64,8 @@ public class Robot {
 	public Stack<Point> generateFastestPath(){
         if (!Config.Simulator){
             Communicator.startRace();}
+        //if (!Config.Simulator)
+        	this.setTesting(true);
         pathCalculator.setMap(getMapKnowledgeBase().getArrayMap());
 		if(pathCalculator.findFastestPath(null)){
 			route = (Stack<Point>) pathCalculator.getFastestPath();
@@ -77,6 +79,8 @@ public class Robot {
 	public Stack<Point> generateShortestPath(){
         if (!Config.Simulator){
             Communicator.startRace();}
+      //if (!Config.Simulator) 
+        	this.setTesting(true);
 		pathCalculator.setMap(getMapKnowledgeBase().getArrayMap());
 		if(pathCalculator.findShortestPath()){
 			route = (Stack<Point>) pathCalculator.getShortestPath();
@@ -90,6 +94,8 @@ public class Robot {
 	public Stack<Point> generateRandomPath(){
         if (!Config.Simulator){
             Communicator.startRace();}
+        //if (!Config.Simulator) 
+    		this.setTesting(true);
 		pathCalculator.setMap(this.getMapKnowledgeBase().getArrayMap());
 		if(pathCalculator.findRandomPath()){
 			route = (Stack<Point>) pathCalculator.getRandomPath();
@@ -111,6 +117,7 @@ public class Robot {
 				System.out.println("Robot: Exploring Floodfill");
 			route = explorer.exploreFloodFill(this);
 			if (route!=null) {
+				//testing = true;
 				return route;
 			} else {
 				System.out.println("Robot: Floodfill null route");
@@ -121,6 +128,7 @@ public class Robot {
 				System.out.println("Robot: Exploring Follow Wall");
 			route = explorer.exploreFollowWall(this);
 			if (route!=null) {
+				//testing = true;
 				return route;
 			} else {
 				System.out.println("fallow-wall null route");
@@ -134,36 +142,44 @@ public class Robot {
 	public void move()throws IOException{
         if (!testing){ // to be changed to !Config.Simulator
 
-            if (route!=null && !route.empty() ){
-            if (Config.debugOn) System.out.println("Robot route exists");
-            if (route.peek().sameGridPoint(ArenaMap.END_POINT)){
-                isOnTheWayReturning = true;
-                if (Config.debugOn) System.out.println("isOnTheWayReturning = true");
-            }
-            Point nextLoc = route.peek();;
-            int xDiff, yDiff;
-			xDiff = nextLoc.gridX - currentLocation.gridX;
-			yDiff = nextLoc.gridY - currentLocation.gridY;
-			if (xDiff>0) {
-				this.turnEast(true);
-			} else if (xDiff<0) {
-				this.turnWest(true);
-			} else if (yDiff>0) {
-				this.turnNorth(true);
-			} else if (yDiff<0) {
-				this.turnSouth(true);
+			if (route != null && !route.empty()) {
+				if (Config.debugOn)
+					System.out.println("Robot route exists");
+				if (route.peek().sameGridPoint(ArenaMap.END_POINT)) {
+					isOnTheWayReturning = true;
+					if (Config.debugOn)
+						System.out.println("isOnTheWayReturning = true");
+				}
+				Point nextLoc = route.peek();
+				;
+				int xDiff, yDiff;
+				xDiff = nextLoc.gridX - currentLocation.gridX;
+				yDiff = nextLoc.gridY - currentLocation.gridY;
+				if (xDiff > 0) {
+					this.turnEast(true);
+				} else if (xDiff < 0) {
+					this.turnWest(true);
+				} else if (yDiff > 0) {
+					this.turnNorth(true);
+				} else if (yDiff < 0) {
+					this.turnSouth(true);
+				}
+				currentLocation = route.pop();
+				updateRobotLoc();
+
+			} else {
+				if (Config.debugOn)
+					System.out.println("Robot route is empty..");
+				isMoving = false;
 			}
-            currentLocation = route.pop();
-            updateRobotLoc();
-            
-        } else {
-            if (Config.debugOn) System.out.println("Robot route is empty..");
-            isMoving = false;
-        }
         } else { // if competition or testing
-
-            if (!Newroute.empty() && Newroute != null) {
-
+        	
+            if (Newroute != null && !Newroute.empty() ) {
+            	if (route.peek().sameGridPoint(ArenaMap.END_POINT)) {
+					isOnTheWayReturning = true;
+					if (Config.debugOn)
+						System.out.println("isOnTheWayReturning = true");
+				}
                 Point nextLoc = Newroute.peek();
 
                 int xDiff, yDiff;
@@ -207,7 +223,11 @@ public class Robot {
                 if (Config.debugOn){
                     System.out.println("current location gridX: "+ currentLocation.gridX + "\tgridY: " + currentLocation.gridY);
                 }
-            }
+            } else {
+				if (Config.debugOn)
+					System.out.println("Robot route is empty..");
+				isMoving = false;
+			}
         }
 
     }
@@ -524,5 +544,13 @@ public class Robot {
         }
         return "-1";
     }
+
+	public boolean isTesting() {
+		return testing;
+	}
+
+	private void setTesting(boolean testing) {
+		this.testing = testing;
+	}
 
 }
