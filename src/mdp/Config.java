@@ -20,7 +20,7 @@ public class Config {
 	public static final int START_GRID_SIZE = 30;
 	public static final int END_GRID_SIZE = 30;
 	public static final int EPS = 2;//cm
-	public static boolean twoBytwo = false;
+	public static boolean twoBytwo = true;
 	
 	//simulation variables
 	public static final double PERCENTAGEOFEXPLORATION = 1;

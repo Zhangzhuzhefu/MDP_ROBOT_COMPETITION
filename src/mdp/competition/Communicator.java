@@ -437,7 +437,7 @@ public class Communicator extends VirtualCommunicator {
 
     public int roundingToTen(int a){
     	int offSet = a%10;
-    	if (offSet<5) {
+    	if (offSet<=5) {
     		a -= offSet; 
     	} else {
     		a += 10-offSet;
