@@ -18,7 +18,7 @@ public class Robot {
 	SimPerceptron sensors;
 	Explorer explorer;
 	PathCalculator pathCalculator;
-    boolean testing = false; // to be removed after changed to (!Config.Simulator)
+    boolean afterExploration = false; // to be removed after changed to (!Config.Simulator)
     private Stack<Point> Newroute;
 	
 	
@@ -140,7 +140,7 @@ public class Robot {
     }
 	
 	public void move()throws IOException{
-        if (!testing){ // to be changed to !Config.Simulator
+        if (!afterExploration){ // to be changed to !Config.Simulator
 
 			if (route != null && !route.empty()) {
 				if (Config.debugOn)
@@ -546,11 +546,11 @@ public class Robot {
     }
 
 	public boolean isTesting() {
-		return testing;
+		return afterExploration;
 	}
 
 	private void setTesting(boolean testing) {
-		this.testing = testing;
+		this.afterExploration = testing;
 	}
 
 }

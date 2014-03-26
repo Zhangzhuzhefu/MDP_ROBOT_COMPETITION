@@ -12,7 +12,7 @@ public class Config {
 	public static boolean trackingOn = false;
 	public static boolean printBitMapStreamOn = false;
 	public static boolean debugOn = true;
-	public static boolean Simulator = true;
+	public static boolean Simulator = false;
 	public static boolean autoUpdate = true;
     public static boolean race = false;
 	//environment variables
@@ -39,7 +39,7 @@ public class Config {
 	public static final double endPointY = 210.0;
 	public static final double endPointX3by3 = 150.0;
 	public static final double endPointY3by3 = 200.0;
-	public static final int UltrasonicDetectDist = 15;
+	public static final int LongInfraredDetectDist = 7;
 	public static final int InfraRedDetectDist = 3;
 	//public static final double RobotStartingDirection = 0;//right
 	public static final double RobotStartingDirection = 90;

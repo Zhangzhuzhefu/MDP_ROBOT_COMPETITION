@@ -53,24 +53,30 @@ public class SimPerceptron{
 			} else {
 				farFront = Math.min(Config.InfraRedDetectDist, ulLeft);
 				for (int i = 0; i < farFront; i++) {
+					if (environment[curLoc.gridX - 1 - 1][curLoc.gridY + i+1] == ArenaMap.UNKNOWN)
 					environment[curLoc.gridX - 1 - 1][curLoc.gridY + i+1] = ArenaMap.EMP;
 				}
 				if (farFront < Config.InfraRedDetectDist) {
+					if (environment[curLoc.gridX - 1 - 1][curLoc.gridY + ulLeft+1] == ArenaMap.UNKNOWN)
 					environment[curLoc.gridX - 1 - 1][curLoc.gridY + ulLeft+1] = ArenaMap.OBS;
 				}
 				frontWay = ArenaMap.MAXM-2 - robot.getCurrentLocation().gridY;
-				farFront = Math.min(frontWay, Math.min(Config.UltrasonicDetectDist, ulCenter));
+				farFront = Math.min(frontWay, Math.min(Config.LongInfraredDetectDist, ulCenter));
 				for (int i = 0; i < farFront; i++) {
+					if (environment[curLoc.gridX - 1][curLoc.gridY + i+1] == ArenaMap.UNKNOWN)
 					environment[curLoc.gridX - 1][curLoc.gridY + i+1] = ArenaMap.EMP;
 				}
-				if (farFront < Config.UltrasonicDetectDist) {
+				if (farFront < Config.LongInfraredDetectDist) {
+					if (environment[curLoc.gridX - 1][curLoc.gridY + ulCenter+1] == ArenaMap.UNKNOWN)
 					environment[curLoc.gridX - 1][curLoc.gridY + ulCenter+1] = ArenaMap.OBS;
 				}
 				farFront = Math.min(Config.InfraRedDetectDist, ulRight);
 				for (int i = 0; i < farFront; i++) {
+					if (environment[curLoc.gridX][curLoc.gridY + i+1] == ArenaMap.UNKNOWN)
 					environment[curLoc.gridX][curLoc.gridY + i+1] = ArenaMap.EMP;
 				}
 				if (farFront < Config.InfraRedDetectDist) {
+					if (environment[curLoc.gridX][curLoc.gridY + ulRight+1] == ArenaMap.UNKNOWN)
 					environment[curLoc.gridX][curLoc.gridY + ulRight+1] = ArenaMap.OBS;
 				}
 			}
@@ -93,24 +99,30 @@ public class SimPerceptron{
 				}
 			} else {
 				for (int i = 0; i < farFront; i++) {
+					if (environment[curLoc.gridX - 0][curLoc.gridY - i - 3] == ArenaMap.UNKNOWN)
 					environment[curLoc.gridX - 0][curLoc.gridY - i - 3] = ArenaMap.EMP;
 				}
 				if (farFront < Config.InfraRedDetectDist) {
+					if (environment[curLoc.gridX - 0][curLoc.gridY - ulLeft - 3] == ArenaMap.UNKNOWN)
 					environment[curLoc.gridX - 0][curLoc.gridY - ulLeft - 3] = ArenaMap.OBS;
 				}
 				frontWay = robot.getCurrentLocation().gridY - 3;
-				farFront = Math.min(frontWay, Math.min(Config.UltrasonicDetectDist, ulCenter));
+				farFront = Math.min(frontWay, Math.min(Config.LongInfraredDetectDist, ulCenter));
 				for (int i = 0; i < farFront; i++) {
+					if (environment[curLoc.gridX - 1][curLoc.gridY - i - 3] == ArenaMap.UNKNOWN)
 					environment[curLoc.gridX - 1][curLoc.gridY - i - 3] = ArenaMap.EMP;
 				}
-				if (farFront < Config.UltrasonicDetectDist) {
+				if (farFront < Config.LongInfraredDetectDist) {
+					if (environment[curLoc.gridX - 1][curLoc.gridY - ulCenter - 3] == ArenaMap.UNKNOWN)
 					environment[curLoc.gridX - 1][curLoc.gridY - ulCenter - 3] = ArenaMap.OBS;
 				}
 				farFront = Math.min(Config.InfraRedDetectDist, ulRight);
 				for (int i = 0; i < farFront; i++) {
+					if (environment[curLoc.gridX - 2][curLoc.gridY - i - 3] == ArenaMap.UNKNOWN)
 					environment[curLoc.gridX - 2][curLoc.gridY - i - 3] = ArenaMap.EMP;
 				}
 				if (farFront < Config.InfraRedDetectDist) {
+					if (environment[curLoc.gridX - 2][curLoc.gridY - ulRight - 3] == ArenaMap.UNKNOWN)
 					environment[curLoc.gridX - 2][curLoc.gridY - ulRight - 3] = ArenaMap.OBS;
 				}
 			}
@@ -133,24 +145,30 @@ public class SimPerceptron{
 				}
 			} else {
 				for (int i = 0; i < farFront; i++) {
+					if (environment[curLoc.gridX - 2 - i][curLoc.gridY - 1 - 1] == ArenaMap.UNKNOWN)
 					environment[curLoc.gridX - 2 - i][curLoc.gridY - 1 - 1] = ArenaMap.EMP;
 				}
 				if (farFront < Config.InfraRedDetectDist) {
+					if (environment[curLoc.gridX - 2 - ulLeft][curLoc.gridY - 1 - 1] == ArenaMap.UNKNOWN)
 					environment[curLoc.gridX - 2 - ulLeft][curLoc.gridY - 1 - 1] = ArenaMap.OBS;
 				}
 				frontWay = robot.getCurrentLocation().gridX - 3;
-				farFront = Math.min(frontWay, Math.min(Config.UltrasonicDetectDist, ulCenter));
+				farFront = Math.min(frontWay, Math.min(Config.LongInfraredDetectDist, ulCenter));
 				for (int i = 0; i < farFront; i++) {
+					if (environment[curLoc.gridX - 2 - i][curLoc.gridY - 1] == ArenaMap.UNKNOWN)
 					environment[curLoc.gridX - 2 - i][curLoc.gridY - 1] = ArenaMap.EMP;
 				}
-				if (farFront < Config.UltrasonicDetectDist) {
+				if (farFront < Config.LongInfraredDetectDist) {
+					if (environment[curLoc.gridX - 2 - ulCenter][curLoc.gridY - 1] == ArenaMap.UNKNOWN)
 					environment[curLoc.gridX - 2 - ulCenter][curLoc.gridY - 1] = ArenaMap.OBS;
 				}
 				farFront = Math.min(Config.InfraRedDetectDist, ulRight);
 				for (int i = 0; i < farFront; i++) {
+					if (environment[curLoc.gridX - 2 - i][curLoc.gridY] == ArenaMap.UNKNOWN)
 					environment[curLoc.gridX - 2 - i][curLoc.gridY] = ArenaMap.EMP;
 				}
 				if (farFront < Config.InfraRedDetectDist) {
+					if (environment[curLoc.gridX - 2 - ulRight][curLoc.gridY] == ArenaMap.UNKNOWN)
 					environment[curLoc.gridX - 2 - ulRight][curLoc.gridY] = ArenaMap.OBS;
 				}
 			}
@@ -173,24 +191,30 @@ public class SimPerceptron{
 				}
 			} else {
 				for (int i = 0; i < farFront; i++) {
+					if (environment[curLoc.gridX + i + 1][curLoc.gridY] == ArenaMap.UNKNOWN)
 					environment[curLoc.gridX + i + 1][curLoc.gridY] = ArenaMap.EMP;
 				}
 				if (farFront < Config.InfraRedDetectDist) {
+					if (environment[curLoc.gridX + ulLeft + 1][curLoc.gridY] == ArenaMap.UNKNOWN)
 					environment[curLoc.gridX + ulLeft + 1][curLoc.gridY] = ArenaMap.OBS;
 				}
 				frontWay = ArenaMap.MAXN-2 - robot.getCurrentLocation().gridX;
-				farFront = Math.min(frontWay, Math.min(Config.UltrasonicDetectDist, ulCenter));
+				farFront = Math.min(frontWay, Math.min(Config.LongInfraredDetectDist, ulCenter));
 				for (int i = 0; i < farFront; i++) {
+					if (environment[curLoc.gridX + i + 1][curLoc.gridY - 1] == ArenaMap.UNKNOWN)
 					environment[curLoc.gridX + i + 1][curLoc.gridY - 1] = ArenaMap.EMP;
 				}
-				if (farFront < Config.UltrasonicDetectDist) {
+				if (farFront < Config.LongInfraredDetectDist) {
+					if (environment[curLoc.gridX + ulCenter + 1][curLoc.gridY - 1] == ArenaMap.UNKNOWN)
 					environment[curLoc.gridX + ulCenter + 1][curLoc.gridY - 1] = ArenaMap.OBS;
 				}
 				farFront = Math.min(Config.InfraRedDetectDist, ulRight);
 				for (int i = 0; i < farFront; i++) {
+					if (environment[curLoc.gridX + i + 1][curLoc.gridY - 1 - 1 ] == ArenaMap.UNKNOWN)
 					environment[curLoc.gridX + i + 1][curLoc.gridY - 1 - 1 ] = ArenaMap.EMP;
 				}
 				if (farFront < Config.InfraRedDetectDist) {
+					if (environment[curLoc.gridX + ulRight + 1][curLoc.gridY - 1 - 1] == ArenaMap.UNKNOWN)
 					environment[curLoc.gridX + ulRight + 1][curLoc.gridY - 1 - 1] = ArenaMap.OBS;
 				}
 			}
@@ -217,9 +241,11 @@ public class SimPerceptron{
 			}
 			else {
 				for (int i = 0; i < farFront; i++) {
+					if (environment[curLoc.gridX - 1 - 1 - 1 - i][curLoc.gridY] == ArenaMap.UNKNOWN)
 					environment[curLoc.gridX - 1 - 1 - 1 - i][curLoc.gridY] = ArenaMap.EMP;
 				}
 				if (farFront < Config.InfraRedDetectDist) {
+					if (environment[curLoc.gridX - 1 - 1 - 1 - uInt][curLoc.gridY] == ArenaMap.UNKNOWN)
 					environment[curLoc.gridX - 1 - 1 - 1 - uInt][curLoc.gridY] = ArenaMap.OBS;
 				}
 			}
@@ -235,20 +261,34 @@ public class SimPerceptron{
 				}
 			} else {
 				for (int i = 0; i < farFront; i++) {
+					if (environment[curLoc.gridX + i + 1][curLoc.gridY - 2] == ArenaMap.UNKNOWN)
 					environment[curLoc.gridX + i + 1][curLoc.gridY - 2] = ArenaMap.EMP;
 				}
 				if (farFront < Config.InfraRedDetectDist) {
+					if (environment[curLoc.gridX + uInt + 1][curLoc.gridY - 2]  == ArenaMap.UNKNOWN)
 					environment[curLoc.gridX + uInt + 1][curLoc.gridY - 2] = ArenaMap.OBS;
 				}
 			}
 			break;
 		case Direction.LEFT:
 			farFront = Math.min(Config.InfraRedDetectDist, uInt);
-			for (int i=0; i<farFront; i++){
-				environment[curLoc.gridX-2][curLoc.gridY-3-i]=ArenaMap.EMP;
-			}
-			if (farFront<Config.InfraRedDetectDist){
-				environment[curLoc.gridX-2][curLoc.gridY-3-uInt]=ArenaMap.OBS;
+			if (Config.twoBytwo) {
+				for (int i = 0; i < farFront; i++) {
+					environment[curLoc.gridX - 2][curLoc.gridY - 3 - i] = ArenaMap.EMP;
+				}
+				if (farFront < Config.InfraRedDetectDist) {
+					environment[curLoc.gridX - 2][curLoc.gridY - 3 - uInt] = ArenaMap.OBS;
+				}
+			} else {
+				for (int i = 0; i < farFront; i++) {
+					if (environment[curLoc.gridX - 2][curLoc.gridY - 3 - i]  == ArenaMap.UNKNOWN)
+					environment[curLoc.gridX - 2][curLoc.gridY - 3 - i] = ArenaMap.EMP;
+				}
+				if (farFront < Config.InfraRedDetectDist) {
+					if (environment[curLoc.gridX - 2][curLoc.gridY - 3 - uInt] == ArenaMap.UNKNOWN)
+					environment[curLoc.gridX - 2][curLoc.gridY - 3 - uInt] = ArenaMap.OBS;
+				}
+
 			}
 			break;
 		case Direction.RIGHT:
@@ -263,10 +303,12 @@ public class SimPerceptron{
 			} else {
 				farFront = Math.min(Config.InfraRedDetectDist, uInt);
 				for (int i = 0; i < farFront; i++) {
+					if (environment[curLoc.gridX ][curLoc.gridY + i + 1] == ArenaMap.UNKNOWN)
 					environment[curLoc.gridX ][curLoc.gridY + i + 1] = ArenaMap.EMP;
 				}
 				if (farFront < Config.InfraRedDetectDist) {
-					environment[curLoc.gridX ][curLoc.gridY + uInt + 1] = ArenaMap.OBS;
+					if (environment[curLoc.gridX ][curLoc.gridY + uInt + 1] == ArenaMap.UNKNOWN)
+					environment[curLoc.gridX ][curLoc.gridY + uInt + 1] = ArenaMap.OBS; 
 				}
 			}
 			break;
@@ -291,9 +333,11 @@ public class SimPerceptron{
 				}
 			} else {
 				for (int i = 0; i < farFront; i++) {
+					if (environment[curLoc.gridX + i + 1][curLoc.gridY] == ArenaMap.UNKNOWN)
 					environment[curLoc.gridX + i + 1][curLoc.gridY] = ArenaMap.EMP;
 				}
 				if (farFront < Config.InfraRedDetectDist) {
+					if (environment[curLoc.gridX + uInt + 1][curLoc.gridY] == ArenaMap.UNKNOWN)
 					environment[curLoc.gridX + uInt + 1][curLoc.gridY] = ArenaMap.OBS;
 				}
 			}
@@ -309,9 +353,11 @@ public class SimPerceptron{
 				}
 			} else {
 				for (int i = 0; i < farFront; i++) {
+					if (environment[curLoc.gridX - 3 - i][curLoc.gridY - 2] == ArenaMap.UNKNOWN)
 					environment[curLoc.gridX - 3 - i][curLoc.gridY - 2] = ArenaMap.EMP;
 				}
 				if (farFront < Config.InfraRedDetectDist) {
+					if (environment[curLoc.gridX - 3 - uInt][curLoc.gridY - 2] == ArenaMap.UNKNOWN)
 					environment[curLoc.gridX - 3 - uInt][curLoc.gridY - 2] = ArenaMap.OBS;
 				}
 			}
@@ -328,9 +374,11 @@ public class SimPerceptron{
 			} else {
 				farFront = Math.min(Config.InfraRedDetectDist, uInt);
 				for (int i = 0; i < farFront; i++) {
+					if (environment[curLoc.gridX - 2][curLoc.gridY + i + 1] == ArenaMap.UNKNOWN)
 					environment[curLoc.gridX - 2][curLoc.gridY + i + 1] = ArenaMap.EMP;
 				}
 				if (farFront < Config.InfraRedDetectDist) {
+					if (environment[curLoc.gridX - 2][curLoc.gridY + uInt + 1] == ArenaMap.UNKNOWN)
 					environment[curLoc.gridX - 2][curLoc.gridY + uInt + 1] = ArenaMap.OBS;
 				}
 			}
@@ -347,9 +395,11 @@ public class SimPerceptron{
 			} else {
 				farFront = Math.min(Config.InfraRedDetectDist, uInt);
 				for (int i = 0; i < farFront; i++) {
+					if (environment[curLoc.gridX][curLoc.gridY - 3 - i] == ArenaMap.UNKNOWN)
 					environment[curLoc.gridX][curLoc.gridY - 3 - i] = ArenaMap.EMP;
 				}
 				if (farFront < Config.InfraRedDetectDist) {
+					if (environment[curLoc.gridX][curLoc.gridY - 3 - uInt] == ArenaMap.UNKNOWN)
 					environment[curLoc.gridX][curLoc.gridY - 3 - uInt] = ArenaMap.OBS;
 				}
 			}

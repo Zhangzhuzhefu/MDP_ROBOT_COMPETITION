@@ -380,19 +380,21 @@ public class Communicator extends VirtualCommunicator {
                         nUs[0] = checkInfraredRange(nUs[0]);
                         nUs[0] -= 5;
 						nUs[0] = roundingToTen(nUs[0]) / 10;
+						
 						nUs[1] = checkUltrasonicRange(nUs[1]);
 						nUs[1] -= 5;
 						nUs[1] = roundingToTen(nUs[1]) / 10;
+						
 						nUs[2] = checkInfraredRange(nUs[2]);
 						nUs[2] -= 5;
 						nUs[2] = roundingToTen(nUs[2]) / 10;
 
-						nLs[0] = checkInfraredRange(nLs[0]);
-						nLs[0] = Integer.parseInt(irl) - 5;
+						nLs[0] = Integer.parseInt(irl);
+						nLs[0] = checkInfraredRange(nLs[0]) - 5;
 						nLs[0] = roundingToTen(nLs[0]) / 10;
 
-						nRs[0] = checkInfraredRange(nRs[0]);
-						nRs[0] = Integer.parseInt(irr) - 5;
+						nRs[0] = Integer.parseInt(irr);
+						nRs[0] = checkInfraredRange(nRs[0]) - 5;
 						nRs[0] = roundingToTen(nRs[0]) / 10;
                     }
 
@@ -402,8 +404,8 @@ public class Communicator extends VirtualCommunicator {
                     	//Communicator.sensorValue();
                     }
 
-                    if (!jsonObject.get("dist").toString().equals(" ") && Config.race){
-                        movedDistance = Integer.getInteger(jsonObject.get("dist").toString());
+                    if (!jsonObject.get("dis").toString().equals("") && Config.race){
+                        movedDistance = Integer.getInteger(jsonObject.get("dis").toString());
                         synchronized (runWait){
                             runWait.notify();
                         }
@@ -456,14 +458,14 @@ public class Communicator extends VirtualCommunicator {
     }
     public int checkInfraredRange(int a){
 		if (a > 30 || a < 0)
-			return 30;
+			return 31;
 		else
 			return a;
 
 	}
     public int checkUltrasonicRange(int a){
-		if (a>150 || a<0)
-			return 150;
+		if (a>70 || a<0)
+			return 71;
 		else return a;
 }
     public void setAuto(){
