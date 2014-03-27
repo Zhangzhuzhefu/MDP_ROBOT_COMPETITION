@@ -38,7 +38,7 @@ public class Config {
 	public static final double endPointY = 210.0;
 	public static final double endPointX3by3 = 150.0;
 	public static final double endPointY3by3 = 200.0;
-	public static final int LongInfraredDetectDist = 4;
+	public static final int LongInfraredDetectDist = 5;
 	public static final int InfraRedDetectDist = 3;
 	//public static final double RobotStartingDirection = 0;//right
 	public static final double RobotStartingDirection = 0;

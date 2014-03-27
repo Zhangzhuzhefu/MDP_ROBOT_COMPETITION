@@ -264,11 +264,14 @@ public class Explorer {
             }
 
             robot.turnNorth(true);
-			int startVisit = 0;
+			boolean endVisit = false;
 			while (robot.getMapKnowledgeBase().lessThanEnoughExploration() 
 					&& System.currentTimeMillis() < timeEnd
-                    && startVisit==0 &&robot.getCurrentLocation()==start) {
-                if (robot.getCurrentLocation()== ArenaMap.END_POINT) startVisit++;
+                    && ((!endVisit&&robot.getCurrentLocation()!=start)
+                    		||(endVisit&&robot.getCurrentLocation()!=start)
+                    		||(!endVisit&&robot.getCurrentLocation()==start))) {
+				
+				if (robot.getCurrentLocation()== ArenaMap.END_POINT3by3) endVisit = true;
 				//if (Config.trackingOn) 
 					System.out.println("explore: Fll-Wall path here at (" + here.gridX + "," + here.gridY + ")");
 				
