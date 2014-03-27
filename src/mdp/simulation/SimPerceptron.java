@@ -432,7 +432,7 @@ public class SimPerceptron{
 				for (int i = 0; i < farFront; i++) {
 					environment[curLoc.gridX + i][curLoc.gridY - 1] = ArenaMap.EMP;
 				}
-				if (farFront < Config.InfraRedDetectDist) {//if (farFront < Config.LongInfraredDetectDist) {
+				if (farFront < Config.LongInfraredDetectDist) {
 					environment[curLoc.gridX + uInt][curLoc.gridY - 1] = ArenaMap.OBS;
 				}
 			} else {
@@ -449,8 +449,8 @@ public class SimPerceptron{
 					}
 				}
 				if (farFront < Config.LongInfraredDetectDist  && !breakFlag) {
-					if (environment[curLoc.gridX + uInt + 1][curLoc.gridY] == ArenaMap.UNKNOWN)
-					environment[curLoc.gridX + uInt + 1][curLoc.gridY] = ArenaMap.OBS;
+					if (environment[curLoc.gridX + farFront + 1][curLoc.gridY] == ArenaMap.UNKNOWN)
+					environment[curLoc.gridX + farFront + 1][curLoc.gridY] = ArenaMap.OBS;
 				}
 			}
 			break;
@@ -477,8 +477,8 @@ public class SimPerceptron{
 					}
 				}
 				if (farFront < Config.LongInfraredDetectDist  && !breakFlag) {
-					if (environment[curLoc.gridX - 3 - uInt][curLoc.gridY - 2] == ArenaMap.UNKNOWN)
-					environment[curLoc.gridX - 3 - uInt][curLoc.gridY - 2] = ArenaMap.OBS;
+					if (environment[curLoc.gridX - 3 - farFront][curLoc.gridY - 2] == ArenaMap.UNKNOWN)
+					environment[curLoc.gridX - 3 - farFront][curLoc.gridY - 2] = ArenaMap.OBS;
 				}
 			}
 			break;
@@ -505,8 +505,8 @@ public class SimPerceptron{
 					}
 				}
 				if (farFront < Config.LongInfraredDetectDist  && !breakFlag) {
-					if (environment[curLoc.gridX - 2][curLoc.gridY + uInt + 1] == ArenaMap.UNKNOWN)
-					environment[curLoc.gridX - 2][curLoc.gridY + uInt + 1] = ArenaMap.OBS;
+					if (environment[curLoc.gridX - 2][curLoc.gridY + farFront + 1] == ArenaMap.UNKNOWN)
+					environment[curLoc.gridX - 2][curLoc.gridY + farFront + 1] = ArenaMap.OBS;
 				}
 			}
 			break;
@@ -532,8 +532,8 @@ public class SimPerceptron{
 					}
 				}
 				if (farFront < Config.LongInfraredDetectDist  && !breakFlag) {
-					if (environment[curLoc.gridX][curLoc.gridY - 3 - uInt] == ArenaMap.UNKNOWN)
-					environment[curLoc.gridX][curLoc.gridY - 3 - uInt] = ArenaMap.OBS;
+					if (environment[curLoc.gridX][curLoc.gridY - 3 - farFront] == ArenaMap.UNKNOWN)
+					environment[curLoc.gridX][curLoc.gridY - 3 - farFront] = ArenaMap.OBS;
 				}
 			}
 			break;
