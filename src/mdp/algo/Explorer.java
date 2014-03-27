@@ -248,7 +248,7 @@ public class Explorer {
 
 			Point here = start;
 			followWallPath.push(start);
-			Point hereNext,hereNextNext,hereLeft,hereLeftLeft,hereRight,hereRightRight;
+			Point hereNext,hereLeft,hereRight;
 			//TODO
 			boolean clockwise;
 			if (robot.getDirection().getDirection()==Direction.UP) 
@@ -270,48 +270,33 @@ public class Explorer {
                 switch (robot.getDirection().getDirection()) {
 				case Direction.UP:
 					hereNext = PointManager.getPoint(here.gridX, here.gridY+1);
-					//hereNextNext = PointManager.getPoint(here.gridX, here.gridY+1+1);
 					hereLeft = PointManager.getPoint(here.gridX-1, here.gridY);
-					//hereLeftLeft = PointManager.getPoint(here.gridX-2, here.gridY);
 					hereRight = PointManager.getPoint(here.gridX + 1, here.gridY);
-					//hereRightRight = PointManager.getPoint(here.gridX + 2, here.gridY);
 					
 					break;
 				case Direction.DOWN:
 					hereNext = PointManager.getPoint(here.gridX, here.gridY-1);
-					//hereNextNext = PointManager.getPoint(here.gridX, here.gridY-2);
 					hereLeft = PointManager.getPoint(here.gridX+1, here.gridY);
-					//hereLeftLeft = PointManager.getPoint(here.gridX+2, here.gridY);
 					hereRight = PointManager.getPoint(here.gridX-1, here.gridY);
-					//hereRightRight = PointManager.getPoint(here.gridX-2, here.gridY);
 					
 					break;
 				case Direction.LEFT:
 					hereNext = PointManager.getPoint(here.gridX-1, here.gridY);
-					//hereNextNext = PointManager.getPoint(here.gridX-2, here.gridY);
 					hereLeft = PointManager.getPoint(here.gridX, here.gridY-1);
-					//hereLeftLeft = PointManager.getPoint(here.gridX, here.gridY-2);
 					hereRight = PointManager.getPoint(here.gridX, here.gridY+1);
-					//hereRightRight = PointManager.getPoint(here.gridX, here.gridY+2);
 					
 					break;
 				case Direction.RIGHT:
 					hereNext = PointManager.getPoint(here.gridX+1, here.gridY);
-					//hereNextNext = PointManager.getPoint(here.gridX+2, here.gridY);
 					hereLeft = PointManager.getPoint(here.gridX, here.gridY+1);
-					//hereLeftLeft = PointManager.getPoint(here.gridX, here.gridY+2);
 					hereRight = PointManager.getPoint(here.gridX, here.gridY-1);
-					//hereRightRight = PointManager.getPoint(here.gridX, here.gridY-2);
 					
 					break;
 					
 				default: 
 					hereNext = null;
-					hereNextNext = null;
 					hereLeft = null;
-					hereLeftLeft = null;
 					hereRight = null;
-					hereRightRight = null;
 				}
 
 				if (hereNext != null) {
@@ -325,6 +310,16 @@ public class Explorer {
 							Simulator.simulatorMapPanel.updatePath(followWallPath);
 						}
 						here = hereLeft;
+						
+						robot.getSensors().perceptEnvironment();
+						if (Config.Simulator) {
+							Simulator.simulatorMapPanel.updateMap(robot
+									.getMapKnowledgeBase().getArrayMap());
+						} else {
+							Competition.simulatorMapPanel.updateMap(robot
+									.getMapKnowledgeBase().getArrayMap());
+						}
+						
 						robot.moveForwardByOneStep(true);
 						robot.updateRobotLoc();
 						
@@ -337,6 +332,16 @@ public class Explorer {
 							Simulator.simulatorMapPanel.updatePath(followWallPath);
 						}
 						here = hereNext;
+						
+						robot.getSensors().perceptEnvironment();
+						if (Config.Simulator) {
+							Simulator.simulatorMapPanel.updateMap(robot
+									.getMapKnowledgeBase().getArrayMap());
+						} else {
+							Competition.simulatorMapPanel.updateMap(robot
+									.getMapKnowledgeBase().getArrayMap());
+						}
+						
 						robot.moveForwardByOneStep(true);
 						robot.updateRobotLoc();
 						
@@ -350,6 +355,16 @@ public class Explorer {
 							Simulator.simulatorMapPanel.updatePath(followWallPath);
 						}
 						here = hereRight;
+						
+						robot.getSensors().perceptEnvironment();
+						if (Config.Simulator) {
+							Simulator.simulatorMapPanel.updateMap(robot
+									.getMapKnowledgeBase().getArrayMap());
+						} else {
+							Competition.simulatorMapPanel.updateMap(robot
+									.getMapKnowledgeBase().getArrayMap());
+						}
+						
 						robot.moveForwardByOneStep(true);
 						robot.updateRobotLoc();
 					}else {

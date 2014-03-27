@@ -457,15 +457,17 @@ public class Communicator extends VirtualCommunicator {
         return a;
     }
     public int checkInfraredRange(int a){
-		if (a > 30 || a < 0)
-			return 31;
+    	int shortIR = Config.InfraRedDetectDist*10;
+		if (a > shortIR || a < 0)
+			return shortIR+1;
 		else
 			return a;
 
 	}
     public int checkUltrasonicRange(int a){
-		if (a>70 || a<0)
-			return 71;
+    	int longIR = Config.LongInfraredDetectDist*10;
+		if (a> longIR || a<0)
+			return longIR+1;
 		else return a;
 }
     public void setAuto(){

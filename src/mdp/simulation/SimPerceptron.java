@@ -77,8 +77,8 @@ public class SimPerceptron{
 					}
 				}
 				if (farFront < Config.LongInfraredDetectDist && !breakFlag) {
-					if (environment[curLoc.gridX - 1][curLoc.gridY + ulCenter+1] == ArenaMap.UNKNOWN)
-					environment[curLoc.gridX - 1][curLoc.gridY + ulCenter+1] = ArenaMap.OBS;
+					if (environment[curLoc.gridX - 1][curLoc.gridY + farFront+1] == ArenaMap.UNKNOWN)
+					environment[curLoc.gridX - 1][curLoc.gridY + farFront+1] = ArenaMap.OBS;
 				}
 				breakFlag = false;
 				farFront = Math.min(Config.InfraRedDetectDist, ulRight);
@@ -138,8 +138,8 @@ public class SimPerceptron{
 					}
 				}
 				if (farFront < Config.LongInfraredDetectDist && !breakFlag) {
-					if (environment[curLoc.gridX - 1][curLoc.gridY - ulCenter - 3] == ArenaMap.UNKNOWN)
-					environment[curLoc.gridX - 1][curLoc.gridY - ulCenter - 3] = ArenaMap.OBS;
+					if (environment[curLoc.gridX - 1][curLoc.gridY - farFront - 3] == ArenaMap.UNKNOWN)
+					environment[curLoc.gridX - 1][curLoc.gridY - farFront - 3] = ArenaMap.OBS;
 				}
 				breakFlag = false;
 				farFront = Math.min(Config.InfraRedDetectDist, ulRight);
@@ -200,8 +200,8 @@ public class SimPerceptron{
 					
 				}
 				if (farFront < Config.LongInfraredDetectDist && !breakFlag) {
-					if (environment[curLoc.gridX - 2 - ulCenter][curLoc.gridY - 1] == ArenaMap.UNKNOWN)
-					environment[curLoc.gridX - 2 - ulCenter][curLoc.gridY - 1] = ArenaMap.OBS;
+					if (environment[curLoc.gridX - 2 - farFront][curLoc.gridY - 1] == ArenaMap.UNKNOWN)
+					environment[curLoc.gridX - 2 - farFront][curLoc.gridY - 1] = ArenaMap.OBS;
 				}
 				breakFlag = false;
 				farFront = Math.min(Config.InfraRedDetectDist, ulRight);
@@ -261,8 +261,8 @@ public class SimPerceptron{
 					}
 				}
 				if (farFront < Config.LongInfraredDetectDist && !breakFlag) {
-					if (environment[curLoc.gridX + ulCenter + 1][curLoc.gridY - 1] == ArenaMap.UNKNOWN)
-					environment[curLoc.gridX + ulCenter + 1][curLoc.gridY - 1] = ArenaMap.OBS;
+					if (environment[curLoc.gridX + farFront + 1][curLoc.gridY - 1] == ArenaMap.UNKNOWN)
+					environment[curLoc.gridX + farFront + 1][curLoc.gridY - 1] = ArenaMap.OBS;
 				}
 				breakFlag = false;
 				farFront = Math.min(Config.InfraRedDetectDist, ulRight);

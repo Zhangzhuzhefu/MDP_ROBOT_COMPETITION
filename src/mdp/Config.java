@@ -12,7 +12,7 @@ public class Config {
 	public static boolean trackingOn = false;
 	public static boolean printBitMapStreamOn = false;
 	public static boolean debugOn = true;
-	public static boolean Simulator = false;
+	public static boolean Simulator = true;
 	public static boolean autoUpdate = true;
     public static boolean race = false;
 	//environment variables
@@ -23,7 +23,7 @@ public class Config {
 	public static boolean twoBytwo = false;
 	
 	//simulation variables
-	public static final double PERCENTAGEOFEXPLORATION = 1;
+	public static final double PERCENTAGEOFEXPLORATION = 0.7;
 	public static final int PANEL_GRID_SIZE = 35;
 	public static final int[] FRAME_LOCATION ={250, 100, 850, 1050};
 	public static final int[] FRAME_SIZE ={900,1050};
@@ -31,7 +31,7 @@ public class Config {
 	public static final long EXP_TIMER_SEC =10;
 
 	//Robot
-	public static final int robotStepsPersecond = 20;
+	public static final int robotStepsPersecond = 1;
 	public static final int robotWaitingTime = 1000/robotStepsPersecond;
 	public static final double startPointX = 30.0;
 	public static final double startPointY = 30.0;
@@ -39,7 +39,7 @@ public class Config {
 	public static final double endPointY = 210.0;
 	public static final double endPointX3by3 = 150.0;
 	public static final double endPointY3by3 = 200.0;
-	public static final int LongInfraredDetectDist = 7;
+	public static final int LongInfraredDetectDist = 4;
 	public static final int InfraRedDetectDist = 3;
 	//public static final double RobotStartingDirection = 0;//right
 	public static final double RobotStartingDirection = 90;
