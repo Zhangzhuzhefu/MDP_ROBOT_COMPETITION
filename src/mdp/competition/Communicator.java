@@ -404,7 +404,7 @@ public class Communicator extends VirtualCommunicator {
                     	//Communicator.sensorValue();
                     }
 
-                    if (!jsonObject.get("dis").toString().equals("") && Config.race){
+                    if (!jsonObject.get("dis").toString().equals("") && robot.isRace()){
                         movedDistance = Integer.getInteger(jsonObject.get("dis").toString());
                         synchronized (runWait){
                             runWait.notify();

@@ -14,7 +14,6 @@ public class Config {
 	public static boolean debugOn = true;
 	public static boolean Simulator = true;
 	public static boolean autoUpdate = true;
-    public static boolean race = false;
 	//environment variables
 	public static final int MAZE_LENGTH = 200, MAZE_WIDTH = 150, GRID_LEN = 10;
 	public static final int START_GRID_SIZE = 30;
@@ -31,7 +30,7 @@ public class Config {
 	public static final long EXP_TIMER_SEC =10;
 
 	//Robot
-	public static final int robotStepsPersecond = 1;
+	public static final int robotStepsPersecond = 10;
 	public static final int robotWaitingTime = 1000/robotStepsPersecond;
 	public static final double startPointX = 30.0;
 	public static final double startPointY = 30.0;

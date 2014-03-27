@@ -3,6 +3,7 @@ package mdp.algo;
 import java.util.Stack;
 
 import mdp.Config;
+import mdp.competition.Communicator;
 import mdp.competition.Competition;
 import mdp.simulation.Simulator;
 
@@ -437,8 +438,10 @@ public class Explorer {
 				while (!returnPsth.isEmpty()) {
 					temp.push(returnPsth.pop());
 				}
-				returnPsth = temp;
-				robot.setRoute(returnPsth);
+				returnPsth = robot.distanceDetermination(temp);
+				robot.setNewRoute(returnPsth);
+				robot.setRace(true);
+				Communicator.startRace();
 				Simulator.robotManager.robotRun();
 			}
 		}

@@ -17,18 +17,17 @@ public class Robot {
 	ArenaMap mapKnowledgeBase;
 	SimPerceptron sensors;
 	Explorer explorer;
-	PathCalculator pathCalculator;
-    boolean afterExploration = false; // to be removed after changed to (!Config.Simulator)
-    private Stack<Point> Newroute;
+	PathCalculator pathCalculator;	
 	
-	
-	boolean isExploring, isMoving, isOnTheWayReturning, isTurning;
+	boolean isExploring, isMoving, isOnTheWayReturning, isTurning, race;
 	private Point currentLocation;
 	private Direction direction;
 	private Stack<Point> route;
+	private Stack<Point> newRoute;
 	
 	
 	public Robot() throws IOException{
+		race = false;
 		isExploring = true;
 		isMoving = false;
         isTurning = false;
@@ -43,6 +42,7 @@ public class Robot {
 	}
 	
 	public void reset(){
+		race = false;
 		isExploring = true;
 		isMoving = false;
         isTurning = false;
@@ -65,11 +65,10 @@ public class Robot {
         if (!Config.Simulator){
             Communicator.startRace();}
         //if (!Config.Simulator)
-        	this.setTesting(true);
         pathCalculator.setMap(getMapKnowledgeBase().getArrayMap());
 		if(pathCalculator.findFastestPath(null)){
 			route = (Stack<Point>) pathCalculator.getFastestPath();
-            Newroute = distanceDetermination(route);
+            newRoute = distanceDetermination(route);
             return route;
 		}
 		else 
@@ -80,11 +79,10 @@ public class Robot {
         if (!Config.Simulator){
             Communicator.startRace();}
       //if (!Config.Simulator) 
-        	this.setTesting(true);
 		pathCalculator.setMap(getMapKnowledgeBase().getArrayMap());
 		if(pathCalculator.findShortestPath()){
 			route = (Stack<Point>) pathCalculator.getShortestPath();
-            Newroute = distanceDetermination(route);
+            newRoute = distanceDetermination(route);
 			return route;
 		}
 		else 
@@ -95,11 +93,10 @@ public class Robot {
         if (!Config.Simulator){
             Communicator.startRace();}
         //if (!Config.Simulator) 
-    		this.setTesting(true);
 		pathCalculator.setMap(this.getMapKnowledgeBase().getArrayMap());
 		if(pathCalculator.findRandomPath()){
 			route = (Stack<Point>) pathCalculator.getRandomPath();
-            Newroute = distanceDetermination(route);
+            newRoute = distanceDetermination(route);
 			return route;
 		}
 		else 
@@ -140,7 +137,7 @@ public class Robot {
     }
 	
 	public void move()throws IOException{
-        if (!afterExploration){ // to be changed to !Config.Simulator
+        if (!race){ // to be changed to !Config.Simulator
 
 			if (route != null && !route.empty()) {
 				if (Config.debugOn)
@@ -174,13 +171,13 @@ public class Robot {
 			}
         } else { // if competition or testing
         	
-            if (Newroute != null && !Newroute.empty() ) {
+            if (newRoute != null && !newRoute.empty() ) {
             	if (route.peek().sameGridPoint(ArenaMap.END_POINT)) {
 					isOnTheWayReturning = true;
 					if (Config.debugOn)
 						System.out.println("isOnTheWayReturning = true");
 				}
-                Point nextLoc = Newroute.peek();
+                Point nextLoc = newRoute.peek();
 
                 int xDiff, yDiff;
                 if (Config.debugOn){
@@ -216,7 +213,7 @@ public class Robot {
                 }
 
 
-                currentLocation = Newroute.pop();
+                currentLocation = newRoute.pop();
                 updateRobotLoc();
                 if (!Config.Simulator) Communicator.getMovedDistance();
 
@@ -236,21 +233,24 @@ public class Robot {
         Stack<Point> tempRoute = (Stack)oriRoute.clone();
         Stack<Point> newRoute = new Stack<>();
         Stack<Point> revRoute = new Stack<>();
-        Point curLoc = new Point(currentLocation.gridX,currentLocation.gridY);
+        Point curLoc = PointManager.getPoint(currentLocation.gridX,currentLocation.gridY);
 
         // if false, moving toward grid x
         // if true, moving toward grid y
         boolean toD=false;
         Point endPoint;
+        Point startPoint;
         if (Config.twoBytwo){
+        	startPoint = ArenaMap.START_POINT;
             endPoint = ArenaMap.END_POINT;
         } else {
+        	startPoint = ArenaMap.START_POINT;
             endPoint = ArenaMap.END_POINT3by3;
         }
         while (tempRoute != null && !tempRoute.empty()){
 
             Point peeka = tempRoute.peek();
-            if (peeka != endPoint ){
+            if (peeka != endPoint && peeka != startPoint ){
                 if (toD){
 
                     if (peeka.gridY == curLoc.gridY && peeka.gridX != curLoc.gridX){
@@ -409,7 +409,7 @@ public class Robot {
 	public void turnNorth(boolean delay){
 		switch (direction.getDirection()){
 		case Direction.UP:
-            if (!Config.race){// will robot turn off sensor during racing ? if not please remove this line
+            if (!race){// will robot turn off sensor during racing ? if not please remove this line
                 Communicator.getSensorValue();}
             break;
 		case Direction.DOWN:
@@ -430,7 +430,7 @@ public class Robot {
 			this.turnBack(delay);
 			break;
 		case Direction.DOWN:
-            if (!Config.race){// will robot turn off sensor during racing ? if not please remove this line
+            if (!race){// will robot turn off sensor during racing ? if not please remove this line
                 Communicator.getSensorValue();}
 			break;
 		case Direction.LEFT:
@@ -451,7 +451,7 @@ public class Robot {
 			this.turnRight(delay);
 			break;
 		case Direction.LEFT:
-            if (!Config.race){// will robot turn off sensor during racing ? if not please remove this line
+            if (!race){// will robot turn off sensor during racing ? if not please remove this line
                 Communicator.getSensorValue();}
 			break;
 		case Direction.RIGHT:
@@ -472,7 +472,7 @@ public class Robot {
 			this.turnBack(delay);
 			break;
 		case Direction.RIGHT:
-            if (!Config.race){// will robot turn off sensor during racing ? if not please remove this line
+            if (!race){// will robot turn off sensor during racing ? if not please remove this line
                 Communicator.getSensorValue();}
 			break;
 		}
@@ -545,12 +545,20 @@ public class Robot {
         return "-1";
     }
 
-	public boolean isTesting() {
-		return afterExploration;
+	public boolean isRace() {
+		return race;
 	}
 
-	private void setTesting(boolean testing) {
-		this.afterExploration = testing;
+	public void setRace(boolean race) {
+		this.race = race;
+	}
+
+	public Stack<Point> getNewRoute() {
+		return newRoute;
+	}
+
+	public void setNewRoute(Stack<Point> newRoute) {
+		this.newRoute = newRoute;
 	}
 
 }
