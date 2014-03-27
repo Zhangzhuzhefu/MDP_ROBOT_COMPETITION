@@ -19,14 +19,16 @@ public class Robot {
 	Explorer explorer;
 	PathCalculator pathCalculator;	
 	
-	boolean isExploring, isMoving, isOnTheWayReturning, isTurning, race;
+	boolean isExploring, isMoving, isOnTheWayReturning, isTurning, race, autoUpdate;
 	private Point currentLocation;
 	private Direction direction;
 	private Stack<Point> route;
 	private Stack<Point> newRoute;
+
 	
 	
 	public Robot() throws IOException{
+        autoUpdate = false;
 		race = false;
 		isExploring = true;
 		isMoving = false;
@@ -42,6 +44,7 @@ public class Robot {
 	}
 	
 	public void reset(){
+        autoUpdate = false;
 		race = false;
 		isExploring = true;
 		isMoving = false;
@@ -303,9 +306,10 @@ public class Robot {
 	}
 
 	public void moveForwardByOneStep(boolean delay){
-       // try {
-            //Communicator.sendMessage("m");// for checklist
-            if (!Config.Simulator){
+
+           if (!Config.Simulator){
+                if (autoUpdate){
+                    Communicator.sendMapToAndroid(getRobotState());}
                 Communicator.moveFor();
             }
             switch (direction.getDirection()){
@@ -327,10 +331,6 @@ public class Robot {
                     break;
             }
             delay(delay);
-
-        //}catch (IOException e){
-
-        //}
 
 	}
 	
@@ -356,7 +356,7 @@ public class Robot {
 
             if (!Config.Simulator){
                 Communicator.turnLeft();
-                if(Config.autoUpdate){
+                if(autoUpdate){
                     Communicator.sendMapToAndroid(getRobotState());
                 }
             }
@@ -372,7 +372,7 @@ public class Robot {
 
             if(!Config.Simulator){
                 Communicator.turnRight();
-                if(Config.autoUpdate){
+                if(autoUpdate){
                     Communicator.sendMapToAndroid(getRobotState());
                 }
             }
@@ -392,7 +392,7 @@ public class Robot {
 			//Communicator.sendMessage("b"); // for checklist
             if(!Config.Simulator){
                 Communicator.turnBack();
-                if(Config.autoUpdate){
+                if(autoUpdate){
                     Communicator.sendMapToAndroid(getRobotState());
                 }
             }
@@ -410,6 +410,7 @@ public class Robot {
 		switch (direction.getDirection()){
 		case Direction.UP:
             if (!race){// will robot turn off sensor during racing ? if not please remove this line
+                //Communicator.getMovedDistance();
                 Communicator.getSensorValue();}
             break;
 		case Direction.DOWN:
@@ -431,6 +432,7 @@ public class Robot {
 			break;
 		case Direction.DOWN:
             if (!race){// will robot turn off sensor during racing ? if not please remove this line
+                //Communicator.getMovedDistance();
                 Communicator.getSensorValue();}
 			break;
 		case Direction.LEFT:
@@ -452,6 +454,7 @@ public class Robot {
 			break;
 		case Direction.LEFT:
             if (!race){// will robot turn off sensor during racing ? if not please remove this line
+                //Communicator.getMovedDistance();
                 Communicator.getSensorValue();}
 			break;
 		case Direction.RIGHT:
@@ -473,6 +476,7 @@ public class Robot {
 			break;
 		case Direction.RIGHT:
             if (!race){// will robot turn off sensor during racing ? if not please remove this line
+                //Communicator.getMovedDistance();
                 Communicator.getSensorValue();}
 			break;
 		}
@@ -560,5 +564,9 @@ public class Robot {
 	public void setNewRoute(Stack<Point> newRoute) {
 		this.newRoute = newRoute;
 	}
+
+    public void setAutoUpdate(boolean autoUpdate){
+        this.autoUpdate=autoUpdate;
+    }
 
 }

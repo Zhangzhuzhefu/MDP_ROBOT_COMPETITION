@@ -334,7 +334,7 @@ public class Explorer {
 						}
 						here = hereNext;
 						
-						robot.getSensors().perceptEnvironment();
+						//robot.getSensors().perceptEnvironment();
 						if (Config.Simulator) {
 							Simulator.simulatorMapPanel.updateMap(robot
 									.getMapKnowledgeBase().getArrayMap());
