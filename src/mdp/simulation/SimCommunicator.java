@@ -24,17 +24,17 @@ public class SimCommunicator extends VirtualCommunicator{
 		Point curLoc = robot.getCurrentLocation();
 		Direction dir = robot.getDirection();
 		for (int i=0; i<3; i++)
-			detectInt[i] = Config.LongInfraredDetectDist;
+			detectInt[i] = Config.InfraRedDetectDist;
 		switch (dir.getDirection()) {
 		case Direction.UP:
 			if (Config.twoBytwo) {
-				for (int i = 0; i < Config.LongInfraredDetectDist; i++) {
+				for (int i = 0; i < Config.InfraRedDetectDist; i++) {
 					if (actualMap[curLoc.gridX - 1 - 1][curLoc.gridY + i] == ArenaMap.OBS) {
 						detectInt[0] = i;
 						break;
 					}
 				}
-				for (int i = 0; i < Config.LongInfraredDetectDist; i++) {
+				for (int i = 0; i < Config.InfraRedDetectDist; i++) {
 					if (actualMap[curLoc.gridX - 1][curLoc.gridY + i] == ArenaMap.OBS) {
 						detectInt[2] = i;
 						break;
@@ -42,19 +42,19 @@ public class SimCommunicator extends VirtualCommunicator{
 				}
 			}
 			else {
-				for (int i = 0; i < Config.LongInfraredDetectDist; i++) {
+				for (int i = 0; i < Config.InfraRedDetectDist; i++) {
 					if (actualMap[curLoc.gridX - 1 - 1][curLoc.gridY + i + 1] == ArenaMap.OBS) {
 						detectInt[0] = i;
 						break;
 					}
 				}
-				for (int i = 0; i < Config.LongInfraredDetectDist; i++) {
+				for (int i = 0; i < Config.InfraRedDetectDist; i++) {
 					if (actualMap[curLoc.gridX - 1][curLoc.gridY + i + 1] == ArenaMap.OBS) {
 						detectInt[1] = i;
 						break;
 					}
 				}
-				for (int i = 0; i < Config.LongInfraredDetectDist; i++) {
+				for (int i = 0; i < Config.InfraRedDetectDist; i++) {
 					if (actualMap[curLoc.gridX][curLoc.gridY + i + 1] == ArenaMap.OBS) {
 						detectInt[2] = i;
 						break;
@@ -64,32 +64,32 @@ public class SimCommunicator extends VirtualCommunicator{
 			break;
 		case Direction.DOWN:
 			if (Config.twoBytwo) {
-				for (int i = 0; i < Config.LongInfraredDetectDist; i++) {
+				for (int i = 0; i < Config.InfraRedDetectDist; i++) {
 					if (actualMap[curLoc.gridX - 1][curLoc.gridY - 3 - i] == ArenaMap.OBS) {
 						detectInt[0] = i;
 						break;
 					}
 				}
-				for (int i = 0; i < Config.LongInfraredDetectDist; i++) {
+				for (int i = 0; i < Config.InfraRedDetectDist; i++) {
 					if (actualMap[curLoc.gridX - 2][curLoc.gridY - 3 - i] == ArenaMap.OBS) {
 						detectInt[2] = i;
 						break;
 					}
 				}
 			} else {
-				for (int i = 0; i < Config.LongInfraredDetectDist; i++) {
+				for (int i = 0; i < Config.InfraRedDetectDist; i++) {
 					if (actualMap[curLoc.gridX - 0][curLoc.gridY - 3 - i] == ArenaMap.OBS) {
 						detectInt[0] = i;
 						break;
 					}
 				}
-				for (int i = 0; i < Config.LongInfraredDetectDist; i++) {
+				for (int i = 0; i < Config.InfraRedDetectDist; i++) {
 					if (actualMap[curLoc.gridX - 1][curLoc.gridY - 3 - i] == ArenaMap.OBS) {
 						detectInt[1] = i;
 						break;
 					}
 				}
-				for (int i = 0; i < Config.LongInfraredDetectDist; i++) {
+				for (int i = 0; i < Config.InfraRedDetectDist; i++) {
 					if (actualMap[curLoc.gridX - 2][curLoc.gridY - 3 - i] == ArenaMap.OBS) {
 						detectInt[2] = i;
 						break;
@@ -99,32 +99,32 @@ public class SimCommunicator extends VirtualCommunicator{
 			break;
 		case Direction.LEFT:
 			if (Config.twoBytwo) {
-				for (int i = 0; i < Config.LongInfraredDetectDist; i++) {
+				for (int i = 0; i < Config.InfraRedDetectDist; i++) {
 					if (actualMap[curLoc.gridX - 2 - i][curLoc.gridY - 1 - 1] == ArenaMap.OBS) {
 						detectInt[0] = i;
 						break;
 					}
 				}
-				for (int i = 0; i < Config.LongInfraredDetectDist; i++) {
+				for (int i = 0; i < Config.InfraRedDetectDist; i++) {
 					if (actualMap[curLoc.gridX - 2 - i][curLoc.gridY - 1] == ArenaMap.OBS) {
 						detectInt[2] = i;
 						break;
 					}
 				}
 			} else {
-				for (int i = 0; i < Config.LongInfraredDetectDist; i++) {
+				for (int i = 0; i < Config.InfraRedDetectDist; i++) {
 					if (actualMap[curLoc.gridX - 2 - i][curLoc.gridY - 1 - 1] == ArenaMap.OBS) {
 						detectInt[0] = i;
 						break;
 					}
 				}
-				for (int i = 0; i < Config.LongInfraredDetectDist; i++) {
+				for (int i = 0; i < Config.InfraRedDetectDist; i++) {
 					if (actualMap[curLoc.gridX - 2 - i][curLoc.gridY - 1] == ArenaMap.OBS) {
 						detectInt[1] = i;
 						break;
 					}
 				}
-				for (int i = 0; i < Config.LongInfraredDetectDist; i++) {
+				for (int i = 0; i < Config.InfraRedDetectDist; i++) {
 					if (actualMap[curLoc.gridX - 2 - i][curLoc.gridY] == ArenaMap.OBS) {
 						detectInt[2] = i;
 						break;
@@ -134,32 +134,32 @@ public class SimCommunicator extends VirtualCommunicator{
 			break;
 		case Direction.RIGHT:
 			if (Config.twoBytwo) {
-				for (int i = 0; i < Config.LongInfraredDetectDist; i++) {
+				for (int i = 0; i < Config.InfraRedDetectDist; i++) {
 					if (actualMap[curLoc.gridX + i][curLoc.gridY - 1] == ArenaMap.OBS) {
 						detectInt[0] = i;
 						break;
 					}
 				}
-				for (int i = 0; i < Config.LongInfraredDetectDist; i++) {
+				for (int i = 0; i < Config.InfraRedDetectDist; i++) {
 					if (actualMap[curLoc.gridX + i][curLoc.gridY - 1 - 1] == ArenaMap.OBS) {
 						detectInt[2] = i;
 						break;
 					}
 				}
 			} else {
-				for (int i = 0; i < Config.LongInfraredDetectDist; i++) {
+				for (int i = 0; i < Config.InfraRedDetectDist; i++) {
 					if (actualMap[curLoc.gridX + i + 1][curLoc.gridY] == ArenaMap.OBS) {
 						detectInt[0] = i;
 						break;
 					}
 				}
-				for (int i = 0; i < Config.LongInfraredDetectDist; i++) {
+				for (int i = 0; i < Config.InfraRedDetectDist; i++) {
 					if (actualMap[curLoc.gridX + i + 1][curLoc.gridY - 1] == ArenaMap.OBS) {
 						detectInt[1] = i;
 						break;
 					}
 				}
-				for (int i = 0; i < Config.LongInfraredDetectDist; i++) {
+				for (int i = 0; i < Config.InfraRedDetectDist; i++) {
 					if (actualMap[curLoc.gridX + i + 1][curLoc.gridY - 1 - 1] == ArenaMap.OBS) {
 						detectInt[2] = i;
 						break;
@@ -251,18 +251,18 @@ public class SimCommunicator extends VirtualCommunicator{
 		actualMap = ArenaMap.actualMap;
 		Point curLoc = robot.getCurrentLocation();
 		Direction dir = robot.getDirection();
-		detectInt = Config.InfraRedDetectDist;
+		detectInt = Config.LongInfraredDetectDist;
 		switch (dir.getDirection()) {
 		case Direction.UP:
 			if (Config.twoBytwo) {
-				for (int i = 0; i < Config.InfraRedDetectDist; i++) {
+				for (int i = 0; i < Config.LongInfraredDetectDist; i++) {
 					if (actualMap[curLoc.gridX + i][curLoc.gridY - 1] == ArenaMap.OBS) {
 						detectInt = i;
 						break;
 					}
 				}
 			} else {
-				for (int i = 0; i < Config.InfraRedDetectDist; i++) {
+				for (int i = 0; i < Config.LongInfraredDetectDist; i++) {
 					if (actualMap[curLoc.gridX + i +1][curLoc.gridY] == ArenaMap.OBS) {
 						detectInt = i;
 						break;
@@ -272,14 +272,14 @@ public class SimCommunicator extends VirtualCommunicator{
 			break;
 		case Direction.DOWN:
 			if (Config.twoBytwo) {
-				for (int i = 0; i < Config.InfraRedDetectDist; i++) {
+				for (int i = 0; i < Config.LongInfraredDetectDist; i++) {
 					if (actualMap[curLoc.gridX - 3 - i][curLoc.gridY - 2] == ArenaMap.OBS) {
 						detectInt = i;
 						break;
 					}
 				}
 			} else {
-				for (int i = 0; i < Config.InfraRedDetectDist; i++) {
+				for (int i = 0; i < Config.LongInfraredDetectDist; i++) {
 					if (actualMap[curLoc.gridX - 3 - i][curLoc.gridY - 2] == ArenaMap.OBS) {
 						detectInt = i;
 						break;
@@ -289,14 +289,14 @@ public class SimCommunicator extends VirtualCommunicator{
 			break;
 		case Direction.LEFT:
 			if (Config.twoBytwo) {
-				for (int i = 0; i < Config.InfraRedDetectDist; i++) {
+				for (int i = 0; i < Config.LongInfraredDetectDist; i++) {
 					if (actualMap[curLoc.gridX - 2][curLoc.gridY + i] == ArenaMap.OBS) {
 						detectInt = i;
 						break;
 					}
 				}
 			} else {
-				for (int i = 0; i < Config.InfraRedDetectDist; i++) {
+				for (int i = 0; i < Config.LongInfraredDetectDist; i++) {
 					if (actualMap[curLoc.gridX - 2][curLoc.gridY + i + 1] == ArenaMap.OBS) {
 						detectInt = i;
 						break;
@@ -306,14 +306,14 @@ public class SimCommunicator extends VirtualCommunicator{
 			break;
 		case Direction.RIGHT:
 			if (Config.twoBytwo) {
-				for (int i = 0; i < Config.InfraRedDetectDist; i++) {
+				for (int i = 0; i < Config.LongInfraredDetectDist; i++) {
 					if (actualMap[curLoc.gridX - 1][curLoc.gridY - 3 - i] == ArenaMap.OBS) {
 						detectInt = i;
 						break;
 					}
 				}
 			} else {
-				for (int i = 0; i < Config.InfraRedDetectDist; i++) {
+				for (int i = 0; i < Config.LongInfraredDetectDist; i++) {
 					if (actualMap[curLoc.gridX][curLoc.gridY - 3 - i] == ArenaMap.OBS) {
 						detectInt = i;
 						break;

@@ -71,7 +71,8 @@ public class Robot {
         pathCalculator.setMap(getMapKnowledgeBase().getArrayMap());
 		if(pathCalculator.findFastestPath(null)){
 			route = (Stack<Point>) pathCalculator.getFastestPath();
-            newRoute = distanceDetermination(route);
+            //newRoute = distanceDetermination(route);
+            newRoute = (Stack)route.clone();
             return route;
 		}
 		else 
@@ -85,7 +86,8 @@ public class Robot {
 		pathCalculator.setMap(getMapKnowledgeBase().getArrayMap());
 		if(pathCalculator.findShortestPath()){
 			route = (Stack<Point>) pathCalculator.getShortestPath();
-            newRoute = distanceDetermination(route);
+            //newRoute = distanceDetermination(route);
+            newRoute = (Stack)route.clone();
 			return route;
 		}
 		else 
@@ -99,7 +101,8 @@ public class Robot {
 		pathCalculator.setMap(this.getMapKnowledgeBase().getArrayMap());
 		if(pathCalculator.findRandomPath()){
 			route = (Stack<Point>) pathCalculator.getRandomPath();
-            newRoute = distanceDetermination(route);
+            //newRoute = distanceDetermination(route);
+            newRoute = (Stack)route.clone();
 			return route;
 		}
 		else 
@@ -140,7 +143,7 @@ public class Robot {
     }
 	
 	public void move()throws IOException{
-        if (!race){ // to be changed to !Config.Simulator
+        if (!race){
 
 			if (route != null && !route.empty()) {
 				if (Config.debugOn)
@@ -172,8 +175,44 @@ public class Robot {
 					System.out.println("Robot route is empty..");
 				isMoving = false;
 			}
-        } else { // if competition or testing
-        	
+        }
+        else {
+
+            if (newRoute != null && !newRoute.empty()) {
+                if (Config.debugOn)
+                    System.out.println("Robot route exists");
+                if (newRoute.peek().sameGridPoint(ArenaMap.END_POINT)) {
+                    isOnTheWayReturning = true;
+                    if (Config.debugOn)
+                        System.out.println("isOnTheWayReturning = true");
+                }
+                Point nextLoc = newRoute.peek();
+                ;
+                int xDiff, yDiff;
+                xDiff = nextLoc.gridX - currentLocation.gridX;
+                yDiff = nextLoc.gridY - currentLocation.gridY;
+                if (xDiff > 0) {
+                    this.turnEast(true);
+                } else if (xDiff < 0) {
+                    this.turnWest(true);
+                } else if (yDiff > 0) {
+                    this.turnNorth(true);
+                } else if (yDiff < 0) {
+                    this.turnSouth(true);
+                }
+                currentLocation = newRoute.pop();
+                updateRobotLoc();
+
+            } else {
+                if (Config.debugOn)
+                    System.out.println("Robot route is empty..");
+                isMoving = false;
+            }
+
+        }
+
+        /*else { // if competition or testing
+
             if (newRoute != null && !newRoute.empty() ) {
             	if (route.peek().sameGridPoint(ArenaMap.END_POINT)) {
 					isOnTheWayReturning = true;
@@ -228,7 +267,7 @@ public class Robot {
 					System.out.println("Robot route is empty..");
 				isMoving = false;
 			}
-        }
+        }*/
 
     }
 

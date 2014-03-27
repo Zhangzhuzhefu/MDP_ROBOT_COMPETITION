@@ -255,9 +255,20 @@ public class Explorer {
 			if (robot.getDirection().getDirection()==Direction.UP) 
 				clockwise = true;
 			else clockwise = false;
-			
+
+            robot.getSensors().perceptEnvironment();
+            if (!Config.Simulator){
+                Competition.simulatorMapPanel.updateMap(robot.getMapKnowledgeBase().getArrayMap());
+            } else {
+                Simulator.simulatorMapPanel.updateMap(robot.getMapKnowledgeBase().getArrayMap());
+            }
+
+            robot.turnNorth(true);
+			int startVisit = 0;
 			while (robot.getMapKnowledgeBase().lessThanEnoughExploration() 
-					&& System.currentTimeMillis() < timeEnd) {
+					&& System.currentTimeMillis() < timeEnd
+                    && startVisit==0 &&robot.getCurrentLocation()==start) {
+                if (robot.getCurrentLocation()== ArenaMap.END_POINT) startVisit++;
 				//if (Config.trackingOn) 
 					System.out.println("explore: Fll-Wall path here at (" + here.gridX + "," + here.gridY + ")");
 				
@@ -438,10 +449,12 @@ public class Explorer {
 				while (!returnPsth.isEmpty()) {
 					temp.push(returnPsth.pop());
 				}
-				returnPsth = robot.distanceDetermination(temp);
+				//returnPsth = robot.distanceDetermination(temp);
+                returnPsth = temp;
 				robot.setNewRoute(returnPsth);
-				robot.setRace(true);
-				Communicator.startRace();
+				//robot.setRace(true);
+                robot.setRace(true);
+				//Communicator.startRace();
 				Simulator.robotManager.robotRun();
 			}
 		}

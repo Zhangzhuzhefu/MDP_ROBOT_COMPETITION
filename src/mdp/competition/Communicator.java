@@ -118,7 +118,7 @@ public class Communicator extends VirtualCommunicator {
                                         break;
 
                                     case "s":    // choose shortestpath algorithm
-                                        Competition.updateShortestPath();
+                                        Competition.updateFastestPath();
                                         Competition.secondRun();
                                         break;
 
@@ -139,7 +139,7 @@ public class Communicator extends VirtualCommunicator {
                                         break;
 
                                     case "e":   // explore
-                                        Competition.explore_floodFill();
+                                        Competition.explore_FollowWall();
                                         break;
 
                                     case "t":   // auto run
