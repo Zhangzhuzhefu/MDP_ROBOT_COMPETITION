@@ -63,7 +63,11 @@ public class ControlPanel extends Panel{
 		jbRandomPath.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Simulator.updateRandomPath();
+                if (!Config.Simulator) {
+                    Competition.updateRandomPath();
+                } else {
+				    Simulator.updateRandomPath();
+                }
 			}
 		});
 		
@@ -72,7 +76,11 @@ public class ControlPanel extends Panel{
 		jbshortestPath.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Simulator.updateShortestPath();
+                if (!Config.Simulator) {
+                    Competition.updateShortestPath();
+                } else {
+				    Simulator.updateShortestPath();
+                }
 			}
 		});
 		
@@ -81,7 +89,11 @@ public class ControlPanel extends Panel{
 		jbfastestPath.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Simulator.updateFastestPath();
+                if (!Config.Simulator){
+				    Competition.updateFastestPath();}
+                else {
+                    Simulator.updateFastestPath();
+                }
 			}
 		});
 
@@ -128,7 +140,11 @@ public class ControlPanel extends Panel{
 		jbExpolore.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Simulator.explore();
+                if (!Config.Simulator){
+                    Competition.explore();
+                } else {
+				    Simulator.explore();
+                }
 			}
 		});
 		
@@ -137,7 +153,11 @@ public class ControlPanel extends Panel{
 		jbRun.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Simulator.secondRun();
+				if (!Config.Simulator){
+                    Competition.secondRun();
+                } else {
+                    Simulator.secondRun();
+                }
 			}
 		});
 		

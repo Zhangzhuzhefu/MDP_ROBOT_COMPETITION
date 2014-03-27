@@ -52,7 +52,8 @@ public class SimPerceptron{
 				}
 			} else {
 				boolean breakFlag = false;
-				farFront = Math.min(Config.InfraRedDetectDist, ulLeft);
+                frontWay = ArenaMap.MAXM-2 - robot.getCurrentLocation().gridY;
+				farFront = Math.min(frontWay,Math.min(Config.InfraRedDetectDist, ulLeft));
 				for (int i = 0; i < farFront; i++) {
 					if (environment[curLoc.gridX - 1 - 1][curLoc.gridY + i+1] == ArenaMap.UNKNOWN)
 					environment[curLoc.gridX - 1 - 1][curLoc.gridY + i+1] = ArenaMap.EMP;
@@ -81,7 +82,8 @@ public class SimPerceptron{
 					environment[curLoc.gridX - 1][curLoc.gridY + ulCenter+1] = ArenaMap.OBS;
 				}
 				breakFlag = false;
-				farFront = Math.min(Config.InfraRedDetectDist, ulRight);
+                frontWay = ArenaMap.MAXM-2 - robot.getCurrentLocation().gridY;
+				farFront = Math.min(frontWay,Math.min(Config.InfraRedDetectDist, ulRight));
 				for (int i = 0; i < farFront; i++) {
 					if (environment[curLoc.gridX][curLoc.gridY + i+1] == ArenaMap.UNKNOWN)
 					environment[curLoc.gridX][curLoc.gridY + i+1] = ArenaMap.EMP;
@@ -114,6 +116,8 @@ public class SimPerceptron{
 				}
 			} else {
 				boolean breakFlag = false;
+                frontWay = robot.getCurrentLocation().gridY - 3;
+                farFront = Math.min(frontWay,Math.min(Config.InfraRedDetectDist, ulLeft));
 				for (int i = 0; i < farFront; i++) {
 					if (environment[curLoc.gridX - 0][curLoc.gridY - i - 3] == ArenaMap.UNKNOWN)
 					environment[curLoc.gridX - 0][curLoc.gridY - i - 3] = ArenaMap.EMP;
@@ -142,7 +146,8 @@ public class SimPerceptron{
 					environment[curLoc.gridX - 1][curLoc.gridY - ulCenter - 3] = ArenaMap.OBS;
 				}
 				breakFlag = false;
-				farFront = Math.min(Config.InfraRedDetectDist, ulRight);
+                frontWay = robot.getCurrentLocation().gridY - 3;
+				farFront = Math.min(frontWay,Math.min(Config.InfraRedDetectDist, ulRight));
 				for (int i = 0; i < farFront; i++) {
 					if (environment[curLoc.gridX - 2][curLoc.gridY - i - 3] == ArenaMap.UNKNOWN)
 					environment[curLoc.gridX - 2][curLoc.gridY - i - 3] = ArenaMap.EMP;
@@ -175,6 +180,8 @@ public class SimPerceptron{
 				}
 			} else {
 				boolean breakFlag = false;
+                frontWay = robot.getCurrentLocation().gridX - 3;
+                farFront = Math.min(frontWay,Math.min(Config.InfraRedDetectDist,ulLeft));
 				for (int i = 0; i < farFront; i++) {
 					if (environment[curLoc.gridX - 2 - i][curLoc.gridY - 1 - 1] == ArenaMap.UNKNOWN)
 					environment[curLoc.gridX - 2 - i][curLoc.gridY - 1 - 1] = ArenaMap.EMP;
@@ -204,7 +211,8 @@ public class SimPerceptron{
 					environment[curLoc.gridX - 2 - ulCenter][curLoc.gridY - 1] = ArenaMap.OBS;
 				}
 				breakFlag = false;
-				farFront = Math.min(Config.InfraRedDetectDist, ulRight);
+                frontWay = robot.getCurrentLocation().gridX - 3;
+				farFront = Math.min(frontWay,Math.min(Config.InfraRedDetectDist, ulRight));
 				for (int i = 0; i < farFront; i++) {
 					if (environment[curLoc.gridX - 2 - i][curLoc.gridY] == ArenaMap.UNKNOWN)
 					environment[curLoc.gridX - 2 - i][curLoc.gridY] = ArenaMap.EMP;
@@ -237,6 +245,8 @@ public class SimPerceptron{
 				}
 			} else {
 				boolean breakFlag = false;
+                frontWay = ArenaMap.MAXN-2 - robot.getCurrentLocation().gridX;
+                farFront = Math.min(frontWay,Math.min(Config.InfraRedDetectDist,ulLeft));
 				for (int i = 0; i < farFront; i++) {
 					if (environment[curLoc.gridX + i + 1][curLoc.gridY] == ArenaMap.UNKNOWN)
 					environment[curLoc.gridX + i + 1][curLoc.gridY] = ArenaMap.EMP;
@@ -265,7 +275,8 @@ public class SimPerceptron{
 					environment[curLoc.gridX + ulCenter + 1][curLoc.gridY - 1] = ArenaMap.OBS;
 				}
 				breakFlag = false;
-				farFront = Math.min(Config.InfraRedDetectDist, ulRight);
+                frontWay = ArenaMap.MAXN-2 - robot.getCurrentLocation().gridX;
+				farFront = Math.min(frontWay,Math.min(Config.InfraRedDetectDist, ulRight));
 				for (int i = 0; i < farFront; i++) {
 					if (environment[curLoc.gridX + i + 1][curLoc.gridY - 1 - 1 ] == ArenaMap.UNKNOWN)
 					environment[curLoc.gridX + i + 1][curLoc.gridY - 1 - 1 ] = ArenaMap.EMP;
@@ -288,6 +299,7 @@ public class SimPerceptron{
 		Point curLoc = robot.getCurrentLocation();
 		int uInt =communicator.leftSensor(); 
 		int farFront;
+        int frontWay;
 		
 		switch (robot.getDirection().getDirection()) {
 		case Direction.UP:
@@ -302,6 +314,8 @@ public class SimPerceptron{
 			}
 			else {
 				boolean breakFlag = false;
+                frontWay = robot.getCurrentLocation().gridX - 3;
+                farFront = Math.min(frontWay,Math.min(Config.InfraRedDetectDist,uInt));
 				for (int i = 0; i < farFront; i++) {
 					if (environment[curLoc.gridX - 1 - 1 - 1 - i][curLoc.gridY] == ArenaMap.UNKNOWN)
 					environment[curLoc.gridX - 1 - 1 - 1 - i][curLoc.gridY] = ArenaMap.EMP;
@@ -327,6 +341,8 @@ public class SimPerceptron{
 				}
 			} else {
 				boolean breakFlag = false;
+                frontWay = ArenaMap.MAXN-2 - robot.getCurrentLocation().gridX;
+                farFront = Math.min(frontWay,Math.min(Config.InfraRedDetectDist, uInt));
 				for (int i = 0; i < farFront; i++) {
 					if (environment[curLoc.gridX + i + 1][curLoc.gridY - 2] == ArenaMap.UNKNOWN)
 					environment[curLoc.gridX + i + 1][curLoc.gridY - 2] = ArenaMap.EMP;
@@ -352,6 +368,8 @@ public class SimPerceptron{
 				}
 			} else {
 				boolean breakFlag = false;
+                frontWay = robot.getCurrentLocation().gridY - 3;
+                farFront = Math.min(frontWay,Math.min(Config.InfraRedDetectDist, uInt));
 				for (int i = 0; i < farFront; i++) {
 					if (environment[curLoc.gridX - 2][curLoc.gridY - 3 - i]  == ArenaMap.UNKNOWN)
 						environment[curLoc.gridX - 2][curLoc.gridY - 3 - i] = ArenaMap.EMP;
@@ -378,7 +396,8 @@ public class SimPerceptron{
 				}
 			} else {
 				boolean breakFlag = false;
-				farFront = Math.min(Config.InfraRedDetectDist, uInt);
+                frontWay = ArenaMap.MAXM-2 - robot.getCurrentLocation().gridY;
+                farFront = Math.min(frontWay,Math.min(Config.InfraRedDetectDist, uInt));
 				for (int i = 0; i < farFront; i++) {
 					if (environment[curLoc.gridX ][curLoc.gridY + i + 1] == ArenaMap.UNKNOWN)
 						environment[curLoc.gridX ][curLoc.gridY + i + 1] = ArenaMap.EMP;
@@ -401,7 +420,7 @@ public class SimPerceptron{
 		Point curLoc = robot.getCurrentLocation();
 		int uInt =communicator.rightSensor(); 
 		int farFront;
-		
+		int frontWay;
 		switch (robot.getDirection().getDirection()) {
 		case Direction.UP:
 			farFront = Math.min(Config.InfraRedDetectDist, uInt);
@@ -414,6 +433,8 @@ public class SimPerceptron{
 				}
 			} else {
 				boolean breakFlag = false;
+                frontWay = ArenaMap.MAXN-2 - robot.getCurrentLocation().gridX;
+                farFront = Math.min(frontWay,Math.min(Config.InfraRedDetectDist, uInt));
 				for (int i = 0; i < farFront; i++) {
 					if (environment[curLoc.gridX + i + 1][curLoc.gridY] == ArenaMap.UNKNOWN)
 					environment[curLoc.gridX + i + 1][curLoc.gridY] = ArenaMap.EMP;
@@ -439,6 +460,8 @@ public class SimPerceptron{
 				}
 			} else {
 				boolean breakFlag = false;
+                frontWay = robot.getCurrentLocation().gridX - 3;
+                farFront = Math.min(frontWay,Math.min(Config.InfraRedDetectDist, uInt));
 				for (int i = 0; i < farFront; i++) {
 					if (environment[curLoc.gridX - 3 - i][curLoc.gridY - 2] == ArenaMap.UNKNOWN)
 					environment[curLoc.gridX - 3 - i][curLoc.gridY - 2] = ArenaMap.EMP;
@@ -464,7 +487,8 @@ public class SimPerceptron{
 				}
 			} else {
 				boolean breakFlag = false;
-				farFront = Math.min(Config.InfraRedDetectDist, uInt);
+                frontWay = ArenaMap.MAXM-2 - robot.getCurrentLocation().gridY;
+				farFront = Math.min(frontWay,Math.min(Config.InfraRedDetectDist, uInt));
 				for (int i = 0; i < farFront; i++) {
 					if (environment[curLoc.gridX - 2][curLoc.gridY + i + 1] == ArenaMap.UNKNOWN)
 					environment[curLoc.gridX - 2][curLoc.gridY + i + 1] = ArenaMap.EMP;
@@ -490,7 +514,8 @@ public class SimPerceptron{
 				}
 			} else {
 				boolean breakFlag = false;
-				farFront = Math.min(Config.InfraRedDetectDist, uInt);
+                frontWay = robot.getCurrentLocation().gridY - 3;
+                farFront = Math.min(frontWay,Math.min(Config.InfraRedDetectDist, uInt));
 				for (int i = 0; i < farFront; i++) {
 					if (environment[curLoc.gridX][curLoc.gridY - 3 - i] == ArenaMap.UNKNOWN)
 					environment[curLoc.gridX][curLoc.gridY - 3 - i] = ArenaMap.EMP;
