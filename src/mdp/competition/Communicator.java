@@ -119,6 +119,7 @@ public class Communicator extends VirtualCommunicator {
 
                                     case "s":    // choose shortestpath algorithm
                                         Competition.updateFastestPath();
+                                        //Competition.robotManager.robotRun();
                                         Competition.secondRun();
                                         break;
 
@@ -313,7 +314,17 @@ public class Communicator extends VirtualCommunicator {
 
     // move a certain distance
     public static void moveInt(int distance){
-        writeCommandToArduino(Integer.toString(distance*2));
+        int newdistance = 0;
+        int newdistance2 = 0;
+        if (distance>=10){
+            newdistance = distance/2;
+            newdistance2 = distance/2;
+            if (newdistance * 2 != distance) newdistance += 1;
+        } else {
+            newdistance = distance;
+        }
+        writeCommandToArduino(Integer.toString(newdistance));
+        if (newdistance2 != 0) writeCommandToArduino(Integer.toString(newdistance2));
     }
 
     public static void writeCommandToArduino(String cmd){
@@ -404,13 +415,7 @@ public class Communicator extends VirtualCommunicator {
                     	//Communicator.sensorValue();
                     }
 
-                    if (!jsonObject.get("dis").toString().equals("") && robot.isRace()){
-                        movedDistance = Integer.getInteger(jsonObject.get("dis").toString());
-                        synchronized (runWait){
-                            runWait.notify();
-                        }
 
-                    }
 
                     synchronized (turn){
                         turn.notify();
@@ -436,6 +441,15 @@ public class Communicator extends VirtualCommunicator {
                 } else {
                 	if (Config.debugOn)
                 		System.out.println("Communicator: warning sensor velue is empty");
+                }
+                System.out.println("the isRace is: " + Competition.robotManager.getRobot().isRace());
+                if (Competition.robotManager.getRobot().isRace()){
+                    if (!jsonObject.get("dis").toString().equals("")){
+                        movedDistance = Integer.getInteger(jsonObject.get("dis").toString());}
+                    synchronized (runWait){
+                        runWait.notify();
+                    }
+
                 }
             }
 
@@ -535,7 +549,7 @@ public class Communicator extends VirtualCommunicator {
     public static int getMovedDistance(){
         synchronized (runWait){
             try{
-                System.out.println("Communicator: I am waiting");
+                System.out.println("Communicator: I am waiting for movedDistance");
                 runWait.wait();
                 System.out.println("Communicator: finish waiting");
             } catch (InterruptedException e) {

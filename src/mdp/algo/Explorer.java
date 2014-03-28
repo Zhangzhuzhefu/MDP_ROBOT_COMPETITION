@@ -430,7 +430,9 @@ public class Explorer {
 				}
 				
 			}
+
 			//return to start point
+            System.out.println("fastest back path");
 			PathCalculator pathCalculator = new PathCalculator();
 			Stack <Point> returnPsth = null;
 			pathCalculator.setMap(robot.getMapKnowledgeBase().getArrayMap());
@@ -447,19 +449,23 @@ public class Explorer {
 					System.out.println("Robot doesn't know how to get back");
 			}
 			//To reverse the returnPath stack
+
 			Stack <Point> temp = new Stack<Point>();
 			if (returnPsth!=null) {
 				while (!returnPsth.isEmpty()) {
 					temp.push(returnPsth.pop());
 				}
-				//returnPsth = robot.distanceDetermination(temp);
-                returnPsth = temp;
+				returnPsth = robot.distanceDetermination(temp);
+                //returnPsth = temp;
 				robot.setNewRoute(returnPsth);
-				//robot.setRace(true);
+
                 robot.setRace(true);
-				//Communicator.startRace();
-				Simulator.robotManager.robotRun();
+                if (!Config.Simulator){
+				    Communicator.startRace();
+                    Competition.secondRun();}
+                else Simulator.robotManager.robotRun();
 			}
+
 		}
 		
 	}

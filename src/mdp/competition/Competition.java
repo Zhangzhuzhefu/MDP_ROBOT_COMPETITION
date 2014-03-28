@@ -82,6 +82,7 @@ public class Competition {
     }
 
     public static void secondRun(){
+        robotManager.getRobot().startMoving();
         robotManager.robotRun();
     }
 

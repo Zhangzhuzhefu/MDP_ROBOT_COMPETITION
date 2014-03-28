@@ -25,7 +25,7 @@ public class ArenaMap {
 		initializeMap();
 		System.out.println("Printing robot knowledge base: ");
 		Utils.printVirtualMap(map);
-		if (Config.Simulator)
+		//if (Config.Simulator)
 			ArenaMap.actualMap = Utils.loadMazeEnvironment(Config.mapFileName);
 	}
 	
