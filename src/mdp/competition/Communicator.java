@@ -281,6 +281,8 @@ public class Communicator extends VirtualCommunicator {
     // d: turn back
     // e: start explore
     // int: move int cm
+    // f: full alignment
+    // h: half alignment
     public static void moveFor() {
         writeCommandToArduino("a");
     }
@@ -327,6 +329,17 @@ public class Communicator extends VirtualCommunicator {
         if (newdistance2 != 0) writeCommandToArduino(Integer.toString(newdistance2));
     }
 
+    // ask to do full alignment
+    public static void fullAlign(){
+        writeCommandToArduino("f");
+    }
+
+    // ask to do half alignment
+    public static void halfAlign(){
+        writeCommandToArduino("h");
+    }
+
+    // write any command to arduino
     public static void writeCommandToArduino(String cmd){
         JSONObject obj = new JSONObject();
         obj.put("cmd","ard");
