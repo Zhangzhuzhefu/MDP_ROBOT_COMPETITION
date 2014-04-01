@@ -250,6 +250,7 @@ public class Explorer {
 			Point here = start;
 			followWallPath.push(start);
 			Point hereNext,hereLeft,hereRight;
+			Point hereNextL,hereNextLL,hereLeftL,hereLeftLL;
 			//TODO
 			boolean clockwise;
 			if (robot.getDirection().getDirection()==Direction.UP) 
@@ -288,31 +289,64 @@ public class Explorer {
 					hereLeft = PointManager.getPoint(here.gridX-1, here.gridY);
 					hereRight = PointManager.getPoint(here.gridX + 1, here.gridY);
 					
+					hereNextL = PointManager.getPoint(here.gridX-1, here.gridY+1);
+					hereNextLL = PointManager.getPoint(here.gridX-2, here.gridY+1);
+					hereLeftL = PointManager.getPoint(here.gridX-1, here.gridY-1);
+					hereLeftLL = PointManager.getPoint(here.gridX-1, here.gridY-2);
 					break;
 				case Direction.DOWN:
 					hereNext = PointManager.getPoint(here.gridX, here.gridY-1);
 					hereLeft = PointManager.getPoint(here.gridX+1, here.gridY);
 					hereRight = PointManager.getPoint(here.gridX-1, here.gridY);
 					
+					hereNextL = PointManager.getPoint(here.gridX+1, here.gridY-1);
+					hereNextLL = PointManager.getPoint(here.gridX+2, here.gridY-1);
+					hereLeftL = PointManager.getPoint(here.gridX+1, here.gridY+1);
+					hereLeftLL = PointManager.getPoint(here.gridX+1, here.gridY+2);
 					break;
 				case Direction.LEFT:
 					hereNext = PointManager.getPoint(here.gridX-1, here.gridY);
 					hereLeft = PointManager.getPoint(here.gridX, here.gridY-1);
 					hereRight = PointManager.getPoint(here.gridX, here.gridY+1);
 					
+					hereNextL = PointManager.getPoint(here.gridX-1, here.gridY-1);
+					hereNextLL = PointManager.getPoint(here.gridX-1, here.gridY-2);
+					hereLeftL = PointManager.getPoint(here.gridX+1, here.gridY-1);
+					hereLeftLL = PointManager.getPoint(here.gridX+2, here.gridY-1);
 					break;
 				case Direction.RIGHT:
 					hereNext = PointManager.getPoint(here.gridX+1, here.gridY);
 					hereLeft = PointManager.getPoint(here.gridX, here.gridY+1);
 					hereRight = PointManager.getPoint(here.gridX, here.gridY-1);
 					
+					hereNextL = PointManager.getPoint(here.gridX+1, here.gridY+1);
+					hereNextLL = PointManager.getPoint(here.gridX+1, here.gridY+2);
+					hereLeftL = PointManager.getPoint(here.gridX-1, here.gridY+1);
+					hereLeftLL = PointManager.getPoint(here.gridX-2, here.gridY+1);
 					break;
 					
 				default: 
 					hereNext = null;
 					hereLeft = null;
 					hereRight = null;
+					hereNextL = null;
+					hereNextLL = null;
+					hereLeftL = null;
+					hereLeftLL = null;
 				}
+                
+                if(map[hereNext.gridX][hereNext.gridY] == ArenaMap.OBS 
+                		&& map[hereNextL.gridX][hereNextL.gridY] == ArenaMap.OBS 
+                		&& map[hereNextLL.gridX][hereNextLL.gridY] == ArenaMap.OBS) {
+                	if (map[hereLeft.gridX][hereLeft.gridY] == ArenaMap.OBS 
+                    		&& map[hereLeftL.gridX][hereLeftL.gridY] == ArenaMap.OBS 
+                    		&& map[hereLeftLL.gridX][hereLeftLL.gridY] == ArenaMap.OBS){
+                		
+                	} else {
+                		
+                	}
+                	
+                }
 
 				if (hereNext != null) {
 					if (hereLeft.robotMovable(map)){// && hereLeftLeft.robotMovable(map)) {
