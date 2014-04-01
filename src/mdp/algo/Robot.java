@@ -28,7 +28,7 @@ public class Robot {
 	
 	
 	public Robot() throws IOException{
-        autoUpdate = false;
+        autoUpdate = true;
 		race = false;
 		isExploring = true;
 		isMoving = false;
@@ -67,12 +67,13 @@ public class Robot {
 	public Stack<Point> generateFastestPath(){
         if (!Config.Simulator){
             Communicator.startRace();}
+        setRace(true);
         //if (!Config.Simulator)
         pathCalculator.setMap(getMapKnowledgeBase().getArrayMap());
 		if(pathCalculator.findFastestPath(null)){
 			route = (Stack<Point>) pathCalculator.getFastestPath();
-            //newRoute = distanceDetermination(route);
-            newRoute = (Stack)route.clone();
+            newRoute = distanceDetermination(route);
+            //newRoute = (Stack)route.clone();
             return route;
 		}
 		else 
@@ -82,27 +83,29 @@ public class Robot {
 	public Stack<Point> generateShortestPath(){
         if (!Config.Simulator){
             Communicator.startRace();}
+        setRace(true);
       //if (!Config.Simulator) 
 		pathCalculator.setMap(getMapKnowledgeBase().getArrayMap());
 		if(pathCalculator.findShortestPath()){
 			route = (Stack<Point>) pathCalculator.getShortestPath();
-            //newRoute = distanceDetermination(route);
-            newRoute = (Stack)route.clone();
+            newRoute = distanceDetermination(route);
+            //newRoute = (Stack)route.clone();
 			return route;
 		}
-		else 
-			return null;
+		else {Competition.explore_FollowWall();
+			return null;}
 	}
 	
 	public Stack<Point> generateRandomPath(){
         if (!Config.Simulator){
             Communicator.startRace();}
+        setRace(true);
         //if (!Config.Simulator) 
 		pathCalculator.setMap(this.getMapKnowledgeBase().getArrayMap());
 		if(pathCalculator.findRandomPath()){
 			route = (Stack<Point>) pathCalculator.getRandomPath();
-            //newRoute = distanceDetermination(route);
-            newRoute = (Stack)route.clone();
+            newRoute = distanceDetermination(route);
+            //newRoute = (Stack)route.clone();
 			return route;
 		}
 		else 
@@ -176,42 +179,8 @@ public class Robot {
 				isMoving = false;
 			}
         }
-        else {
 
-            if (newRoute != null && !newRoute.empty()) {
-                if (Config.debugOn)
-                    System.out.println("Robot route exists");
-                if (newRoute.peek().sameGridPoint(ArenaMap.END_POINT)) {
-                    isOnTheWayReturning = true;
-                    if (Config.debugOn)
-                        System.out.println("isOnTheWayReturning = true");
-                }
-                Point nextLoc = newRoute.peek();
-                ;
-                int xDiff, yDiff;
-                xDiff = nextLoc.gridX - currentLocation.gridX;
-                yDiff = nextLoc.gridY - currentLocation.gridY;
-                if (xDiff > 0) {
-                    this.turnEast(true);
-                } else if (xDiff < 0) {
-                    this.turnWest(true);
-                } else if (yDiff > 0) {
-                    this.turnNorth(true);
-                } else if (yDiff < 0) {
-                    this.turnSouth(true);
-                }
-                currentLocation = newRoute.pop();
-                updateRobotLoc();
-
-            } else {
-                if (Config.debugOn)
-                    System.out.println("Robot route is empty..");
-                isMoving = false;
-            }
-
-        }
-
-        /*else { // if competition or testing
+        else { // if competition or testing
 
             if (newRoute != null && !newRoute.empty() ) {
             	if (route.peek().sameGridPoint(ArenaMap.END_POINT)) {
@@ -233,25 +202,25 @@ public class Robot {
                 if (xDiff > 0 ) {
                     this.turnEast(true);
                     if (Config.debugOn){
-                        System.out.println("I tell arduino to move "+xDiff + " grids");}
+                        System.out.println("I tell arduino to move "+Math.abs(xDiff) + " grids");}
 
-                    if (!Config.Simulator) Communicator.moveInt(xDiff);
+                    if (!Config.Simulator) Communicator.moveInt(Math.abs(xDiff));
                 } else if (xDiff < 0 ){
                     this.turnWest(true);
                     if (Config.debugOn){
-                        System.out.println("I tell arduino to move "+xDiff + " grids");}
+                        System.out.println("I tell arduino to move "+Math.abs(xDiff) + " grids");}
 
-                    if (!Config.Simulator) Communicator.moveInt(xDiff);
+                    if (!Config.Simulator) Communicator.moveInt(Math.abs(xDiff));
                 } else if (yDiff > 0 ){
                     this.turnNorth(true);
                     if (Config.debugOn){
-                        System.out.println("I tell arduino to move "+yDiff + " grids");}
-                    if (!Config.Simulator) Communicator.moveInt(yDiff);
+                        System.out.println("I tell arduino to move "+Math.abs(yDiff) + " grids");}
+                    if (!Config.Simulator) Communicator.moveInt(Math.abs(yDiff));
                 } else if (yDiff < 0 ){
                     this.turnSouth(true);
                     if (Config.debugOn){
-                        System.out.println("I tell arduino to move "+yDiff + " grids");}
-                    if (!Config.Simulator) Communicator.moveInt(yDiff);
+                        System.out.println("I tell arduino to move "+Math.abs(yDiff) + " grids");}
+                    if (!Config.Simulator) Communicator.moveInt(Math.abs(yDiff));
                 }
 
 
@@ -267,7 +236,7 @@ public class Robot {
 					System.out.println("Robot route is empty..");
 				isMoving = false;
 			}
-        }*/
+        }
 
     }
 
@@ -448,18 +417,28 @@ public class Robot {
 	public void turnNorth(boolean delay){
 		switch (direction.getDirection()){
 		case Direction.UP:
-            if (!race){// will robot turn off sensor during racing ? if not please remove this line
-                //Communicator.getMovedDistance();
-                Communicator.getSensorValue();}
+            // Do nothing
             break;
 		case Direction.DOWN:
 			this.turnBack(delay);
+            if (Config.debugOn) System.out.println("i turn back");
+            if (race && !Config.Simulator){// wait for robot to finish turning
+                Communicator.getMovedDistance();
+                if (Config.debugOn) System.out.println("i turn back\nI wait for movedDistance");}
 			break;
 		case Direction.LEFT:
 			this.turnRight(delay);
+            if (Config.debugOn) System.out.println("i turn right");
+            if (race && !Config.Simulator){// wait for robot to finish turning
+                Communicator.getMovedDistance();
+                if (Config.debugOn) System.out.println("i turn right\nI wait for movedDistance");}
 			break;
 		case Direction.RIGHT:
 			this.turnLeft(delay);
+            if (Config.debugOn) System.out.println("i turn left");
+            if (race && !Config.Simulator){
+                Communicator.getMovedDistance();
+                if (Config.debugOn) System.out.println("i turn left\nI wait for movedDistance");}
 			break;
 		}
 	}
@@ -468,17 +447,27 @@ public class Robot {
 		switch (direction.getDirection()){
 		case Direction.UP:
 			this.turnBack(delay);
+            if (Config.debugOn) System.out.println("i turn back");
+            if (race && !Config.Simulator){
+                Communicator.getMovedDistance();
+                 if (Config.debugOn) System.out.println("i turn back\nI wait for movedDistance");}
 			break;
 		case Direction.DOWN:
-            if (!race){// will robot turn off sensor during racing ? if not please remove this line
-                //Communicator.getMovedDistance();
-                Communicator.getSensorValue();}
+            // same direction, no turning, do nothing
 			break;
 		case Direction.LEFT:
 			this.turnLeft(delay);
+            if (Config.debugOn) System.out.println("i turn left");
+            if (race && !Config.Simulator){
+                Communicator.getMovedDistance();
+                if (Config.debugOn) System.out.println("i turn left\nI wait for movedDistance");}
 			break;
 		case Direction.RIGHT:
 			this.turnRight(delay);
+            if (Config.debugOn) System.out.println("i turn right");
+            if (race && !Config.Simulator){
+                Communicator.getMovedDistance();
+                if (Config.debugOn) System.out.println("i turn right\nI wait for movedDistance");}
 			break;
 		}
 	}
@@ -487,17 +476,27 @@ public class Robot {
 		switch (direction.getDirection()){
 		case Direction.UP:
 			this.turnLeft(delay);
+            if (Config.debugOn) System.out.println("i turn left");
+            if (race && !Config.Simulator){
+                Communicator.getMovedDistance();
+                if (Config.debugOn) System.out.println("i turn left\nI wait for movedDistance");}
 			break;
 		case Direction.DOWN:
 			this.turnRight(delay);
+            if (Config.debugOn) System.out.println("i turn right");
+            if (race && !Config.Simulator){
+                Communicator.getMovedDistance();
+                if (Config.debugOn) System.out.println("i turn right\nI wait for movedDistance");}
 			break;
 		case Direction.LEFT:
-            if (!race){// will robot turn off sensor during racing ? if not please remove this line
-                //Communicator.getMovedDistance();
-                Communicator.getSensorValue();}
+            // do nothing
 			break;
 		case Direction.RIGHT:
 			this.turnBack(delay);
+            if (Config.debugOn) System.out.println("i turn back");
+            if (race && !Config.Simulator){
+                Communicator.getMovedDistance();
+                if (Config.debugOn) System.out.println("i turn back\nI wait for movedDistance");}
 			break;
 		}
 	}
@@ -506,17 +505,28 @@ public class Robot {
 		switch (direction.getDirection()){
 		case Direction.UP:
 			this.turnRight(delay);
+            if (Config.debugOn) System.out.println("i turn right");
+            if (race && !Config.Simulator){
+                Communicator.getMovedDistance();
+                if (Config.debugOn) System.out.println("i turn right\nI wait for movedDistance");}
 			break;
 		case Direction.DOWN:
 			this.turnLeft(delay);
+            if (Config.debugOn) System.out.println("i turn left");
+            if (race && !Config.Simulator){
+                Communicator.getMovedDistance();
+                if (Config.debugOn) System.out.println("i turn left\nI wait for movedDistance");}
 			break;
 		case Direction.LEFT:
 			this.turnBack(delay);
+            if (Config.debugOn) System.out.println("i turn back");
+            if (race && !Config.Simulator){
+                Communicator.getMovedDistance();
+                if (Config.debugOn) System.out.println("i turn back\nI wait for movedDistance");}
 			break;
 		case Direction.RIGHT:
-            if (!race){// will robot turn off sensor during racing ? if not please remove this line
-                //Communicator.getMovedDistance();
-                Communicator.getSensorValue();}
+           // do nothing
+            if (Config.debugOn) System.out.println("do nothing");
 			break;
 		}
 	}
