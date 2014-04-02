@@ -514,7 +514,14 @@ public class Communicator extends VirtualCommunicator {
         synchronized (turn){
         try{
             System.out.println("Communicator: I am waiting");
-            turn.wait();
+            long tBefore=System.currentTimeMillis();
+            turn.wait(Config.TIMEOUT);
+            if ((System.currentTimeMillis() - tBefore) > Config.TIMEOUT) 
+              { 
+            	 System.out.println("Communicator: timeout liao");
+                 getSensorValue();
+                 turn.wait();
+              }
             System.out.println("Communicator: finish waiting");
             } catch (InterruptedException e) {
                 System.err.print(e);

@@ -248,7 +248,13 @@ public class Robot {
 
         // if false, moving toward grid x
         // if true, moving toward grid y
+        
         boolean toD=false;
+        if(tempRoute.peek().gridX == curLoc.gridX){
+        	toD = true;
+        } else {
+        	toD = false;
+        }
         Point endPoint;
         Point startPoint;
         if (Config.twoBytwo){

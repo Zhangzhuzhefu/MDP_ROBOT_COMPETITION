@@ -12,8 +12,10 @@ public class SimPerceptron{
 	protected VirtualCommunicator communicator;
 	int[][] environment;
 	private Robot robot;
+	private boolean updateFlag;
 	
 	public SimPerceptron(Robot r) {
+		updateFlag = true;
 		robot = r;
 		environment = r.getMapKnowledgeBase().getArrayMap();
 	}
@@ -33,6 +35,7 @@ public class SimPerceptron{
 		int ulRight = uInt[2]; 
 		int farFront;
 		int frontWay;
+		if(updateFlag){
 		switch (robot.getDirection().getDirection()) {
 		case Direction.UP:
 			farFront = Math.min(Config.InfraRedDetectDist, ulLeft);
@@ -296,6 +299,7 @@ public class SimPerceptron{
 			}
 			break;
 		}
+		}
 		return 0;
 	}
 
@@ -304,7 +308,7 @@ public class SimPerceptron{
 		int uInt =communicator.leftSensor(); 
 		int farFront;
         int frontWay;
-		
+        if(updateFlag){
 		switch (robot.getDirection().getDirection()) {
 		case Direction.UP:
 			farFront = Math.min(Config.InfraRedDetectDist, uInt);
@@ -417,6 +421,7 @@ public class SimPerceptron{
 			}
 			break;
 		}
+        }
 		return 0;
 	}
 
@@ -425,6 +430,7 @@ public class SimPerceptron{
 		int uInt =communicator.rightSensor(); 
 		int farFront;
 		int frontWay;
+		if(updateFlag){
 		switch (robot.getDirection().getDirection()) {
 		case Direction.UP:
 			farFront = Math.min(Config.LongInfraredDetectDist, uInt);
@@ -538,6 +544,7 @@ public class SimPerceptron{
 			}
 			break;
 		}
+		}
 		return 0;
 	}
 
@@ -564,6 +571,14 @@ public class SimPerceptron{
 	
 	public int percept(int x, int y) {
 		return environment[x][y];
+	}
+
+	public boolean isUpdateFlag() {
+		return updateFlag;
+	}
+
+	public void setUpdateFlag(boolean updateFlag) {
+		this.updateFlag = updateFlag;
 	}
 
 	

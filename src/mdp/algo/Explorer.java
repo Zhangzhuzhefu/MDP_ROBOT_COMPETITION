@@ -259,6 +259,8 @@ public class Explorer {
 			else clockwise = false;
 
             robot.getSensors().perceptEnvironment();
+//            robot.turnWest(true);
+//    		Communicator.fullAlign();
             if (!Config.Simulator){
                 Competition.simulatorMapPanel.updateMap(robot.getMapKnowledgeBase().getArrayMap());
             } else {
@@ -353,10 +355,18 @@ public class Explorer {
                     		&& map[hereLeft2.gridX-1][hereLeft2.gridY-1] == ArenaMap.OBS 
                     		&& map[hereLeft3.gridX-1][hereLeft3.gridY-1] == ArenaMap.OBS){
                 		System.out.println("Full align at "+here.gridX+" "+here.gridY);
+                		robot.getSensors().setUpdateFlag(false);
+                		Communicator.getSensorValue();
+                		robot.getSensors().perceptEnvironment();
                 		Communicator.fullAlign();
+                		robot.getSensors().setUpdateFlag(true);
                 	} else {
                 		System.out.println("Half align at "+here.gridX+" "+here.gridY);
+                		robot.getSensors().setUpdateFlag(false);
+                		Communicator.getSensorValue();
+                		robot.getSensors().perceptEnvironment();
                 		Communicator.halfAlign();
+                		robot.getSensors().setUpdateFlag(true);
                 	}
                 	
                 }
