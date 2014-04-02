@@ -8,6 +8,7 @@ import mdp.competition.Competition;
 import mdp.simulation.Simulator;
 
 public class Explorer {
+	Object syncLock  = new Object();
 	public static final String FLOODFILL = "FloodFill";
 	public static final String FLLWALL = "FallowWall";
 	public static final int North = 1, South = 3, East = 0, West = 2;
@@ -250,7 +251,7 @@ public class Explorer {
 			Point here = start;
 			followWallPath.push(start);
 			Point hereNext,hereLeft,hereRight;
-			Point hereNextL,hereNextLL,hereLeftL,hereLeftLL;
+			Point hereNext1,hereNext2,hereNext3,hereLeft1,hereLeft2,hereLeft3;
 			//TODO
 			boolean clockwise;
 			if (robot.getDirection().getDirection()==Direction.UP) 
@@ -289,61 +290,73 @@ public class Explorer {
 					hereLeft = PointManager.getPoint(here.gridX-1, here.gridY);
 					hereRight = PointManager.getPoint(here.gridX + 1, here.gridY);
 					
-					hereNextL = PointManager.getPoint(here.gridX-1, here.gridY+1);
-					hereNextLL = PointManager.getPoint(here.gridX-2, here.gridY+1);
-					hereLeftL = PointManager.getPoint(here.gridX-1, here.gridY-1);
-					hereLeftLL = PointManager.getPoint(here.gridX-1, here.gridY-2);
+					hereNext1 = PointManager.getPoint(here.gridX, here.gridY+2);
+					hereNext2 = PointManager.getPoint(here.gridX-1, here.gridY+2);
+					hereNext3 = PointManager.getPoint(here.gridX-2, here.gridY+2);
+					hereLeft1 = PointManager.getPoint(here.gridX-2, here.gridY);
+					hereLeft2 = PointManager.getPoint(here.gridX-2, here.gridY-1);
+					hereLeft3 = PointManager.getPoint(here.gridX-2, here.gridY-2);
 					break;
 				case Direction.DOWN:
 					hereNext = PointManager.getPoint(here.gridX, here.gridY-1);
 					hereLeft = PointManager.getPoint(here.gridX+1, here.gridY);
 					hereRight = PointManager.getPoint(here.gridX-1, here.gridY);
 					
-					hereNextL = PointManager.getPoint(here.gridX+1, here.gridY-1);
-					hereNextLL = PointManager.getPoint(here.gridX+2, here.gridY-1);
-					hereLeftL = PointManager.getPoint(here.gridX+1, here.gridY+1);
-					hereLeftLL = PointManager.getPoint(here.gridX+1, here.gridY+2);
+					hereNext1 = PointManager.getPoint(here.gridX, here.gridY-2);
+					hereNext2 = PointManager.getPoint(here.gridX+1, here.gridY-2);
+					hereNext3 = PointManager.getPoint(here.gridX+2, here.gridY-2);
+					hereLeft1 = PointManager.getPoint(here.gridX+2, here.gridY);
+					hereLeft2 = PointManager.getPoint(here.gridX+2, here.gridY+1);
+					hereLeft3 = PointManager.getPoint(here.gridX+2, here.gridY+2);
 					break;
 				case Direction.LEFT:
 					hereNext = PointManager.getPoint(here.gridX-1, here.gridY);
 					hereLeft = PointManager.getPoint(here.gridX, here.gridY-1);
 					hereRight = PointManager.getPoint(here.gridX, here.gridY+1);
 					
-					hereNextL = PointManager.getPoint(here.gridX-1, here.gridY-1);
-					hereNextLL = PointManager.getPoint(here.gridX-1, here.gridY-2);
-					hereLeftL = PointManager.getPoint(here.gridX+1, here.gridY-1);
-					hereLeftLL = PointManager.getPoint(here.gridX+2, here.gridY-1);
+					hereNext1 = PointManager.getPoint(here.gridX-2, here.gridY);
+					hereNext2 = PointManager.getPoint(here.gridX-2, here.gridY-1);
+					hereNext3 = PointManager.getPoint(here.gridX-2, here.gridY-2);
+					hereLeft1 = PointManager.getPoint(here.gridX, here.gridY-2);
+					hereLeft2 = PointManager.getPoint(here.gridX+1, here.gridY-2);
+					hereLeft3 = PointManager.getPoint(here.gridX+2, here.gridY-2);
 					break;
 				case Direction.RIGHT:
 					hereNext = PointManager.getPoint(here.gridX+1, here.gridY);
 					hereLeft = PointManager.getPoint(here.gridX, here.gridY+1);
 					hereRight = PointManager.getPoint(here.gridX, here.gridY-1);
 					
-					hereNextL = PointManager.getPoint(here.gridX+1, here.gridY+1);
-					hereNextLL = PointManager.getPoint(here.gridX+1, here.gridY+2);
-					hereLeftL = PointManager.getPoint(here.gridX-1, here.gridY+1);
-					hereLeftLL = PointManager.getPoint(here.gridX-2, here.gridY+1);
+					hereNext1 = PointManager.getPoint(here.gridX+2, here.gridY);
+					hereNext2 = PointManager.getPoint(here.gridX+2, here.gridY+1);
+					hereNext3 = PointManager.getPoint(here.gridX+2, here.gridY+2);
+					hereLeft1 = PointManager.getPoint(here.gridX, here.gridY+2);
+					hereLeft2 = PointManager.getPoint(here.gridX-1, here.gridY+2);
+					hereLeft3 = PointManager.getPoint(here.gridX-2, here.gridY+2);
 					break;
 					
 				default: 
 					hereNext = null;
 					hereLeft = null;
 					hereRight = null;
-					hereNextL = null;
-					hereNextLL = null;
-					hereLeftL = null;
-					hereLeftLL = null;
+					hereNext1 = null;
+					hereNext2 = null;
+					hereNext3 = null;
+					hereLeft1 = null;
+					hereLeft2 = null;
+					hereLeft3 = null;
 				}
                 
-                if(map[hereNext.gridX][hereNext.gridY] == ArenaMap.OBS 
-                		&& map[hereNextL.gridX][hereNextL.gridY] == ArenaMap.OBS 
-                		&& map[hereNextLL.gridX][hereNextLL.gridY] == ArenaMap.OBS) {
-                	if (map[hereLeft.gridX][hereLeft.gridY] == ArenaMap.OBS 
-                    		&& map[hereLeftL.gridX][hereLeftL.gridY] == ArenaMap.OBS 
-                    		&& map[hereLeftLL.gridX][hereLeftLL.gridY] == ArenaMap.OBS){
-                		
+                if(map[hereNext1.gridX-1][hereNext1.gridY-1] == ArenaMap.OBS 
+                		&& map[hereNext2.gridX-1][hereNext2.gridY-1] == ArenaMap.OBS 
+                		&& map[hereNext3.gridX-1][hereNext3.gridY-1] == ArenaMap.OBS) {
+                	if (map[hereLeft1.gridX-1][hereLeft1.gridY-1] == ArenaMap.OBS 
+                    		&& map[hereLeft2.gridX-1][hereLeft2.gridY-1] == ArenaMap.OBS 
+                    		&& map[hereLeft3.gridX-1][hereLeft3.gridY-1] == ArenaMap.OBS){
+                		System.out.println("Full align at "+here.gridX+" "+here.gridY);
+                		Communicator.fullAlign();
                 	} else {
-                		
+                		System.out.println("Half align at "+here.gridX+" "+here.gridY);
+                		Communicator.halfAlign();
                 	}
                 	
                 }
