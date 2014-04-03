@@ -3,8 +3,8 @@ package mdp;
 
 public class Config {
 	//simulation test file
-	//public static String mapFileName = "testMap.in";
-	public static String mapFileName = "shtest&fartestMap.in";
+	public static String mapFileName = "testMap.in";
+	//public static String mapFileName = "shtest&fartestMap.in";
 	//public static String mapFileName = "emptyMap.in";
 	//public static String mapFileName = "zheMap.in";
 	public static String background = "black_dark.jpg";
@@ -19,7 +19,7 @@ public class Config {
 	public static final int START_GRID_SIZE = 30;
 	public static final int END_GRID_SIZE = 30;
 	public static final int EPS = 2;//cm
-	public static boolean twoBytwo = true;
+	public static boolean twoBytwo = false;
 	
 	//simulation variables
 	public static final double PERCENTAGEOFEXPLORATION = 1;

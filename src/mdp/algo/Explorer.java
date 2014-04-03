@@ -8,7 +8,7 @@ import mdp.competition.Competition;
 import mdp.simulation.Simulator;
 
 public class Explorer {
-	public static Object syncLock  = new Object();
+	public static final Object syncLock  = new Object();
 	public static final String FLOODFILL = "FloodFill";
 	public static final String FLLWALL = "FallowWall";
 	public static final int North = 1, South = 3, East = 0, West = 2;
@@ -360,6 +360,7 @@ public class Explorer {
 //                		robot.getSensors().perceptEnvironment();
                 		Communicator.fullAlign();
                 		try {
+                            System.out.println("I am waiting for syncLock");
 							syncLock.wait();
 						} catch (InterruptedException e) {
 							// TODO Auto-generated catch block
@@ -372,6 +373,7 @@ public class Explorer {
 //                		robot.getSensors().perceptEnvironment();
                 		Communicator.halfAlign();
                 		try {
+                            System.out.println("I am waiting for syncLock");
 							syncLock.wait();
 						} catch (InterruptedException e) {
 							// TODO Auto-generated catch block

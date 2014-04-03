@@ -66,8 +66,10 @@ public class Robot {
 	}
 	
 	public Stack<Point> generateFastestPath(){
+        Communicator.startExplore();//remove during real run
         if (!Config.Simulator){
             Communicator.startRace();}
+
         setRace(true);
         //if (!Config.Simulator)
         pathCalculator.setMap(getMapKnowledgeBase().getArrayMap());

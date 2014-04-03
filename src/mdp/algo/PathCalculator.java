@@ -5,6 +5,7 @@ import java.util.PriorityQueue;
 import java.util.Stack;
 
 import mdp.Config;
+import mdp.competition.Communicator;
 
 public class PathCalculator {
 	
@@ -41,7 +42,7 @@ public class PathCalculator {
 	public boolean findFastestPath(Point des){
 		
 		//if (validatePath(shortestPath)) return true;
-		
+
 		//initialize
 		fastestPath.clear();
 		Comparator<Point> comparator = new PointDistanceComparator();

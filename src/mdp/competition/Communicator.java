@@ -89,7 +89,7 @@ public class Communicator extends VirtualCommunicator {
                     System.out.println("Communicator: Server Up! at "+serverSocket.getInetAddress().getHostName());
                     while (true){
                         try{
-
+                            System.out.println("Server: I am alive");
                             Socket clientSocket = serverSocket.accept();
                             long startTime = System.currentTimeMillis();
                             reintialize(); // to prevent command re-read
@@ -97,6 +97,7 @@ public class Communicator extends VirtualCommunicator {
                             InputStream clientInputStream = clientSocket.getInputStream();
                             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(clientInputStream));
                             message = bufferedReader.readLine();
+
 
                             if (Config.debugOn){
                                 System.out.println("Communicator: Message Received: "+message);
@@ -327,7 +328,16 @@ public class Communicator extends VirtualCommunicator {
             newdistance = distance;
         }
         writeCommandToArduino(Integer.toString(newdistance));
-        if (newdistance2 != 0) writeCommandToArduino(Integer.toString(newdistance2));
+        if (newdistance2 != 0) {
+            synchronized (runWait){
+                try{
+                    runWait.wait();}
+                catch (InterruptedException e){
+
+                }
+            }
+            writeCommandToArduino(Integer.toString(newdistance2));
+        }
     }
 
     // ask to do full alignment
@@ -381,9 +391,11 @@ public class Communicator extends VirtualCommunicator {
                     String irl = jsonObject.get("irl").toString();
                     String irr = jsonObject.get("irr").toString();
                     
-                    if ( usl == "-1" && usr == "-1" && usc == "-1" && irl == "-1" && irr == "-1"
-                    		) {
-                    	Explorer.syncLock.notify();
+                    if ( usl.equals("-1") && usr.equals("-1") && usc.equals("-1") && irl.equals("-1") && irr.equals("-1")) {
+                        System.out.println("I notify syncLock");
+                        synchronized (Explorer.syncLock){
+                        Explorer.syncLock.notify();}
+
                     }
 
                     if (Config.twoBytwo) {
@@ -456,7 +468,7 @@ public class Communicator extends VirtualCommunicator {
                     }
                 } else {
                 	if (Config.debugOn)
-                		System.out.println("Communicator: warning sensor velue is empty");
+                		System.out.println("Communicator: warning sensor value is empty");
                 }
 
                 System.out.println("the isRace is: " + Competition.robotManager.getRobot().isRace());
