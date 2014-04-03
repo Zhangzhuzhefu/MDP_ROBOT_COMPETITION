@@ -358,27 +358,31 @@ public class Explorer {
                 		System.out.println("Full align at "+here.gridX+" "+here.gridY);
 //                		robot.getSensors().setUpdateFlag(false);
 //                		robot.getSensors().perceptEnvironment();
-                		Communicator.fullAlign();
-                		try {
-                            System.out.println("I am waiting for syncLock");
-							syncLock.wait();
-						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
+                        if (!Config.Simulator){
+                            Communicator.fullAlign();
+                            try {
+                                System.out.println("I am waiting for syncLock");
+                                syncLock.wait();
+                            } catch (InterruptedException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+						    }
+                        }
 //                		robot.getSensors().setUpdateFlag(true);
                 	} else {
                 		System.out.println("Half align at "+here.gridX+" "+here.gridY);
 //                		robot.getSensors().setUpdateFlag(false);
 //                		robot.getSensors().perceptEnvironment();
-                		Communicator.halfAlign();
-                		try {
-                            System.out.println("I am waiting for syncLock");
-							syncLock.wait();
-						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
+                        if (!Config.Simulator){
+                            Communicator.halfAlign();
+                            try {
+                                System.out.println("I am waiting for syncLock");
+                                syncLock.wait();
+                            } catch (InterruptedException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                            }
+                        }
 //                		robot.getSensors().setUpdateFlag(true);
                 	}
                 	

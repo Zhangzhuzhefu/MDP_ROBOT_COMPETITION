@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Stack;
 
 import mdp.Config;
+import mdp.Utils;
 import mdp.competition.Communicator;
 import mdp.competition.Competition;
 import mdp.simulation.SimCommunicator;
@@ -66,7 +67,7 @@ public class Robot {
 	}
 	
 	public Stack<Point> generateFastestPath(){
-        Communicator.startExplore();//remove during real run
+
         if (!Config.Simulator){
             Communicator.startRace();}
 
@@ -238,6 +239,8 @@ public class Robot {
 				if (Config.debugOn)
 					System.out.println("Robot route is empty..");
 				isMoving = false;
+
+                Utils.printExplorationBitMap(getMapKnowledgeBase().getArrayMap());
 			}
         }
 
@@ -270,10 +273,11 @@ public class Robot {
         while (tempRoute != null && !tempRoute.empty()){
 
             Point peeka = tempRoute.peek();
-            if (peeka != endPoint && peeka != startPoint ){
+            //System.out.println("the point: gridX: "+curLoc.gridX+"\tgridY: "+curLoc.gridY+"\ttoD: "+toD);
+            if (curLoc != endPoint && (peeka != startPoint) ){
                 if (toD){
 
-                    if (peeka.gridY == curLoc.gridY && peeka.gridX != curLoc.gridX){
+                    if (peeka.gridY == curLoc.gridY && peeka.gridX != curLoc.gridX){//if moving along X, not Y
                         toD = false;
                         newRoute.push(curLoc);
                         if (Config.debugOn){
@@ -281,7 +285,7 @@ public class Robot {
                     }
 
                 } else {
-                    if (peeka.gridX == curLoc.gridX && peeka.gridY != curLoc.gridY){
+                    if (peeka.gridX == curLoc.gridX && peeka.gridY != curLoc.gridY){ // if moving along Y, not X
                         toD = true;
                         newRoute.push(curLoc);
                         if (Config.debugOn){
@@ -289,11 +293,18 @@ public class Robot {
                     }
                 }
                 curLoc =tempRoute.pop();
-
+                if (curLoc == endPoint){
+                    newRoute.push(curLoc);
+                    if (Config.debugOn){
+                        System.out.println("distanceDetermination\tcurLoc gridX: "+curLoc.gridX + "curLoc gridY: "+curLoc.gridY);
+                    }
+                }
+                //System.out.println("the point after pop: gridX: "+curLoc.gridX+"\tgridY: "+curLoc.gridY+"\ttoD: "+toD);
             } else { // if reach end point, pop the end point from route and push to the newRoute
+
                 curLoc = tempRoute.pop();
                 if (Config.debugOn){
-                    System.out.println("distanceDetermination\tcurLoc gridX: " + curLoc.gridX + "curLoc gridY: " + curLoc.gridY);
+                    System.out.println("aadistanceDetermination\tcurLoc gridX: " + curLoc.gridX + "curLoc gridY: " + curLoc.gridY);
                 }
                 newRoute.push(curLoc);
             }
@@ -309,7 +320,6 @@ public class Robot {
 
         return revRoute;
     }
-
 
     public void updateRobotLoc(){
 		if (sensors.getCommunicator() instanceof SimCommunicator){
@@ -370,6 +380,7 @@ public class Robot {
 			}
 		}
 	}
+
 	public void turnLeft(boolean delay){
 
             if (!Config.Simulator){
@@ -582,10 +593,6 @@ public class Robot {
 	public void setDirectionDegree(double d) {
 		this.direction.setDegree(d);
 	}
-
-    public void tellRPI(){
-
-    }
 
 	public void setRoute(Stack<Point> route) {
 		this.route = route;

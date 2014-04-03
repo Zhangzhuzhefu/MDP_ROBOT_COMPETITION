@@ -236,7 +236,7 @@ public class Communicator extends VirtualCommunicator {
                     }
 
                 } catch (Exception e) {
-                    System.err.println("Communicator: something wrong with me! : "+e.toString());
+                    System.err.println("Communicator: something wrong with me! : "+e.toString()+"\n he is trying to sent: "+sentMessage);
                 }
             }
         }).start();
