@@ -270,12 +270,14 @@ public class Explorer {
 
             robot.turnNorth(true);
 			boolean endVisit = false;
+			//after explore, run back
 //			while (robot.getMapKnowledgeBase().lessThanEnoughExploration() 
 //					&& System.currentTimeMillis() < timeEnd
 //                    && ((!endVisit&&robot.getCurrentLocation()!=start)
 //                    		||(endVisit&&robot.getCurrentLocation()!=start)
 //                    		||(!endVisit&&robot.getCurrentLocation()==start))) {
 			
+			//after explore, move back
 			while (//robot.getMapKnowledgeBase().lessThanEnoughExploration() 
 					 System.currentTimeMillis() < timeEnd
                     && ((!endVisit&&robot.getCurrentLocation()!=start)
