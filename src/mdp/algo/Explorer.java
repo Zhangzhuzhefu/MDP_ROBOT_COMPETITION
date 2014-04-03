@@ -270,8 +270,14 @@ public class Explorer {
 
             robot.turnNorth(true);
 			boolean endVisit = false;
-			while (robot.getMapKnowledgeBase().lessThanEnoughExploration() 
-					&& System.currentTimeMillis() < timeEnd
+//			while (robot.getMapKnowledgeBase().lessThanEnoughExploration() 
+//					&& System.currentTimeMillis() < timeEnd
+//                    && ((!endVisit&&robot.getCurrentLocation()!=start)
+//                    		||(endVisit&&robot.getCurrentLocation()!=start)
+//                    		||(!endVisit&&robot.getCurrentLocation()==start))) {
+			
+			while (//robot.getMapKnowledgeBase().lessThanEnoughExploration() 
+					 System.currentTimeMillis() < timeEnd
                     && ((!endVisit&&robot.getCurrentLocation()!=start)
                     		||(endVisit&&robot.getCurrentLocation()!=start)
                     		||(!endVisit&&robot.getCurrentLocation()==start))) {
@@ -506,6 +512,7 @@ public class Explorer {
 			}
 
 			//return to start point
+			/*
             System.out.println("fastest back path");
 			PathCalculator pathCalculator = new PathCalculator();
 			Stack <Point> returnPsth = null;
@@ -522,6 +529,7 @@ public class Explorer {
 				if (Config.debugOn)
 					System.out.println("Robot doesn't know how to get back");
 			}
+			
 			//To reverse the returnPath stack
 
 			Stack <Point> temp = new Stack<Point>();
@@ -538,6 +546,13 @@ public class Explorer {
 				    Communicator.startRace();
                     Competition.secondRun();}
                 else Simulator.robotManager.robotRun();
+			}
+			*/
+			
+			if (!Config.Simulator) {
+				Communicator.fullAlign();
+				Communicator.startRace();
+                Competition.secondRun();
 			}
 
 		}
