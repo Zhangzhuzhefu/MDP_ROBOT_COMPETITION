@@ -59,7 +59,8 @@ public class Robot {
 	}
 	
 	public void startMoving(){
-		setCurrentLocation(ArenaMap.START_POINT);
+        if (!race){
+		    setCurrentLocation(ArenaMap.START_POINT);}
 		isMoving = true;
 		isOnTheWayReturning = false;
 	}
@@ -274,7 +275,7 @@ public class Robot {
                         toD = false;
                         newRoute.push(curLoc);
                         if (Config.debugOn){
-                            System.out.println("curLoc gridX: "+curLoc.gridX + "curLoc gridY: "+curLoc.gridY);}
+                            System.out.println("distanceDetermination\tcurLoc gridX: "+curLoc.gridX + "curLoc gridY: "+curLoc.gridY);}
                     }
 
                 } else {
@@ -282,7 +283,7 @@ public class Robot {
                         toD = true;
                         newRoute.push(curLoc);
                         if (Config.debugOn){
-                            System.out.println("curLoc gridX: "+curLoc.gridX + "curLoc gridY: "+curLoc.gridY);}
+                            System.out.println("distanceDetermination\tcurLoc gridX: "+curLoc.gridX + "curLoc gridY: "+curLoc.gridY);}
                     }
                 }
                 curLoc =tempRoute.pop();
@@ -290,7 +291,7 @@ public class Robot {
             } else { // if reach end point, pop the end point from route and push to the newRoute
                 curLoc = tempRoute.pop();
                 if (Config.debugOn){
-                    System.out.println("curLoc gridX: " + curLoc.gridX + "curLoc gridY: " + curLoc.gridY);
+                    System.out.println("distanceDetermination\tcurLoc gridX: " + curLoc.gridX + "curLoc gridY: " + curLoc.gridY);
                 }
                 newRoute.push(curLoc);
             }
@@ -300,7 +301,8 @@ public class Robot {
         // reverse the stack
         while(newRoute != null && !newRoute.empty()){
             tempPoint = newRoute.pop();
-            revRoute.push(tempPoint);
+            if (tempPoint != currentLocation) {
+                revRoute.push(tempPoint);}
         }
 
         return revRoute;

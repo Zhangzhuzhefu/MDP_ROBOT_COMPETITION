@@ -458,14 +458,12 @@ public class Communicator extends VirtualCommunicator {
                 	if (Config.debugOn)
                 		System.out.println("Communicator: warning sensor velue is empty");
                 }
+
                 System.out.println("the isRace is: " + Competition.robotManager.getRobot().isRace());
                 if (Competition.robotManager.getRobot().isRace()){
-                    if (!jsonObject.get("dis").toString().equals("")){
-                        movedDistance = Integer.getInteger(jsonObject.get("dis").toString());}
                     synchronized (runWait){
                         runWait.notify();
                     }
-
                 }
             }
 
@@ -574,7 +572,7 @@ public class Communicator extends VirtualCommunicator {
             try{
                 System.out.println("Communicator: I am waiting for movedDistance");
                 runWait.wait();
-                System.out.println("Communicator: finish waiting,getMovedDistance");
+                System.out.println("Communicator: finish waiting for movedDistance");
             } catch (InterruptedException e) {
                 System.err.print(e);
             }
