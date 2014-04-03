@@ -569,7 +569,7 @@ public class Communicator extends VirtualCommunicator {
             try{
                 System.out.println("Communicator: I am waiting for movedDistance");
                 runWait.wait();
-                System.out.println("Communicator: finish waiting");
+                System.out.println("Communicator: finish waiting for movedDistance");
             } catch (InterruptedException e) {
                 System.err.print(e);
             }

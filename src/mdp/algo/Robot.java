@@ -301,7 +301,8 @@ public class Robot {
         // reverse the stack
         while(newRoute != null && !newRoute.empty()){
             tempPoint = newRoute.pop();
-            revRoute.push(tempPoint);
+            if (tempPoint != currentLocation) {
+                revRoute.push(tempPoint);}
         }
 
         return revRoute;
