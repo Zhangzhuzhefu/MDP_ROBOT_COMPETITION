@@ -8,7 +8,7 @@ import mdp.competition.Competition;
 import mdp.simulation.Simulator;
 
 public class Explorer {
-	Object syncLock  = new Object();
+	public static Object syncLock  = new Object();
 	public static final String FLOODFILL = "FloodFill";
 	public static final String FLLWALL = "FallowWall";
 	public static final int North = 1, South = 3, East = 0, West = 2;
@@ -232,6 +232,7 @@ public class Explorer {
 
 		@Override
 		public void run() {
+			synchronized (syncLock) {
 			if (Config.debugOn)
 				System.out.println("Explorer: Follow Wall");
 			
@@ -355,18 +356,28 @@ public class Explorer {
                     		&& map[hereLeft2.gridX-1][hereLeft2.gridY-1] == ArenaMap.OBS 
                     		&& map[hereLeft3.gridX-1][hereLeft3.gridY-1] == ArenaMap.OBS){
                 		System.out.println("Full align at "+here.gridX+" "+here.gridY);
-                		robot.getSensors().setUpdateFlag(false);
-                		Communicator.getSensorValue();
-                		robot.getSensors().perceptEnvironment();
+//                		robot.getSensors().setUpdateFlag(false);
+//                		robot.getSensors().perceptEnvironment();
                 		Communicator.fullAlign();
-                		robot.getSensors().setUpdateFlag(true);
+                		try {
+							syncLock.wait();
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+//                		robot.getSensors().setUpdateFlag(true);
                 	} else {
                 		System.out.println("Half align at "+here.gridX+" "+here.gridY);
-                		robot.getSensors().setUpdateFlag(false);
-                		Communicator.getSensorValue();
-                		robot.getSensors().perceptEnvironment();
+//                		robot.getSensors().setUpdateFlag(false);
+//                		robot.getSensors().perceptEnvironment();
                 		Communicator.halfAlign();
-                		robot.getSensors().setUpdateFlag(true);
+                		try {
+							syncLock.wait();
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+//                		robot.getSensors().setUpdateFlag(true);
                 	}
                 	
                 }
@@ -524,7 +535,7 @@ public class Explorer {
 			}
 
 		}
-		
+		}
 	}
 	
 	

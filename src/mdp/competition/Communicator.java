@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mdp.Config;
+import mdp.algo.Explorer;
 import mdp.algo.Robot;
 import mdp.algo.VirtualCommunicator;
 
@@ -367,6 +368,9 @@ public class Communicator extends VirtualCommunicator {
             cmd = jsonObject.get("cmd").toString();
 
             // from Arduino
+//            if (cmd.equals("aln")){
+//            	Explorer.syncLock.notify();
+//            }else 
             if (cmd.equals("ssr")){
 
                 if (!jsonObject.get("usl").toString().equals("")){
@@ -377,6 +381,11 @@ public class Communicator extends VirtualCommunicator {
                     String irl = jsonObject.get("irl").toString();
                     String irr = jsonObject.get("irr").toString();
                     
+                    if ( usl == "-1" && usr == "-1" && usc == "-1" && irl == "-1" && irr == "-1"
+                    		) {
+                    	Explorer.syncLock.notify();
+                    }
+
                     if (Config.twoBytwo) {
                     	nUs[0] = Integer.parseInt(usl);
                         nUs[1] = Integer.parseInt(usc);
@@ -420,12 +429,6 @@ public class Communicator extends VirtualCommunicator {
 						nRs[0] = Integer.parseInt(irr);
 						nRs[0] = checkUltrasonicRange(nRs[0])- 5;
 						nRs[0] = roundingToTen(nRs[0]) / 10;
-                    }
-
-                    if ( nUs[0]<0 || nUs[1]<0 || nUs[2]<0 || nLs[0]<0 || nRs[0]<0
-                    		
-                    		) {
-                    	//Communicator.sensorValue();
                     }
 
 
@@ -571,7 +574,7 @@ public class Communicator extends VirtualCommunicator {
             try{
                 System.out.println("Communicator: I am waiting for movedDistance");
                 runWait.wait();
-                System.out.println("Communicator: finish waiting");
+                System.out.println("Communicator: finish waiting,getMovedDistance");
             } catch (InterruptedException e) {
                 System.err.print(e);
             }
