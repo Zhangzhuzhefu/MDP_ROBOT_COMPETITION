@@ -93,7 +93,8 @@ public class Utils {
 	public static String expBitsToHex (int [][] map) {
 		String result = "";
 		String strMap = "11";
-		for (int j = map[0].length - 2; j >= 1; j--) {
+//		for (int j = map[0].length - 2; j >= 1; j--) {
+		for (int j = 1; j < map[0].length - 2; j++) {
 			for (int i = 1; i < map.length-1; i++) {
 				strMap += map[i][j]==2?0:1;
 			}
@@ -106,6 +107,7 @@ public class Utils {
 			try{
 				result += Long.toHexString(Integer.parseInt(subStr, 2));
 			} catch (Exception e){
+				System.out.println("Utils: Hex failed.");
 			}
 		}
 		return result; 
@@ -114,7 +116,8 @@ public class Utils {
 	public static String mapBitsToHex (int [][] map) {
 		String result="";
 		String strMap = "";
-		for (int j = map[0].length - 2; j >= 1; j--) {
+//		for (int j = map[0].length - 2; j >= 1; j--) {
+		for (int j = 1; j <  map[0].length - 2; j++) {
 			for (int i = 1; i < map.length-1; i++) {
 				if (map[i][j]!=2)
 				strMap += map[i][j]==0?0:1;
