@@ -261,8 +261,17 @@ public class Explorer {
 			else clockwise = false;
 
             robot.getSensors().perceptEnvironment();
-//            robot.turnWest(true);
-//    		Communicator.fullAlign();
+            robot.turnWest(true);
+            if (!Config.Simulator){
+                Communicator.fullAlign();
+                try {
+                    System.out.println("I am waiting for syncLock");
+                    syncLock.wait();
+                } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
             if (!Config.Simulator){
                 Competition.simulatorMapPanel.updateMap(robot.getMapKnowledgeBase().getArrayMap());
             } else {
@@ -522,12 +531,10 @@ public class Explorer {
                 else Simulator.robotManager.robotRun();
 			}
 			*/
-			
 			if (!Config.Simulator) {
+
 				Communicator.fullAlign();
 				Utils.printExplorationBitMap(robot.getMapKnowledgeBase().getArrayMap());
-				Communicator.startRace();
-                Competition.secondRun();
 			}
 
 		}

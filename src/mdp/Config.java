@@ -12,7 +12,7 @@ public class Config {
 	public static boolean trackingOn = false;
 	public static boolean printBitMapStreamOn = false;
 	public static boolean debugOn = true;
-	public static boolean Simulator = true;
+	public static boolean Simulator = false;
 
 	//environment variables
 	public static final int MAZE_LENGTH = 200, MAZE_WIDTH = 150, GRID_LEN = 10;
@@ -39,8 +39,9 @@ public class Config {
 	public static final double endPointY = 210.0;
 	public static final double endPointX3by3 = 150.0;
 	public static final double endPointY3by3 = 200.0;
-	public static final int LongInfraredDetectDist = 4;
-	public static final int InfraRedDetectDist = 3;
+	public static final int LongInfraredDetectDist = 2;
+	public static final int LeftInfraRedDetectDist = 2;
+    public static final int InfraRedDetectDist = 2;
 	//public static final double RobotStartingDirection = 0;//right
 	public static final double RobotStartingDirection = 0;
 
