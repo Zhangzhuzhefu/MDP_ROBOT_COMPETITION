@@ -185,7 +185,7 @@ public class SimPerceptron{
 				}
 			} else {
 				boolean breakFlag = false;
-                frontWay = robot.getCurrentLocation().gridX - 2;
+                frontWay = robot.getCurrentLocation().gridX - 3;
                 farFront = Math.min(frontWay,Math.min(Config.InfraRedDetectDist,ulLeft));
 				for (int i = 0; i < farFront; i++) {
 					if (environment[curLoc.gridX - 2 - i][curLoc.gridY - 1 - 1] == ArenaMap.UNKNOWN)
@@ -200,7 +200,7 @@ public class SimPerceptron{
 					environment[curLoc.gridX - 2 - farFront][curLoc.gridY - 1 - 1] = ArenaMap.OBS;
 				}
 				breakFlag = false;
-				frontWay = robot.getCurrentLocation().gridX - 2;
+				frontWay = robot.getCurrentLocation().gridX - 3;
 
                 farFront = Math.min(frontWay,Math.min(Config.InfraRedDetectDist, ulCenter));
 				for (int i = 0; i < farFront; i++) {
