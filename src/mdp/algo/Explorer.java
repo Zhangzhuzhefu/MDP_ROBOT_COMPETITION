@@ -3,6 +3,7 @@ package mdp.algo;
 import java.util.Stack;
 
 import mdp.Config;
+import mdp.Utils;
 import mdp.competition.Communicator;
 import mdp.competition.Competition;
 import mdp.simulation.Simulator;
@@ -470,37 +471,8 @@ public class Explorer {
 									+ ": path not found");
 							return;
 						} else {
-							here = followWallPath.pop();
-							if (Config.Simulator) {
-								Simulator.simulatorMapPanel
-										.updatePath(followWallPath);
-							} else {
-								Competition.simulatorMapPanel
-										.updatePath(followWallPath);
-							}
-							int xDiff, yDiff;
-							xDiff = here.gridX
-									- robot.getCurrentLocation().gridX;
-							yDiff = here.gridY
-									- robot.getCurrentLocation().gridY;
-							if (xDiff > 0) {
-								robot.turnEast(true);
-							} else if (xDiff < 0) {
-								robot.turnWest(true);
-							} else if (yDiff > 0) {
-								robot.turnNorth(true);
-							} else if (yDiff < 0) {
-								robot.turnSouth(true);
-							}
+							robot.turnBack(true);
 							robot.getSensors().perceptEnvironment();
-							if (Config.Simulator) {
-								Simulator.simulatorMapPanel.updateMap(robot
-										.getMapKnowledgeBase().getArrayMap());
-							} else {
-								Competition.simulatorMapPanel.updateMap(robot
-										.getMapKnowledgeBase().getArrayMap());
-							}
-							robot.jumpToPoint(here.gridX, here.gridY, true);
 						}
 					}
 					if (Config.Simulator){
@@ -553,6 +525,7 @@ public class Explorer {
 			
 			if (!Config.Simulator) {
 				Communicator.fullAlign();
+				Utils.printExplorationBitMap(robot.getMapKnowledgeBase().getArrayMap());
 				Communicator.startRace();
                 Competition.secondRun();
 			}
