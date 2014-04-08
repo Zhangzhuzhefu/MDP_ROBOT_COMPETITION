@@ -12,7 +12,7 @@ public class Config {
 	public static boolean trackingOn = false;
 	public static boolean printBitMapStreamOn = false;
 	public static boolean debugOn = true;
-	public static boolean Simulator = true;
+	public static boolean Simulator = false;
 
 	//environment variables
 	public static final int MAZE_LENGTH = 200, MAZE_WIDTH = 150, GRID_LEN = 10;
@@ -26,12 +26,13 @@ public class Config {
 	public static final int PANEL_GRID_SIZE = 35;
 	public static final int[] FRAME_LOCATION ={250, 100, 850, 1050};
 	public static final int[] FRAME_SIZE ={900,1050};
-	public static final long EXP_TIMER_MIN =1;
-	public static final long EXP_TIMER_SEC =31;
+	public static final long EXP_TIMER_MIN =8;
+	public static final long EXP_TIMER_SEC =1;
 
 	//Robot
 	public static final int TIMEOUT = 12000;
-	public static final int robotStepsPersecond = 3;
+
+	public static final int robotStepsPersecond = 50;
 	public static final int robotWaitingTime = 1000/robotStepsPersecond;
 	public static final double startPointX = 30.0;
 	public static final double startPointY = 30.0;

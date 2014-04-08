@@ -239,7 +239,7 @@ public class Robot {
 				if (Config.debugOn)
 					System.out.println("Robot route is empty..");
 				isMoving = false;
-
+                Communicator.halfAlign();
                 Utils.printExplorationBitMap(getMapKnowledgeBase().getArrayMap());
 			}
         }

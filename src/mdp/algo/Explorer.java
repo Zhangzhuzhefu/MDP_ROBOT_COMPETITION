@@ -313,24 +313,24 @@ public class Explorer {
 					hereLeft = PointManager.getPoint(here.gridX-1, here.gridY);
 					hereRight = PointManager.getPoint(here.gridX + 1, here.gridY);
 					
-					hereNext1 = PointManager.getPoint(here.gridX, here.gridY+2);
-					hereNext2 = PointManager.getPoint(here.gridX-1, here.gridY+2);
-					hereNext3 = PointManager.getPoint(here.gridX-2, here.gridY+2);
-					hereLeft1 = PointManager.getPoint(here.gridX-2, here.gridY);
-					hereLeft2 = PointManager.getPoint(here.gridX-2, here.gridY-1);
-					hereLeft3 = PointManager.getPoint(here.gridX-2, here.gridY-2);
+					hereNext1 = PointManager.getPoint(here.gridX+1, here.gridY+2);
+					hereNext2 = PointManager.getPoint(here.gridX, here.gridY+2);
+					hereNext3 = PointManager.getPoint(here.gridX-1, here.gridY+2);
+					hereLeft1 = PointManager.getPoint(here.gridX-2, here.gridY+1);
+					hereLeft2 = PointManager.getPoint(here.gridX-2, here.gridY);
+					hereLeft3 = PointManager.getPoint(here.gridX-2, here.gridY-1);
 					break;
 				case Direction.DOWN:
 					hereNext = PointManager.getPoint(here.gridX, here.gridY-1);
 					hereLeft = PointManager.getPoint(here.gridX+1, here.gridY);
 					hereRight = PointManager.getPoint(here.gridX-1, here.gridY);
 					
-					hereNext1 = PointManager.getPoint(here.gridX, here.gridY-2);
-					hereNext2 = PointManager.getPoint(here.gridX+1, here.gridY-2);
-					hereNext3 = PointManager.getPoint(here.gridX+2, here.gridY-2);
-					hereLeft1 = PointManager.getPoint(here.gridX+2, here.gridY);
-					hereLeft2 = PointManager.getPoint(here.gridX+2, here.gridY+1);
-					hereLeft3 = PointManager.getPoint(here.gridX+2, here.gridY+2);
+					hereNext1 = PointManager.getPoint(here.gridX-1, here.gridY-2);
+					hereNext2 = PointManager.getPoint(here.gridX, here.gridY-2);
+					hereNext3 = PointManager.getPoint(here.gridX+1, here.gridY-2);
+					hereLeft1 = PointManager.getPoint(here.gridX+2, here.gridY-1);
+					hereLeft2 = PointManager.getPoint(here.gridX+2, here.gridY);
+					hereLeft3 = PointManager.getPoint(here.gridX+2, here.gridY+1);
 					break;
 				case Direction.LEFT:
 					hereNext = PointManager.getPoint(here.gridX-1, here.gridY);
@@ -340,21 +340,21 @@ public class Explorer {
 					hereNext1 = PointManager.getPoint(here.gridX-2, here.gridY);
 					hereNext2 = PointManager.getPoint(here.gridX-2, here.gridY-1);
 					hereNext3 = PointManager.getPoint(here.gridX-2, here.gridY-2);
-					hereLeft1 = PointManager.getPoint(here.gridX, here.gridY-2);
-					hereLeft2 = PointManager.getPoint(here.gridX+1, here.gridY-2);
-					hereLeft3 = PointManager.getPoint(here.gridX+2, here.gridY-2);
+					hereLeft1 = PointManager.getPoint(here.gridX-1, here.gridY-2);
+					hereLeft2 = PointManager.getPoint(here.gridX, here.gridY-2);
+					hereLeft3 = PointManager.getPoint(here.gridX+1, here.gridY-2);
 					break;
 				case Direction.RIGHT:
 					hereNext = PointManager.getPoint(here.gridX+1, here.gridY);
 					hereLeft = PointManager.getPoint(here.gridX, here.gridY+1);
 					hereRight = PointManager.getPoint(here.gridX, here.gridY-1);
 					
-					hereNext1 = PointManager.getPoint(here.gridX+2, here.gridY);
-					hereNext2 = PointManager.getPoint(here.gridX+2, here.gridY+1);
-					hereNext3 = PointManager.getPoint(here.gridX+2, here.gridY+2);
-					hereLeft1 = PointManager.getPoint(here.gridX, here.gridY+2);
-					hereLeft2 = PointManager.getPoint(here.gridX-1, here.gridY+2);
-					hereLeft3 = PointManager.getPoint(here.gridX-2, here.gridY+2);
+					hereNext1 = PointManager.getPoint(here.gridX+2, here.gridY-1);
+					hereNext2 = PointManager.getPoint(here.gridX+2, here.gridY);
+					hereNext3 = PointManager.getPoint(here.gridX+2, here.gridY+1);
+					hereLeft1 = PointManager.getPoint(here.gridX+1, here.gridY+2);
+					hereLeft2 = PointManager.getPoint(here.gridX, here.gridY+2);
+					hereLeft3 = PointManager.getPoint(here.gridX-1, here.gridY+2);
 					break;
 					
 				default: 
@@ -376,6 +376,9 @@ public class Explorer {
                     		&& map[hereLeft2.gridX-1][hereLeft2.gridY-1] == ArenaMap.OBS 
                     		&& map[hereLeft3.gridX-1][hereLeft3.gridY-1] == ArenaMap.OBS){
                 		System.out.println("Full align at "+here.gridX+" "+here.gridY);
+                        System.out.println("hereNext1: "+hereNext1.gridX+" "+hereNext1.gridY+" hereNext2: "+hereNext2.gridX+" "+hereNext2.gridY+ " hereNext3: "+ hereNext3.gridX+" "+ hereNext3.gridY);
+                        System.out.println("hereLeft1: "+hereLeft1.gridX+" "+hereLeft1.gridY+" hereNext2: "+hereLeft2.gridX+ " "+hereLeft2.gridY +" hereLeft3: "+ hereLeft3.gridX+ " "+ hereLeft3.gridY);
+
 //                		robot.getSensors().setUpdateFlag(false);
 //                		robot.getSensors().perceptEnvironment();
                         if (!Config.Simulator){
@@ -391,6 +394,9 @@ public class Explorer {
 //                		robot.getSensors().setUpdateFlag(true);
                 	} else {
                 		System.out.println("Half align at "+here.gridX+" "+here.gridY);
+                        System.out.println("hereNext1: "+hereNext1.gridX+" "+hereNext1.gridY+" hereNext2: "+hereNext2.gridX+" "+hereNext2.gridY+ " hereNext3: "+ hereNext3.gridX+" "+ hereNext3.gridY);
+                        System.out.println("hereLeft1: "+hereLeft1.gridX+" "+hereLeft1.gridY+" hereNext2: "+hereLeft2.gridX+ " "+hereLeft2.gridY +" hereLeft3: "+ hereLeft3.gridX+ " "+ hereLeft3.gridY);
+
 //                		robot.getSensors().setUpdateFlag(false);
 //                		robot.getSensors().perceptEnvironment();
                         if (!Config.Simulator){
@@ -495,6 +501,12 @@ public class Explorer {
 				}
 				
 			}
+                if (!Config.Simulator) {
+
+                    Communicator.fullAlign();
+                    Utils.printExplorationBitMap(robot.getMapKnowledgeBase().getArrayMap());
+                }
+
 
 			//return to start point
 			/*
@@ -533,11 +545,6 @@ public class Explorer {
                 else Simulator.robotManager.robotRun();
 			}
 			*/
-			if (!Config.Simulator) {
-
-				Communicator.fullAlign();
-				Utils.printExplorationBitMap(robot.getMapKnowledgeBase().getArrayMap());
-			}
 
 		}
 		}
