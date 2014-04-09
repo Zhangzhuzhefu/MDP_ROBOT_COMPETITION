@@ -73,7 +73,6 @@ public class SimPerceptron{
 				frontWay = ArenaMap.MAXM-2 - robot.getCurrentLocation().gridY;
 
                 farFront = Math.min(frontWay,Math.min(Config.InfraRedDetectDist, ulCenter));
-				System.out.println("gridX: "+robot.getCurrentLocation().gridX+" frontWay: "+frontWay+" ulCenter: "+ulCenter+" farFront: "+farFront);
 				for (int i = 0; i < farFront; i++) {
 					if (environment[curLoc.gridX - 1][curLoc.gridY + i+1] == ArenaMap.UNKNOWN)
 					environment[curLoc.gridX - 1][curLoc.gridY + i+1] = ArenaMap.EMP;
@@ -188,6 +187,7 @@ public class SimPerceptron{
 				boolean breakFlag = false;
                 frontWay = robot.getCurrentLocation().gridX - 3;
                 farFront = Math.min(frontWay,Math.min(Config.InfraRedDetectDist,ulLeft));
+                System.out.print("frontWay: "+frontWay+" farFront: "+farFront+" ulLeft: "+ulLeft);
 				for (int i = 0; i < farFront; i++) {
 					if (environment[curLoc.gridX - 3 - i][curLoc.gridY - 2] == ArenaMap.UNKNOWN)
 					environment[curLoc.gridX - 3 - i][curLoc.gridY - 2] = ArenaMap.EMP;

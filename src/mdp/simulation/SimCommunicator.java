@@ -113,19 +113,19 @@ public class SimCommunicator extends VirtualCommunicator{
 				}
 			} else {
 				for (int i = 0; i < Config.InfraRedDetectDist; i++) {
-					if (actualMap[curLoc.gridX - 2 - i][curLoc.gridY - 1 - 1] == ArenaMap.OBS) {
+					if (actualMap[curLoc.gridX - 3 - i][curLoc.gridY - 1 - 1] == ArenaMap.OBS) {
 						detectInt[0] = i;
 						break;
 					}
 				}
 				for (int i = 0; i < Config.InfraRedDetectDist; i++) {
-					if (actualMap[curLoc.gridX - 2 - i][curLoc.gridY - 1] == ArenaMap.OBS) {
+					if (actualMap[curLoc.gridX - 3 - i][curLoc.gridY - 1] == ArenaMap.OBS) {
 						detectInt[1] = i;
 						break;
 					}
 				}
 				for (int i = 0; i < Config.InfraRedDetectDist; i++) {
-					if (actualMap[curLoc.gridX - 2 - i][curLoc.gridY] == ArenaMap.OBS) {
+					if (actualMap[curLoc.gridX - 3 - i][curLoc.gridY] == ArenaMap.OBS) {
 						detectInt[2] = i;
 						break;
 					}
