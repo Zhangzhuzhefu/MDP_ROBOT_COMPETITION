@@ -18,6 +18,7 @@ import javax.swing.border.EmptyBorder;
 
 import mdp.Config;
 import mdp.algo.ArenaMap;
+import mdp.competition.Communicator;
 import mdp.competition.Competition;
 import mdp.simulation.Simulator;
 
@@ -142,8 +143,10 @@ public class ControlPanel extends Panel{
 			public void actionPerformed(ActionEvent e) {
                 if (!Config.Simulator){
                     Competition.explore();
+                   Communicator.writeCommandToArduino("e");
                 } else {
 				    Simulator.explore();
+				    
                 }
 			}
 		});

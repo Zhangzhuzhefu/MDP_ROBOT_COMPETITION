@@ -337,9 +337,9 @@ public class Explorer {
 					hereLeft = PointManager.getPoint(here.gridX, here.gridY-1);
 					hereRight = PointManager.getPoint(here.gridX, here.gridY+1);
 					
-					hereNext1 = PointManager.getPoint(here.gridX-2, here.gridY);
-					hereNext2 = PointManager.getPoint(here.gridX-2, here.gridY-1);
-					hereNext3 = PointManager.getPoint(here.gridX-2, here.gridY-2);
+					hereNext1 = PointManager.getPoint(here.gridX-2, here.gridY-1);
+					hereNext2 = PointManager.getPoint(here.gridX-2, here.gridY);
+					hereNext3 = PointManager.getPoint(here.gridX-2, here.gridY+1);
 					hereLeft1 = PointManager.getPoint(here.gridX-1, here.gridY-2);
 					hereLeft2 = PointManager.getPoint(here.gridX, here.gridY-2);
 					hereLeft3 = PointManager.getPoint(here.gridX+1, here.gridY-2);
@@ -504,6 +504,7 @@ public class Explorer {
                 if (!Config.Simulator) {
 
                     Communicator.fullAlign();
+                    robot.turnBack(true);
                     Utils.printExplorationBitMap(robot.getMapKnowledgeBase().getArrayMap());
                 }
 
